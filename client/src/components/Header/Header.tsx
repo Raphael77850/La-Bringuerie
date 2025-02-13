@@ -1,5 +1,6 @@
 import { AppBar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Link as RouterLink } from "react-router-dom";
 import letterB from "../../assets/images/IconeBM.png";
 
 const useStyles = makeStyles({
@@ -20,19 +21,16 @@ export default function Header() {
   const classes = useStyles();
 
   return (
-    <AppBar
-      position="static"
-      className={classes.appBar}
-      style={{
-        alignItems: "center",
-        margin: "1rem",
-      }}
-    >
-      <img
-        src={letterB}
-        alt="La Bringuerie"
-        style={{ height: "2rem", marginRight: "1rem" }}
-      />
+    <AppBar position="static" className={classes.appBar}>
+      <RouterLink
+        to="/about"
+        style={{ color: "orange", textDecoration: "none" }}
+      >
+        À propos
+      </RouterLink>
+      <RouterLink to="/">
+        <img src={letterB} alt="La Bringuerie" style={{ height: "2rem" }} />
+      </RouterLink>
     </AppBar>
   );
 }
