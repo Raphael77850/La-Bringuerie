@@ -22,14 +22,14 @@ export default function Header() {
 
   return (
     <AppBar position="static" className={classes.appBar}>
+      <RouterLink to="/">
+        <img src={letterB} alt="La Bringuerie" style={{ height: "2rem" }} />
+      </RouterLink>
       <RouterLink
         to="/about"
         style={{ color: "orange", textDecoration: "none" }}
       >
         À propos
-      </RouterLink>
-      <RouterLink to="/">
-        <img src={letterB} alt="La Bringuerie" style={{ height: "2rem" }} />
       </RouterLink>
     </AppBar>
   );
