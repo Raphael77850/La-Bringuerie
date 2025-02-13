@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import videoSrc from "../../assets/videos/Soiree.mp4";
+import videoSrc from "../../assets/images/Soiree.mp4";
 
 export default function HeroSection() {
   return (

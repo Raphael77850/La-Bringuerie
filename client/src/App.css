@@ -3,3 +3,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+html,
+body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+#root {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+.events,
+.newsletter {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 20px;
+  overflow-x: hidden;
+}
