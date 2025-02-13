@@ -4,6 +4,7 @@ import EventCarrousel from "./components/EventCarrousel/EventCarrousel";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
+import Intro from "./components/Introduction/Intro";
 import NewsletterForm from "./components/NewsletterForm/NewsletterForm";
 
 // Définir un thème personnalisé
@@ -54,6 +55,7 @@ export default function App() {
       <CssBaseline />
       <Header />
       <HeroSection />
+      <Intro />
       <section className="events">
         <h2>Prochains Événements</h2>
         <EventCarrousel events={events} />
