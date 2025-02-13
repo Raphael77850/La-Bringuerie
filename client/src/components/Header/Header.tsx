@@ -1,6 +1,6 @@
-import { AppBar, Button } from "@mui/material";
+import { AppBar } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import letterB from "../../assets/images/letter-b.png";
+import letterB from "../../assets/images/IconeBM.png";
 
 const useStyles = makeStyles({
   appBar: {
@@ -24,23 +24,15 @@ export default function Header() {
       position="static"
       className={classes.appBar}
       style={{
-        display: "flex",
-        justifyContent: "flex-end",
         alignItems: "center",
+        margin: "1rem",
       }}
     >
       <img
         src={letterB}
         alt="La Bringuerie"
-        style={{ height: "24px", marginRight: "16px" }}
+        style={{ height: "2rem", marginRight: "1rem" }}
       />
-      <Button
-        href="/about"
-        className={classes.button}
-        style={{ textTransform: "none" }}
-      >
-        À propos
-      </Button>
     </AppBar>
   );
 }

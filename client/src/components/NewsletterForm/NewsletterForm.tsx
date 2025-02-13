@@ -37,6 +37,8 @@ export default function NewsletterForm() {
       sx={{
         maxWidth: 400,
         margin: "auto",
+        mt: 4,
+        mb: 1,
         p: 2,
         border: 1,
         borderRadius: 2,
