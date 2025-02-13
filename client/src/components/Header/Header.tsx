@@ -8,12 +8,18 @@ const useStyles = makeStyles({
     backgroundColor: "white !important",
     boxShadow: "none !important",
   },
-  title: {
-    flexGrow: 1,
-    color: "orange !important",
+  container: {
+    display: "flex !important",
+    justifyContent: "space-between !important",
+    alignItems: "center !important",
+    width: "100% !important",
   },
-  button: {
+  link: {
     color: "orange !important",
+    textDecoration: "none !important",
+    "&:hover": {
+      textDecoration: "underline !important",
+    },
   },
 });
 
