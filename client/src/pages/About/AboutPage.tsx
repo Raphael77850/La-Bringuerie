@@ -102,7 +102,7 @@ export default function AboutPage() {
             ))}
           </Grid>
           <Typography
-            variant="h2"
+            variant="h3"
             align="center"
             pt={3}
             gutterBottom
@@ -111,15 +111,15 @@ export default function AboutPage() {
             CV DES CHEFS DE BRINGUE
           </Typography>
           <Typography
-            variant="h5"
+            variant="h6"
             align="center"
             paragraph
             sx={{ color: "#FF8C00", mb: 6 }}
           >
-            Chefs de Clan, de Bringue et Organisateurs d’Événements Privés Le
-            chef de bringue est un passionné d’événements exclusifs et
+            Chefs de Clan, de Bringue et Organisateurs d'Événements Privés Le
+            chef de bringue est un passionné d'événements exclusifs et
             innovants, reconnu pour son influence dans la scène parisienne.
-            Expert en création d’expériences uniques, il allie networking,
+            Expert en création d'expériences uniques, il allie networking,
             communication et festivités haut de gamme. Il a été coopté par les
             Ambassadeurs pour intégrer les clans les plus prisés de la Nuit des
             Ambassadeurs, un événement devenu incontournable à Paris, mélangeant
