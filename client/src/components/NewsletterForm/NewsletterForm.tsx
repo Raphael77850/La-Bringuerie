@@ -1,8 +1,10 @@
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
   FormControlLabel,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -16,6 +18,18 @@ export default function NewsletterForm() {
     consent: false,
   });
 
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    setMessage(null);
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -26,11 +40,6 @@ export default function NewsletterForm() {
     });
   };
 
-  const [, setMessage] = useState<{
-    type: "success" | "error";
-    text: string;
-  } | null>(null);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -39,6 +48,7 @@ export default function NewsletterForm() {
         type: "error",
         text: "Veuillez accepter de recevoir la newsletter",
       });
+      setOpen(true);
       return;
     }
 
@@ -66,69 +76,88 @@ export default function NewsletterForm() {
       } else {
         setMessage({ type: "error", text: "Une erreur est survenue" });
       }
+      setOpen(true);
     } catch (error) {
       setMessage({ type: "error", text: "Une erreur est survenue" });
+      setOpen(true);
     }
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        maxWidth: 400,
-        margin: "auto",
-        mt: 4,
-        mb: 1,
-        p: 2,
-        border: 1,
-        borderRadius: 2,
-        borderColor: "primary.main",
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        Inscrivez-vous à notre newsletter
-      </Typography>
-      <TextField
-        fullWidth
-        margin="normal"
-        label="Prénom"
-        name="firstName"
-        value={formData.firstName}
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        fullWidth
-        margin="normal"
-        label="Nom"
-        name="lastName"
-        value={formData.lastName}
-        onChange={handleChange}
-        required
-      />
-      <TextField
-        fullWidth
-        margin="normal"
-        label="Email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={formData.consent}
-            onChange={handleChange}
-            name="consent"
-          />
-        }
-        label="J'accepte de recevoir des newsletters"
-      />
-      <Button type="submit" variant="contained" color="primary" fullWidth>
-        S'inscrire
-      </Button>
-    </Box>
+    <>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          maxWidth: 400,
+          margin: "auto",
+          mt: 4,
+          mb: 1,
+          p: 2,
+          border: 1,
+          borderRadius: 2,
+          borderColor: "primary.main",
+        }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Inscrivez-vous à notre newsletter
+        </Typography>
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Prénom"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Nom"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          label="Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={formData.consent}
+              onChange={handleChange}
+              name="consent"
+            />
+          }
+          label="J'accepte de recevoir des newsletters"
+        />
+        <Button type="submit" variant="contained" color="primary" fullWidth>
+          S'inscrire
+        </Button>
+      </Box>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={message?.type || "info"}
+          sx={{ width: "100%" }}
+        >
+          {message?.text}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
