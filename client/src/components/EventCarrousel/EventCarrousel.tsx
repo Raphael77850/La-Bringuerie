@@ -1,4 +1,5 @@
 import Slider from "react-slick";
+import FormEvent from "../FormEvent/FormEvent";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
@@ -8,6 +9,7 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
 
 interface Event {
   id: number;
@@ -22,6 +24,8 @@ interface EventCarouselProps {
 }
 
 export default function EventCarousel({ events }: EventCarouselProps) {
+  const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -67,13 +71,24 @@ export default function EventCarousel({ events }: EventCarouselProps) {
               <Typography variant="body2" color="text.secondary">
                 {event.date}
               </Typography>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setSelectedEventId(event.id)}
+              >
                 S'inscrire
               </Button>
             </CardContent>
           </Card>
         ))}
       </Slider>
+      {selectedEventId && (
+        <FormEvent
+          eventId={selectedEventId}
+          open={selectedEventId !== null}
+          onClose={() => setSelectedEventId(null)}
+        />
+      )}
     </div>
   );
 }
