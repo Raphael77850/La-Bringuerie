@@ -2,7 +2,6 @@ import databaseClient from "../../../database/client";
 import type { Result } from "../../../database/client";
 
 type EventRegistration = {
-  id?: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -11,21 +10,41 @@ type EventRegistration = {
 
 class EventRegistrationRepository {
   async create(registration: EventRegistration) {
-    // Création de l'utilisateur
-    const [result] = await databaseClient.query<Result>(
-      "INSERT INTO user (firstName, lastName, email) VALUES (?, ?, ?)",
-      [registration.firstName, registration.lastName, registration.email],
-    );
+    const connection = await databaseClient.getConnection();
 
-    const userId = result.insertId;
+    try {
+      await connection.beginTransaction();
 
-    // Création de la relation user_event
-    await databaseClient.query<Result>(
-      "INSERT INTO user_event (user_id, event_id) VALUES (?, ?)",
-      [userId, registration.event_id],
-    );
+      // Vérifier si l'événement existe
+      const [eventExists] = await connection.query(
+        "SELECT id FROM event WHERE id = ?",
+        [registration.event_id],
+      );
 
-    return userId;
+      if (!eventExists) {
+        throw new Error("Event not found");
+      }
+
+      // Création de l'utilisateur
+      const [userResult] = await connection.query<Result>(
+        "INSERT INTO user (firstName, lastName, email) VALUES (?, ?, ?)",
+        [registration.firstName, registration.lastName, registration.email],
+      );
+
+      // Création de l'inscription
+      await connection.query<Result>(
+        "INSERT INTO user_event (user_id, event_id) VALUES (?, ?)",
+        [userResult.insertId, registration.event_id],
+      );
+
+      await connection.commit();
+      return userResult.insertId;
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
   }
 }
 

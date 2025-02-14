@@ -9,15 +9,13 @@ CREATE TABLE event (
   id int primary key auto_increment,
   title varchar(255) not null,
   description text not null,
-  date datetime not null,
-  user_id int not null,
-  foreign key (user_id) references user(id)
+  date datetime not null
 );
 
 CREATE TABLE user_event (
+  id int primary key auto_increment,
   user_id int not null,
   event_id int not null,
-  primary key (user_id, event_id),
   foreign key (user_id) references user(id),
   foreign key (event_id) references event(id)
 );
