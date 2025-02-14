@@ -1,19 +1,22 @@
 import styled from "styled-components";
 
 const IntroSection = styled.section`
-    background-color: white;
-    padding: 2rem;
+    background-color: #FF5722;
+    padding: 1rem;
+    margin-top: 2.5rem; 
+    padding-bottom: 2rem;
     text-align: center;
 `;
 
 const Title = styled.h1`
-    color: #FF8C00; // Orange color
+    color: white;
     font-size: 2rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 `;
 
 const Paragraph = styled.p`
-    color: #FF8C00;
+    color: white;
     font-size: 1.2rem;
     line-height: 1.5;
 `;

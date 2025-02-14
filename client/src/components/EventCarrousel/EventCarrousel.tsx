@@ -30,7 +30,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
     responsive: [
       {
@@ -51,7 +51,9 @@ export default function EventCarousel({ events }: EventCarouselProps) {
   };
 
   return (
-    <div style={{ width: "100%", overflow: "hidden" }}>
+    <div
+      style={{ width: "100%", overflow: "hidden", margin: "2", padding: "2" }}
+    >
       <Slider {...settings}>
         {events.map((event) => (
           <Card key={event.id} sx={{ maxWidth: 300, gap: 1 }}>

@@ -35,6 +35,8 @@ import eventImage3 from "./assets/images/fiesta2.jpg";
 import eventImage4 from "./assets/images/fiesta3.jpg";
 import eventImage5 from "./assets/images/fiesta4.jpg";
 
+// tableau a suprrimer par la suite
+// fecth de data pour les event depuis de la BDD
 const events = [
   {
     id: 1,
@@ -43,10 +45,10 @@ const events = [
     description: "@Ibaïa",
     date: "2023-20-03",
   },
-  { id: 2, image: eventImage2, title: "Soon", description: ". . .", date: "" },
-  { id: 3, image: eventImage3, title: "Soon", description: ". . .", date: "" },
-  { id: 4, image: eventImage4, title: "Soon", description: ". . .", date: "" },
-  { id: 5, image: eventImage5, title: "Soon", description: ". . .", date: "" },
+  { id: 2, image: eventImage2, title: "Soon", description: "...", date: "..." },
+  { id: 3, image: eventImage3, title: "Soon", description: "...", date: "..." },
+  { id: 4, image: eventImage4, title: "Soon", description: "...", date: "..." },
+  { id: 5, image: eventImage5, title: "Soon", description: "...", date: "..." },
 ];
 
 export default function App() {
@@ -55,11 +57,13 @@ export default function App() {
       <CssBaseline />
       <Header />
       <HeroSection />
-      <Intro />
       <section className="events">
-        <h2>Prochains Événements</h2>
+        <h2 style={{ margin: "1rem 0", color: "#FF5722" }}>
+          Prochains Événements
+        </h2>
         <EventCarrousel events={events} />
       </section>
+      <Intro />
       <section className="newsletter">
         <NewsletterForm />
       </section>

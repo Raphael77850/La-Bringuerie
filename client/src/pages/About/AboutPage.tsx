@@ -54,18 +54,9 @@ export default function AboutPage() {
       <AboutSection>
         <Container>
           <Typography
-            variant="h2"
-            align="center"
-            gutterBottom
-            sx={{ color: "#FF8C00" }}
-          >
-            Notre Équipe
-          </Typography>
-          <Typography
             variant="h5"
             align="center"
-            paragraph
-            sx={{ color: "#FF8C00", mb: 6 }}
+            sx={{ color: "#FF5722", mb: 2 }}
           >
             Découvrez les personnes qui font vibrer vos soirées
           </Typography>
@@ -85,7 +76,7 @@ export default function AboutPage() {
                       gutterBottom
                       variant="h5"
                       component="h3"
-                      sx={{ color: "#FF8C00" }}
+                      sx={{ color: "#FF5722" }}
                     >
                       {member.name}
                     </Typography>
@@ -106,7 +97,7 @@ export default function AboutPage() {
             align="center"
             pt={3}
             gutterBottom
-            sx={{ color: "#FF8C00" }}
+            sx={{ color: "#FF5722" }}
           >
             CV DES CHEFS DE BRINGUE
           </Typography>
@@ -114,11 +105,12 @@ export default function AboutPage() {
             variant="h6"
             align="center"
             paragraph
-            sx={{ color: "#FF8C00", mb: 6 }}
+            sx={{ color: "#FF5722", mb: 1 }}
           >
-            Chefs de Clan, de Bringue et Organisateurs d'Événements Privés Le
+            Chefs de Clan, de Bringue et Organisateurs d'Événements Privés le
             chef de bringue est un passionné d'événements exclusifs et
             innovants, reconnu pour son influence dans la scène parisienne.
+            <br />
             Expert en création d'expériences uniques, il allie networking,
             communication et festivités haut de gamme. Il a été coopté par les
             Ambassadeurs pour intégrer les clans les plus prisés de la Nuit des

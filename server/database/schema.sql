@@ -7,6 +7,7 @@ CREATE TABLE user (
 
 CREATE TABLE event (
   id int primary key auto_increment,
+  image varchar(255) not null,
   title varchar(255) not null,
   description text not null,
   date datetime not null
