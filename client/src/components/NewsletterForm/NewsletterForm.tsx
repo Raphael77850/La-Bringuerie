@@ -26,8 +26,49 @@ export default function NewsletterForm() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.consent) {
+      setMessage({
+        type: "error",
+        text: "Veuillez accepter de recevoir la newsletter",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3310/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+        }),
+      });
+
+      if (response.ok) {
+        setMessage({ type: "success", text: "Inscription réussie!" });
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          consent: false,
+        });
+      } else {
+        setMessage({ type: "error", text: "Une erreur est survenue" });
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: "Une erreur est survenue" });
+    }
   };
 
   return (
