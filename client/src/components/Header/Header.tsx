@@ -35,7 +35,7 @@ export default function Header() {
         </RouterLink>
         <RouterLink
           to="/about"
-          style={{ color: "orange", textDecoration: "none" }}
+          style={{ color: "#FF5722", textDecoration: "none" }}
         >
           À propos
         </RouterLink>

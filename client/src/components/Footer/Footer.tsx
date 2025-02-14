@@ -7,7 +7,7 @@ export const Footer = () => {
         textAlign: "center",
         py: 2,
         backgroundColor: "white",
-        color: "orange",
+        color: "#FF5722",
       }}
     >
       <Typography variant="body2">© La Bringuerie</Typography>
