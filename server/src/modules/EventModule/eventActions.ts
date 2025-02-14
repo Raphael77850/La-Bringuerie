@@ -17,9 +17,17 @@ const add: RequestHandler = async (req, res, next) => {
       event_id,
     });
 
-    res.status(201).json({ id: insertId });
+    res.status(201).json({
+      message: "Inscription réussie",
+      userId: insertId,
+    });
   } catch (err) {
-    next(err);
+    console.error("Erreur lors de l'inscription :", err);
+    res.status(500).json({
+      message: "Une erreur est survenue lors de l'inscription",
+      error:
+        err instanceof Error ? err.message : "Erreur lors de l'inscription",
+    });
   }
 };
 

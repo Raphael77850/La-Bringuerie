@@ -16,7 +16,7 @@ import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 router.post("/api/newsletter", newsletterActions.add);
 
 import eventActions from "./modules/EventModule/eventActions";
-router.post("/api/event", eventActions.add);
+router.post("/api/user_event", eventActions.add);
 
 /* ************************************************************************* */
 

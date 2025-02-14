@@ -29,7 +29,7 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/event", {
+      const response = await fetch("http://localhost:3310/api/user_event", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,10 +40,12 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
         }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         setMessage({
           type: "success",
-          text: "Inscription réussie",
+          text: data.message || "Inscription réussie",
         });
         setTimeout(() => {
           onClose();
@@ -53,7 +55,7 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
       } else {
         setMessage({
           type: "error",
-          text: "Erreur lors de l'inscription",
+          text: data.message || "Erreur lors de l'inscription",
         });
       }
     } catch (err) {
