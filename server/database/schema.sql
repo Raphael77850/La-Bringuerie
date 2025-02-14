@@ -1,7 +1,7 @@
 CREATE TABLE user (
   id int primary key auto_increment,
-  firstname varchar(255) not null,
-  lastname varchar(255) not null,
+  firstName varchar(255) not null,
+  lastName varchar(255) not null,
   email varchar(255) not null
 );
 
