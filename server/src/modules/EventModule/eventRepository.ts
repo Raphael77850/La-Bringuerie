@@ -1,3 +1,4 @@
+import type { RowDataPacket } from "mysql2";
 import databaseClient from "../../../database/client";
 import type { Result } from "../../../database/client";
 
@@ -16,32 +17,31 @@ class EventRegistrationRepository {
       await connection.beginTransaction();
 
       // Vérifier si l'événement existe
-      const [eventExists] = await connection.query(
+      const [events] = await connection.query<RowDataPacket[]>(
         "SELECT id FROM event WHERE id = ?",
         [registration.event_id],
       );
 
-      if (!eventExists) {
-        throw new Error("Event not found");
+      if (!events.length) {
+        throw new Error("Événement non trouvé");
       }
 
-      // Création de l'utilisateur
-      const [userResult] = await connection.query<Result>(
-        "INSERT INTO user (firstName, lastName, email) VALUES (?, ?, ?)",
-        [registration.firstName, registration.lastName, registration.email],
-      );
-
-      // Création de l'inscription
-      await connection.query<Result>(
-        "INSERT INTO user_event (user_id, event_id) VALUES (?, ?)",
-        [userResult.insertId, registration.event_id],
+      // Insérer l'inscription
+      const [result] = await connection.query<Result>(
+        "INSERT INTO user_event (firstName, lastName, email, event_id) VALUES (?, ?, ?, ?)",
+        [
+          registration.firstName,
+          registration.lastName,
+          registration.email,
+          registration.event_id,
+        ],
       );
 
       await connection.commit();
-      return userResult.insertId;
-    } catch (err) {
+      return result.insertId;
+    } catch (error) {
       await connection.rollback();
-      throw err;
+      throw error;
     } finally {
       connection.release();
     }
