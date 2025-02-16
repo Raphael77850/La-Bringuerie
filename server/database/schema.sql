@@ -15,9 +15,11 @@ CREATE TABLE event (
 
 CREATE TABLE user_event (
   id int primary key auto_increment,
-  user_id int not null,
+  firstName varchar(255) not null,
+  lastName varchar(255) not null,
+  email varchar(255) not null,
   event_id int not null,
-  foreign key (user_id) references user(id),
+  created_at timestamp default current_timestamp,
   foreign key (event_id) references event(id)
 );
 
