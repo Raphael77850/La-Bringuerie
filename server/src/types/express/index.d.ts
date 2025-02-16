@@ -12,3 +12,13 @@ declare global {
     }
   }
 }
+
+declare namespace Express {
+  interface Request {
+    admin?: {
+      id: number;
+      email: string;
+      role: string;
+    };
+  }
+}
