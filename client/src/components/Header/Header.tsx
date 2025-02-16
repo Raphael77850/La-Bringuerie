@@ -1,7 +1,8 @@
 import { AppBar, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link as RouterLink } from "react-router-dom";
-import letterB from "../../assets/images/Logo-Officiel.png";
+import LogoOfficiel from "../../assets/images/LogoOfficiel.png";
+import instagramLogo from "../../assets/images/instagramLogo.svg";
 
 const useStyles = makeStyles({
   appBar: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
   },
   link: {
     color: "orange !important",
-    textDecoration: "none !important",
+
     "&:hover": {
       textDecoration: "underline !important",
     },
@@ -30,9 +31,22 @@ export default function Header() {
   return (
     <AppBar position="static" className={classes.appBar}>
       <Box className={classes.container}>
-        <RouterLink to="/">
-          <img src={letterB} alt="La Bringuerie" style={{ height: "3rem" }} />
+        <RouterLink
+          to="https://www.instagram.com/labringueriebordeaux/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img src={instagramLogo} alt="Instagram" style={{ height: "2rem" }} />
         </RouterLink>
+
+        <RouterLink to="/">
+          <img
+            src={LogoOfficiel}
+            alt="La Bringuerie"
+            style={{ height: "2.8rem" }}
+          />
+        </RouterLink>
+
         <RouterLink
           to="/about"
           style={{ color: "#FF5722", textDecoration: "none" }}

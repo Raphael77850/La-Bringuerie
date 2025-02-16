@@ -46,7 +46,7 @@ export default function NewsletterForm() {
     if (!formData.consent) {
       setMessage({
         type: "error",
-        text: "Veuillez accepter de recevoir la newsletter",
+        text: "Veuillez accepter de recevoir des news la Bringuerie",
       });
       setOpen(true);
       return;
@@ -94,13 +94,13 @@ export default function NewsletterForm() {
           mt: 4,
           mb: 1,
           p: 2,
-          border: 1,
+          border: 2,
           borderRadius: 2,
           borderColor: "primary.main",
         }}
       >
-        <Typography variant="h6" gutterBottom>
-          Inscrivez-vous à notre newsletter
+        <Typography variant="h6" gutterBottom textAlign="center">
+          Deviens un Bringueur !
         </Typography>
         <TextField
           fullWidth
@@ -137,7 +137,7 @@ export default function NewsletterForm() {
               name="consent"
             />
           }
-          label="J'accepte de recevoir des newsletters"
+          label="J'accepte de recevoir des news la Bringuerie"
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>
           S'inscrire
