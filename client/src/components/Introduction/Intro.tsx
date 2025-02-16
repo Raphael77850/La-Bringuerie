@@ -30,8 +30,10 @@ export default function Intro() {
         mots.
         <br />
         Et qui sait, peut-être que ces soirées marqueront le début d’une
-        aventure inoubliable entre bringueurs et bringueuses passionnés ! Plus
-        qu’une soirée, une aventure à partager !
+        aventure inoubliable
+        <br />
+        entre bringueurs et bringueuses passionnés ! Plus qu’une soirée, une
+        aventure à partager !
       </Paragraph>
     </IntroSection>
   );

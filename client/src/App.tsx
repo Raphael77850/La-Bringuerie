@@ -11,17 +11,17 @@ import NewsletterForm from "./components/NewsletterForm/NewsletterForm";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#FF5722", // Couleur orange pour les boutons
+      main: "#FF5722",
     },
   },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          color: "#FFFFFF", // Texte blanc pour les boutons
-          border: "2px solid #FF5722", // Contour orange
+          color: "#FFFFFF",
+          border: "2px solid #FF5722",
           "&:hover": {
-            backgroundColor: "#FF5722", // Couleur de fond orange au survol
+            backgroundColor: "#FF5722",
           },
         },
       },
