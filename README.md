@@ -1,4 +1,8 @@
 # La-Bringuerie
+<<<<<<< HEAD
+=======
+Site vitrine d'évènementiel
+>>>>>>> 68c12957948efd9e2c39e50613409a6a19efb773
 
 Ce projet est un monorepo JS, suivant l'architecture React-Express-MySQL telle qu'enseignée à la Wild Code School (v7.1.7) :
 
