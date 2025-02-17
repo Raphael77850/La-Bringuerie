@@ -1,0 +1,91 @@
+import type { Request, RequestHandler, Response } from "express";
+import eventRepository from "../eventModule/eventRepository";
+import adminRepository from "./adminRepository";
+
+const adminActions = {
+  // Récupérer les emails de la newsletter
+  getNewsletterEmails: async (req: Request, res: Response) => {
+    try {
+      const emails = await adminRepository.getNewsletterEmails();
+      res.json(emails);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des emails newsletter:",
+        error,
+      );
+      res.status(500).json({ error: "Erreur serveur interne" });
+    }
+  },
+
+  // Récupérer les emails des événements
+  getEventEmails: async (req: Request, res: Response) => {
+    try {
+      const eventId = req.params.id
+        ? Number.parseInt(req.params.id, 10)
+        : undefined;
+      const emails = await adminRepository.getEventEmails(eventId);
+      res.json(emails);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la récupération des emails événement:",
+        error,
+      );
+      res.status(500).json({ error: "Erreur serveur interne" });
+    }
+  },
+
+  // Ajouter un événement
+  addEvent: async (req: Request, res: Response) => {
+    try {
+      const { image, title, description, date } = req.body;
+
+      if (!image || !title || !description || !date) {
+        res.status(400).json({ message: "Tous les champs sont requis" });
+        return;
+      }
+
+      const insertId = await eventRepository.create({
+        image,
+        title,
+        description,
+        date,
+      });
+
+      res
+        .status(201)
+        .json({ message: "Événement ajouté avec succès", id: insertId });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Erreur lors de l'ajout de l'événement" });
+    }
+  },
+
+  // Mettre à jour un événement
+  updateEvent: async (req: Request, res: Response) => {
+    try {
+      const { id, image, title, description, date } = req.body;
+
+      if (!id || !image || !title || !description || !date) {
+        res.status(400).json({ message: "Tous les champs sont requis" });
+        return;
+      }
+
+      await eventRepository.update({
+        id,
+        image,
+        title,
+        description,
+        date,
+      });
+
+      res.status(200).json({ message: "Événement mis à jour avec succès" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la mise à jour de l'événement" });
+    }
+  },
+};
+
+export default adminActions;

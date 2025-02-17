@@ -1,20 +1,20 @@
 import type { RequestHandler } from "express";
-import eventRegistrationRepository from "./eventRepository";
+import eventRepository from "./eventRepository";
 
 const add: RequestHandler = async (req, res, next) => {
   try {
-    const { firstName, lastName, email, event_id } = req.body;
+    const { image, title, description, date } = req.body;
 
-    if (!firstName || !lastName || !email || !event_id) {
+    if (!image || !title || !description || !date) {
       res.status(400).json({ message: "Missing required fields" });
       return;
     }
 
-    const insertId = await eventRegistrationRepository.create({
-      firstName,
-      lastName,
-      email,
-      event_id,
+    const insertId = await eventRepository.create({
+      image,
+      title,
+      description,
+      date,
     });
 
     res.status(201).json({

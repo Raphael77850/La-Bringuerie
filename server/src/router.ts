@@ -18,19 +18,35 @@ router.post("/api/newsletter", newsletterActions.add);
 import eventActions from "./modules/eventModule/eventActions";
 router.post("/api/user_event", eventActions.add);
 
-import adminAuth from "../public/assets/images/middleware/adminAuth/adminAuth";
-import adminActions from "./modules/adminsModule/adminsActions";
-router.get("/api/admin/newsletter/emails", adminActions.getNewsletterEmails);
-router.get("/api/admin/events/emails/:id?", adminActions.getEventEmails);
+import adminActions from "./modules/adminModule/adminActions";
+import adminAuth from "./modules/middleware/adminAuth";
+router.get(
+  "/api/admin/newsletter/emails",
+  adminAuth,
+  adminActions.getNewsletterEmails,
+);
 router.get(
   "/api/admin/events/emails/:id?",
   adminAuth,
   adminActions.getEventEmails,
 );
+router.post("/api/admin/events", adminAuth, adminActions.addEvent);
+router.put("/api/admin/events", adminAuth, adminActions.updateEvent);
+
+import eventAdminActions from "./modules/adminModule/eventAdminAction";
+router.post("/api/admin/events", adminAuth, eventAdminActions.addEvent);
+router.put("/api/admin/events", adminAuth, eventAdminActions.updateEvent);
+
+import newsletterAdminActions from "./modules/adminModule/newsletterAdminActions";
 router.get(
-  "/api/admin/newsletter/emails/:id",
+  "/api/admin/newsletter",
   adminAuth,
-  adminActions.getNewsletterEmails,
+  newsletterAdminActions.getAllSubscriptions,
+);
+router.delete(
+  "/api/admin/newsletter/:id",
+  adminAuth,
+  newsletterAdminActions.deleteSubscription,
 );
 
 /* ************************************************************************* */
