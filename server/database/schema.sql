@@ -15,10 +15,11 @@ CREATE TABLE event (
 
 CREATE TABLE user_event (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
   event_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES user(id),
   FOREIGN KEY (event_id) REFERENCES event(id)
 );
 
@@ -40,7 +41,8 @@ CREATE TABLE admin_event (
 
 CREATE TABLE newsletter (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  user_id INT NOT NULL,
-  date_inscription DATETIME NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES user(id)
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  date_inscription DATETIME DEFAULT CURRENT_TIMESTAMP
 );
