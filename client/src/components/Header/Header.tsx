@@ -17,8 +17,11 @@ const useStyles = makeStyles({
     width: "100% !important",
   },
   link: {
-    color: "orange !important",
-
+    color: "#FF5722 !important",
+    fontSize: "1.25rem !important",
+    fontFamily: "'Roboto', sans-serif !important",
+    fontWeight: "400 !important",
+    textDecoration: "none !important",
     "&:hover": {
       textDecoration: "underline !important",
     },
@@ -47,10 +50,7 @@ export default function Header() {
           />
         </RouterLink>
 
-        <RouterLink
-          to="/about"
-          style={{ color: "#FF5722", textDecoration: "none" }}
-        >
+        <RouterLink to="/about" className={classes.link}>
           À propos
         </RouterLink>
       </Box>
