@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
   link: {
     color: "#FF5722 !important",
-    fontSize: "1.25rem !important",
+    fontSize: "1rem !important",
     fontFamily: "'Roboto', sans-serif !important",
     fontWeight: "400 !important",
     textDecoration: "none !important",
@@ -46,7 +46,7 @@ export default function Header() {
           <img
             src={LogoOfficiel}
             alt="La Bringuerie"
-            style={{ height: "2.8rem" }}
+            style={{ height: "2.5rem" }}
           />
         </RouterLink>
 
