@@ -137,7 +137,7 @@ export default function NewsletterForm() {
               name="consent"
             />
           }
-          label="J'accepte de recevoir des news la Bringuerie"
+          label="J'accepte de recevoir des news de la Bringuerie"
         />
         <Button type="submit" variant="contained" color="primary" fullWidth>
           S'inscrire

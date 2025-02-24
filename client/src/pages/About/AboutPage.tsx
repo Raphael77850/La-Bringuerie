@@ -12,8 +12,7 @@ import { Footer } from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 
 const AboutSection = styled.section`
-  padding: 4rem 0;
-  background-color: white;
+  background-color: #FF5722;
 `;
 
 const TeamMember = styled(Card)`
@@ -29,19 +28,19 @@ const TeamMember = styled(Card)`
 const teamMembers = [
   {
     id: 1,
-    name: "Alexis",
+    name: "Alexis Borgé",
     role: "Directeur Artistique & Graphiste 360°",
     image: "/src/assets/images/AlexisDA.png",
   },
   {
     id: 2,
-    name: "Anaïs",
+    name: "Anaïs De Mongolfier",
     role: "Directrice Événementiel",
     image: "/src/assets/images/AnaisDE.png",
   },
   {
     id: 3,
-    name: "Prénom Nom",
+    name: "Victor Barbazanges ",
     role: "Directeur des partenariats",
     image: "/src/assets/images/VictorDDP.png",
   },
@@ -56,7 +55,7 @@ export default function AboutPage() {
           <Typography
             variant="h5"
             align="center"
-            sx={{ color: "#FF5722", mb: 2 }}
+            sx={{ color: "white", mb: 2, pt: 2 }}
           >
             Découvrez les personnes qui font vibrer vos soirées
           </Typography>
@@ -97,7 +96,7 @@ export default function AboutPage() {
             align="center"
             pt={3}
             gutterBottom
-            sx={{ color: "#FF5722" }}
+            sx={{ color: "white" }}
           >
             CV DES CHEFS DE BRINGUE
           </Typography>
@@ -105,7 +104,7 @@ export default function AboutPage() {
             variant="h6"
             align="center"
             paragraph
-            sx={{ color: "#FF5722", mb: 1 }}
+            sx={{ color: "white", mb: 1, pb: 2 }}
           >
             Chefs de Clan, de Bringue et Organisateurs d'Événements Privés le
             chef de bringue est un passionné d'événements exclusifs et

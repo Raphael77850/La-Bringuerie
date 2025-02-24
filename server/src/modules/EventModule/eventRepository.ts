@@ -1,31 +1,47 @@
-import type { RowDataPacket } from "mysql2";
 import databaseClient from "../../../database/client";
 import type { Result } from "../../../database/client";
 
-type Event = {
+type EventRegistration = {
   id?: number;
-  image: string;
-  title: string;
-  description: string;
-  date: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  event_id: number;
+  image?: string;
+  title?: string;
+  description?: string;
+  date?: string;
 };
 
-class EventRepository {
-  async create(event: Event) {
+class EventRegistrationRepository {
+  createEvent(arg0: {
+    image: string;
+    title: string;
+    description: string;
+    date: string;
+  }) {
+    throw new Error("Method not implemented.");
+  }
+  async create(registration: EventRegistration) {
     const [result] = await databaseClient.query<Result>(
-      "INSERT INTO event (image, title, description, date) VALUES (?, ?, ?, ?)",
-      [event.image, event.title, event.description, event.date],
+      "INSERT INTO user_event (firstName, lastName, email, event_id) VALUES (?, ?, ?, ?)",
+      [
+        registration.firstName,
+        registration.lastName,
+        registration.email,
+        registration.event_id,
+      ],
     );
 
     return result.insertId;
   }
 
-  async update(event: Event) {
+  async update(event: EventRegistration) {
     await databaseClient.query<Result>(
-      "UPDATE event SET image = ?, title = ?, description = ?, date = ? WHERE id = ?",
+      "UPDATE event SET image = ?, title= ?, description = ?, date = ? WHERE id = ?",
       [event.image, event.title, event.description, event.date, event.id],
     );
   }
 }
 
-export default new EventRepository();
+export default new EventRegistrationRepository();

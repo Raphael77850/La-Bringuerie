@@ -1,7 +1,7 @@
 import { AppBar, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link as RouterLink } from "react-router-dom";
-import LogoOfficiel from "../../assets/images/LogoOfficiel.png";
+import LogoTitle from "../../assets/images/LogoTitle.png";
 import instagramLogo from "../../assets/images/instagramLogo.svg";
 
 const useStyles = makeStyles({
@@ -44,14 +44,14 @@ export default function Header() {
 
         <RouterLink to="/">
           <img
-            src={LogoOfficiel}
+            src={LogoTitle}
             alt="La Bringuerie"
-            style={{ height: "2.5rem" }}
+            style={{ height: "4.5rem" }}
           />
         </RouterLink>
 
         <RouterLink to="/about" className={classes.link}>
-          À propos
+          Qui ?
         </RouterLink>
       </Box>
     </AppBar>

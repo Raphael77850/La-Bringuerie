@@ -44,7 +44,7 @@ const adminActions = {
         return;
       }
 
-      const insertId = await eventRepository.create({
+      const insertId = await eventRepository.createEvent({
         image,
         title,
         description,
@@ -77,6 +77,10 @@ const adminActions = {
         title,
         description,
         date,
+        firstName: "",
+        lastName: "",
+        email: "",
+        event_id: 0,
       });
 
       res.status(200).json({ message: "Événement mis à jour avec succès" });
