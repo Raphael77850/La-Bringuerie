@@ -92,7 +92,7 @@ export default function AboutPage() {
             ))}
           </Grid>
           <Typography
-            variant="h3"
+            variant="h4"
             align="center"
             pt={3}
             gutterBottom

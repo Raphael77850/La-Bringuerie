@@ -1,3 +1,4 @@
+import "../../App.css";
 import Slider from "react-slick";
 import FormEvent from "../FormEvent/FormEvent";
 import "slick-carousel/slick/slick.css";
