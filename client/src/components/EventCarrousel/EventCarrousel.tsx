@@ -65,18 +65,32 @@ export default function EventCarousel({ events }: EventCarouselProps) {
               alt={event.title}
             />
             <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="div"
+                sx={{ fontFamily: "Francois One, serif" }}
+              >
                 {event.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ fontFamily: "Francois One, serif" }}
+              >
                 {event.description}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ fontFamily: "Francois One, serif" }}
+              >
                 {event.date}
               </Typography>
               <Button
                 variant="contained"
                 color="primary"
+                sx={{ fontFamily: "Francois One, serif" }}
                 onClick={() => setSelectedEventId(event.id)}
               >
                 S'inscrire

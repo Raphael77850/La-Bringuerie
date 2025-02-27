@@ -1,3 +1,4 @@
+import "../../App.css";
 import { AppBar, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link as RouterLink } from "react-router-dom";
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   link: {
     color: "#FF5722 !important",
     fontSize: "1rem !important",
-    fontFamily: "'Roboto', sans-serif !important",
+    fontFamily: "'Francois One', serif !important",
     fontWeight: "400 !important",
     textDecoration: "none !important",
     "&:hover": {

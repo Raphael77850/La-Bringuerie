@@ -13,6 +13,7 @@ import Header from "../../components/Header/Header";
 
 const AboutSection = styled.section`
   background-color: #FF5722;
+  fontFamily: "Francois One, serif !important;
 `;
 
 const TeamMember = styled(Card)`
@@ -55,7 +56,12 @@ export default function AboutPage() {
           <Typography
             variant="h5"
             align="center"
-            sx={{ color: "white", mb: 2, pt: 2 }}
+            sx={{
+              color: "white",
+              mb: 2,
+              pt: 2,
+              fontFamily: "Francois One, serif",
+            }}
           >
             Découvrez les personnes qui font vibrer vos soirées
           </Typography>
@@ -75,7 +81,10 @@ export default function AboutPage() {
                       gutterBottom
                       variant="h5"
                       component="h3"
-                      sx={{ color: "#FF5722" }}
+                      sx={{
+                        color: "#FF5722",
+                        fontFamily: "Francois One, serif",
+                      }}
                     >
                       {member.name}
                     </Typography>
@@ -83,6 +92,7 @@ export default function AboutPage() {
                       variant="subtitle1"
                       color="text.secondary"
                       gutterBottom
+                      sx={{ fontFamily: "Francois One, serif" }}
                     >
                       {member.role}
                     </Typography>
@@ -96,7 +106,7 @@ export default function AboutPage() {
             align="center"
             pt={3}
             gutterBottom
-            sx={{ color: "white" }}
+            sx={{ color: "white", fontFamily: "Francois One, serif" }}
           >
             CV DES CHEFS DE BRINGUE
           </Typography>
@@ -104,7 +114,12 @@ export default function AboutPage() {
             variant="h6"
             align="center"
             paragraph
-            sx={{ color: "white", mb: 1, pb: 2 }}
+            sx={{
+              color: "white",
+              mb: 1,
+              pb: 2,
+              fontFamily: "Francois One, serif",
+            }}
           >
             Chefs de Clan, de Bringue et Organisateurs d'Événements Privés le
             chef de bringue est un passionné d'événements exclusifs et

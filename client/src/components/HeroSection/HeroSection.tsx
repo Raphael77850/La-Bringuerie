@@ -36,8 +36,17 @@ export default function HeroSection() {
           textAlign: "center",
         }}
       >
-        <Typography variant="h6">
-          Découvrez nos événements et inscrivez-vous !
+        <Typography
+          variant="h6"
+          sx={{ fontFamily: "Francois One, serif", cursor: "pointer" }}
+          onClick={() => {
+            const element = document.getElementById("newsletterForm");
+            if (element) {
+              element.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+        >
+          Découvrez nos événements et inscrivez-vous ! ⬇️
         </Typography>
       </Box>
     </Box>

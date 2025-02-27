@@ -1,3 +1,4 @@
+import "../../App.css";
 import {
   Alert,
   Box,
@@ -86,6 +87,7 @@ export default function NewsletterForm() {
   return (
     <>
       <Box
+        id="newsletterForm"
         component="form"
         onSubmit={handleSubmit}
         sx={{
@@ -99,7 +101,12 @@ export default function NewsletterForm() {
           borderColor: "primary.main",
         }}
       >
-        <Typography variant="h6" gutterBottom textAlign="center">
+        <Typography
+          variant="h6"
+          gutterBottom
+          textAlign="center"
+          fontFamily="Francois One, serif"
+        >
           Deviens un Bringueur !
         </Typography>
         <TextField
@@ -139,7 +146,13 @@ export default function NewsletterForm() {
           }
           label="J'accepte de recevoir des news de la Bringuerie"
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ fontFamily: "Francois One, serif" }}
+        >
           S'inscrire
         </Button>
       </Box>
