@@ -12,6 +12,7 @@ import App from "./App";
 // Try creating these components in the "pages" folder
 
 import AboutPage from "./pages/About/AboutPage";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 // import Contact from "./pages/Contact";
 
 /* ************************************************************************* */
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/about",
     element: <AboutPage />,
+  },
+  {
+    path: "/admin",
+    element: <AdminDashboard />,
   },
   // Try adding a new route! For example, "/about" with an About component
 ]);

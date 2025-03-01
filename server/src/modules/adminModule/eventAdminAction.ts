@@ -10,15 +10,11 @@ const addEvent: RequestHandler = async (req, res, next) => {
       return;
     }
 
-    const insertId = await eventRepository.create({
+    const insertId = await eventRepository.createEvent({
       image,
       title,
       description,
       date,
-      firstName: "",
-      lastName: "",
-      email: "",
-      event_id: 0,
     });
 
     res
@@ -44,10 +40,6 @@ const updateEvent: RequestHandler = async (req, res, next) => {
       title,
       description,
       date,
-      firstName: "",
-      lastName: "",
-      email: "",
-      event_id: 0,
     });
 
     res.status(200).json({ message: "Événement mis à jour avec succès" });

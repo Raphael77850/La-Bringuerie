@@ -32,22 +32,7 @@ router.get(
 );
 router.post("/api/admin/events", adminAuth, adminActions.addEvent);
 router.put("/api/admin/events", adminAuth, adminActions.updateEvent);
-
-import eventAdminActions from "./modules/adminModule/eventAdminAction";
-router.post("/api/admin/events", adminAuth, eventAdminActions.addEvent);
-router.put("/api/admin/events", adminAuth, eventAdminActions.updateEvent);
-
-import newsletterAdminActions from "./modules/adminModule/newsletterAdminActions";
-router.get(
-  "/api/admin/newsletter",
-  adminAuth,
-  newsletterAdminActions.getAllSubscriptions,
-);
-router.delete(
-  "/api/admin/newsletter/:id",
-  adminAuth,
-  newsletterAdminActions.deleteSubscription,
-);
+router.delete("/api/admin/events/:id", adminAuth, adminActions.deleteEvent);
 
 /* ************************************************************************* */
 

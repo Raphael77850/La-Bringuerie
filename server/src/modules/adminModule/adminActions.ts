@@ -9,10 +9,6 @@ const adminActions = {
       const emails = await adminRepository.getNewsletterEmails();
       res.json(emails);
     } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des emails newsletter:",
-        error,
-      );
       res.status(500).json({ error: "Erreur serveur interne" });
     }
   },
@@ -26,10 +22,6 @@ const adminActions = {
       const emails = await adminRepository.getEventEmails(eventId);
       res.json(emails);
     } catch (error) {
-      console.error(
-        "Erreur lors de la récupération des emails événement:",
-        error,
-      );
       res.status(500).json({ error: "Erreur serveur interne" });
     }
   },
@@ -77,10 +69,6 @@ const adminActions = {
         title,
         description,
         date,
-        firstName: "",
-        lastName: "",
-        email: "",
-        event_id: 0,
       });
 
       res.status(200).json({ message: "Événement mis à jour avec succès" });
@@ -88,6 +76,23 @@ const adminActions = {
       res
         .status(500)
         .json({ message: "Erreur lors de la mise à jour de l'événement" });
+    }
+  },
+
+  // Supprimer un événement
+  deleteEvent: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: "ID requis" });
+        return;
+      }
+      await eventRepository.delete(Number(id));
+      res.status(200).json({ message: "Événement supprimé avec succès" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la suppression de l'événement" });
     }
   },
 };
