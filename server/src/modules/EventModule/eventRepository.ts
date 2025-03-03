@@ -26,6 +26,15 @@ class EventRepository {
   }
 
   async createUserEvent(userEvent: UserEvent) {
+    const [rows] = await databaseClient.query<Result[]>(
+      "SELECT id FROM event WHERE id = ?",
+      [userEvent.event_id],
+    );
+
+    if (!rows || rows.length === 0) {
+      throw new Error(`Event with id ${userEvent.event_id} does not exist`);
+    }
+
     const [result] = await databaseClient.query<Result>(
       "INSERT INTO user_event (firstName, lastName, email, event_id) VALUES (?, ?, ?, ?)",
       [

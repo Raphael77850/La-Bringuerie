@@ -1,10 +1,3 @@
-CREATE TABLE user (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE
-);
-
 CREATE TABLE event (
   id INT PRIMARY KEY AUTO_INCREMENT,
   image VARCHAR(255) NOT NULL,
@@ -20,7 +13,8 @@ CREATE TABLE user_event (
   email VARCHAR(255) NOT NULL,
   event_id INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (event_id) REFERENCES event(id)
+  FOREIGN KEY (event_id) REFERENCES event(id),
+  UNIQUE (email, event_id)
 );
 
 CREATE TABLE admin (
