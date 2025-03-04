@@ -29,7 +29,7 @@ const theme = createTheme({
   },
 });
 
-import eventImage1 from "./assets/images/EventIbaia.png";
+import eventImage1 from "./assets/images/Affiche_Ibaia.png";
 import eventImage2 from "./assets/images/Fiesta.png";
 import eventImage3 from "./assets/images/fiesta2.jpg";
 import eventImage4 from "./assets/images/fiesta3.jpg";
@@ -37,6 +37,7 @@ import eventImage5 from "./assets/images/fiesta4.jpg";
 
 // tableau a suprrimer par la suite
 // fecth de data pour les event depuis de la BDD
+
 const events = [
   {
     id: 1,

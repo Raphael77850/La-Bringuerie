@@ -1,6 +1,6 @@
 import "../../App.css";
 import { Box, Typography } from "@mui/material";
-import videoSrc from "../../assets/images/Soiree.mp4";
+import videoSrc from "../../../src/assets/images/Video_Bringuerie.mp4";
 
 export default function HeroSection() {
   return (
@@ -8,7 +8,7 @@ export default function HeroSection() {
       sx={{
         position: "relative",
         width: "100%",
-        height: "70vh",
+        height: { xs: "100vh", md: "70vh" },
         overflow: "hidden",
       }}
     >
@@ -16,7 +16,12 @@ export default function HeroSection() {
         autoPlay
         loop
         muted
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center 45%",
+        }}
       >
         <source src={videoSrc} type="video/mp4" />
         Ton navigateur ne supporte pas la balise vidéo.
@@ -36,18 +41,28 @@ export default function HeroSection() {
           textAlign: "center",
         }}
       >
-        <Typography
-          variant="h6"
-          sx={{ fontFamily: "Francois One, serif", cursor: "pointer" }}
-          onClick={() => {
-            const element = document.getElementById("newsletterForm");
-            if (element) {
-              element.scrollIntoView({ behavior: "smooth" });
-            }
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            height: "100%",
+            paddingBottom: "2rem",
           }}
         >
-          Découvrez nos événements et inscrivez-vous ! ⬇️
-        </Typography>
+          <Typography
+            variant="h6"
+            sx={{ fontFamily: "Francois One, serif", cursor: "pointer" }}
+            onClick={() => {
+              const element = document.getElementById("newsletterForm");
+              if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            Découvrez nos événements et inscrivez-vous ! ⬇️
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

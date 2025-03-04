@@ -14,6 +14,7 @@ import Header from "../../components/Header/Header";
 const AboutSection = styled.section`
   background-color: #FF5722;
   fontFamily: "Francois One, serif !important;
+  margin-top: 20rem;
 `;
 
 const TeamMember = styled(Card)`
@@ -31,19 +32,16 @@ const teamMembers = [
     id: 1,
     name: "Alexis Borgé",
     role: "Directeur Artistique & Graphiste 360°",
-    image: "/src/assets/images/AlexisDA.png",
   },
   {
     id: 2,
     name: "Anaïs De Mongolfier",
     role: "Directrice Événementiel",
-    image: "/src/assets/images/AnaisDE.png",
   },
   {
     id: 3,
     name: "Victor Barbazanges ",
     role: "Directeur des partenariats",
-    image: "/src/assets/images/VictorDDP.png",
   },
 ];
 
@@ -72,8 +70,8 @@ export default function AboutPage() {
                 <TeamMember>
                   <CardMedia
                     component="img"
-                    height="300"
-                    image={member.image}
+                    height="0"
+                    image="/path-to-your-image.jpg"
                     alt={member.name}
                   />
                   <CardContent>
