@@ -7,26 +7,45 @@ const add: RequestHandler = async (req, res, next) => {
 
     if (!firstName || !lastName || !email || !event_id) {
       res.status(400).json({ message: "Tous les champs sont requis" });
-      return;
+      return; // Ajoutez un return après chaque réponse
     }
 
-    const insertId = await eventRepository.createUserEvent({
-      firstName,
-      lastName,
-      email,
-      event_id,
-    });
+    try {
+      const insertId = await eventRepository.createUserEvent({
+        firstName,
+        lastName,
+        email,
+        event_id,
+      });
 
-    res.status(201).json({
-      message: "Inscription réussie !",
-      id: insertId,
-    });
-  } catch (error) {
-    console.error("Erreur d'inscription:", error);
-    res.status(500).json({
-      message:
-        error instanceof Error ? error.message : "Erreur lors de l'inscription",
-    });
+      res.status(201).json({
+        message: "Inscription réussie !",
+        id: insertId,
+      });
+    } catch (error: unknown) {
+      // Vérifier si c'est une erreur de duplication
+      interface DuplicationError extends Error {
+        code: string;
+      }
+
+      if (
+        error instanceof Error &&
+        (error as DuplicationError).code === "ER_DUP_ENTRY"
+      ) {
+        res.status(409).json({
+          message: "Vous êtes déjà inscrit à cet événement.",
+        });
+        return; // Ajoutez un return ici
+      }
+
+      // Pour les autres erreurs, renvoyer une erreur 500
+      console.error("Erreur d'inscription:", error);
+      res.status(500).json({
+        message: "Une erreur s'est produite lors de l'inscription.",
+      });
+    }
+  } catch (err) {
+    next(err);
   }
 };
 
