@@ -41,6 +41,7 @@ const adminActions = {
         title,
         description,
         date,
+        id: 0,
       });
 
       res

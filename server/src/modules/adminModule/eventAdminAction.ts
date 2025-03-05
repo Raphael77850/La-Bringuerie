@@ -15,6 +15,7 @@ const addEvent: RequestHandler = async (req, res, next) => {
       title,
       description,
       date,
+      id: 0,
     });
 
     res

@@ -1,13 +1,6 @@
 import type { RequestHandler } from "express";
 import eventRepository from "./eventRepository";
 
-interface UserEvent {
-  firstName: string;
-  lastName: string;
-  email: string;
-  event_id: number;
-}
-
 const add: RequestHandler = async (req, res, next) => {
   try {
     const { firstName, lastName, email, event_id } = req.body;
@@ -37,4 +30,13 @@ const add: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { add };
+const getEvents: RequestHandler = async (req, res, next) => {
+  try {
+    const events = await eventRepository.getEvents();
+    res.status(200).json(events);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { add, getEvents };

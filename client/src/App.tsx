@@ -1,5 +1,7 @@
 import "./App.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import EventCarrousel from "./components/EventCarrousel/EventCarrousel";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
@@ -7,7 +9,6 @@ import HeroSection from "./components/HeroSection/HeroSection";
 import Intro from "./components/Introduction/Intro";
 import NewsletterForm from "./components/NewsletterForm/NewsletterForm";
 
-// Définir un thème personnalisé
 const theme = createTheme({
   palette: {
     primary: {
@@ -29,30 +30,30 @@ const theme = createTheme({
   },
 });
 
-import eventImage1 from "./assets/images/Affiche_Ibaia.png";
-import eventImage2 from "./assets/images/Fiesta.png";
-import eventImage3 from "./assets/images/fiesta2.jpg";
-import eventImage4 from "./assets/images/fiesta3.jpg";
-import eventImage5 from "./assets/images/fiesta4.jpg";
-
-// tableau a suprrimer par la suite
-// fecth de data pour les event depuis de la BDD
-
-const events = [
-  {
-    id: 1,
-    image: eventImage1,
-    title: "1st Event",
-    description: "@Ibaïa",
-    date: "2023-20-03",
-  },
-  { id: 2, image: eventImage2, title: "Soon", description: "...", date: "..." },
-  { id: 3, image: eventImage3, title: "Soon", description: "...", date: "..." },
-  { id: 4, image: eventImage4, title: "Soon", description: "...", date: "..." },
-  { id: 5, image: eventImage5, title: "Soon", description: "...", date: "..." },
-];
+export interface Event {
+  id: number;
+  image: string;
+  title: string;
+  description: string;
+  date: string;
+}
 
 export default function App() {
+  const [events, setEvents] = useState<Event[]>([]);
+
+  useEffect(() => {
+    axios.get("/api/events").then((response) => {
+      if (Array.isArray(response.data)) {
+        setEvents(response.data);
+      } else {
+        console.error(
+          "Erreur lors de la récupération des événements",
+          response.data,
+        );
+      }
+    });
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

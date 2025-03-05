@@ -1,4 +1,10 @@
 import express from "express";
+import adminActions from "./modules/adminModule/adminActions";
+import authActions from "./modules/auth/authActions";
+import eventActions from "./modules/eventModule/eventActions";
+import itemActions from "./modules/item/itemActions";
+import adminAuth from "./modules/middleware/adminAuth";
+import newsletterActions from "./modules/newsletterModule/newsletterActions";
 
 const router = express.Router();
 
@@ -7,32 +13,26 @@ const router = express.Router();
 /* ************************************************************************* */
 
 // Define item-related routes
-import itemActions from "./modules/item/itemActions";
-router.get("/api/items", itemActions.browse);
-router.get("/api/items/:id", itemActions.read);
-router.post("/api/items", itemActions.add);
+router.get("/items", itemActions.browse);
+router.get("/items/:id", itemActions.read);
+router.post("/items", itemActions.add);
 
-import newsletterActions from "./modules/newsletterModule/newsletterActions";
-router.post("/api/newsletter", newsletterActions.add);
+router.post("/newsletter", newsletterActions.add);
 
-import eventActions from "./modules/eventModule/eventActions";
-router.post("/api/user_event", eventActions.add);
+router.post("/user_event", eventActions.add);
+router.get("/events", eventActions.getEvents);
 
-import adminActions from "./modules/adminModule/adminActions";
-import adminAuth from "./modules/middleware/adminAuth";
 router.get(
-  "/api/admin/newsletter/emails",
+  "/admin/newsletter/emails",
   adminAuth,
   adminActions.getNewsletterEmails,
 );
-router.get(
-  "/api/admin/events/emails/:id?",
-  adminAuth,
-  adminActions.getEventEmails,
-);
-router.post("/api/admin/events", adminAuth, adminActions.addEvent);
-router.put("/api/admin/events", adminAuth, adminActions.updateEvent);
-router.delete("/api/admin/events/:id", adminAuth, adminActions.deleteEvent);
+router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
+router.post("/admin/events", adminAuth, adminActions.addEvent);
+router.put("/admin/events", adminAuth, adminActions.updateEvent);
+router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
+
+router.post("/login", authActions.login);
 
 /* ************************************************************************* */
 
