@@ -3,7 +3,8 @@ CREATE TABLE event (
   image LONGTEXT NOT NULL,
   title VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
-  date DATETIME NOT NULL
+  date DATETIME NOT NULL,
+  endTime DATETIME NOT NULL
 );
 
 CREATE TABLE user_event (

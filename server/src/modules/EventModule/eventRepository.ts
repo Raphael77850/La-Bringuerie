@@ -9,6 +9,7 @@ type Event = {
   title: string;
   description: string;
   date: string;
+  endTime: string;
 };
 
 type UserEvent = {
@@ -24,12 +25,19 @@ class EventRepository {
     title: string;
     description: string;
     date: string;
+    endTime: string;
     id?: number;
   }): Promise<number> {
     try {
       const [result] = await databaseClient.query<ResultSetHeader>(
-        "INSERT INTO event (image, title, description, date) VALUES (?, ?, ?, ?)",
-        [event.image, event.title, event.description, event.date],
+        "INSERT INTO event (image, title, description, date, endTime) VALUES (?, ?, ?, ?, ?)",
+        [
+          event.image,
+          event.title,
+          event.description,
+          event.date,
+          event.endTime,
+        ],
       );
 
       return result.insertId;
@@ -79,8 +87,15 @@ class EventRepository {
 
   async update(event: Event) {
     await databaseClient.query<Result>(
-      "UPDATE event SET image = ?, title = ?, description = ?, date = ? WHERE id = ?",
-      [event.image, event.title, event.description, event.date, event.id],
+      "UPDATE event SET image = ?, title = ?, description = ?, date = ? endTime = ? WHERE id = ?",
+      [
+        event.image,
+        event.title,
+        event.description,
+        event.date,
+        event.endTime,
+        event.id,
+      ],
     );
   }
 

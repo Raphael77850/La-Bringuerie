@@ -12,14 +12,16 @@ class AdminRepository {
 
   // Récupérer les emails des inscrits aux événements
   async getEventEmails(eventId?: number) {
-    const query = eventId
-      ? "SELECT firstName, lastName, email, event_id FROM user_event WHERE event_id = ?"
-      : "SELECT firstName, lastName, email, event_id FROM user_event";
+    let query =
+      "SELECT u.email, u.firstName, u.lastName, e.title as eventName FROM user_event u JOIN event e ON u.event_id = e.id";
+    const params = [];
 
-    const [rows] = await databaseClient.query<RowDataPacket[]>(
-      query,
-      eventId ? [eventId] : [],
-    );
+    if (eventId) {
+      query += " WHERE u.event_id = ?";
+      params.push(eventId);
+    }
+
+    const [rows] = await databaseClient.query<RowDataPacket[]>(query, params);
     return rows;
   }
 }

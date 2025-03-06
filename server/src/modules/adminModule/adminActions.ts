@@ -29,9 +29,9 @@ const adminActions = {
   // Ajouter un événement
   addEvent: async (req: Request, res: Response) => {
     try {
-      const { image, title, description, date } = req.body;
+      const { image, title, description, date, endTime } = req.body;
 
-      if (!image || !title || !description || !date) {
+      if (!image || !title || !description || !date || !endTime) {
         res.status(400).json({ message: "Tous les champs sont requis" });
         return;
       }
@@ -41,6 +41,7 @@ const adminActions = {
         title,
         description,
         date,
+        endTime,
         id: 0,
       });
 
@@ -57,9 +58,9 @@ const adminActions = {
   // Mettre à jour un événement
   updateEvent: async (req: Request, res: Response) => {
     try {
-      const { id, image, title, description, date } = req.body;
+      const { id, image, title, description, date, endTime } = req.body;
 
-      if (!id || !image || !title || !description || !date) {
+      if (!id || !image || !title || !description || !date || !endTime) {
         res.status(400).json({ message: "Tous les champs sont requis" });
         return;
       }
@@ -70,6 +71,7 @@ const adminActions = {
         title,
         description,
         date,
+        endTime,
       });
 
       res.status(200).json({ message: "Événement mis à jour avec succès" });
