@@ -34,6 +34,22 @@ const AdminDashboard = () => {
     text: string;
   } | null>(null);
 
+  // Ajoutez ces états
+  const [editOpen, setEditOpen] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState<{
+    id: number;
+    image: string;
+    title: string;
+    description: string;
+    date: string;
+  }>({
+    id: 0,
+    image: "",
+    title: "",
+    description: "",
+    date: "",
+  });
+
   useEffect(() => {
     // Si un token existe, effectuer les requêtes
     if (token) {
@@ -218,6 +234,109 @@ const AdminDashboard = () => {
     });
   };
 
+  const handleDeleteEvent = (id: number) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?")) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      axios
+        .delete(`/api/admin/events/${id}`, config)
+        .then(() => {
+          // Mettre à jour la liste des événements en supprimant l'événement
+          setEvents(events.filter((event) => event.id !== id));
+          setMessage({
+            type: "success",
+            text: "Événement supprimé avec succès",
+          });
+        })
+        .catch((error) => {
+          console.error("Error deleting event:", error);
+          setMessage({
+            type: "error",
+            text: "Erreur lors de la suppression de l'événement",
+          });
+        });
+    }
+  };
+
+  // Fonction pour ouvrir la boîte de dialogue de modification
+  const handleOpenEditDialog = (event: {
+    id: number;
+    title: string;
+    date: string;
+  }) => {
+    // Récupérer les détails complets de l'événement
+    axios
+      .get(`/api/events/${event.id}`)
+      .then((response) => {
+        setCurrentEvent(
+          response.data as {
+            id: number;
+            image: string;
+            title: string;
+            description: string;
+            date: string;
+          },
+        );
+        setEditOpen(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching event details:", error);
+        setMessage({
+          type: "error",
+          text: "Erreur lors de la récupération des détails de l'événement",
+        });
+      });
+  };
+
+  // Fonction pour soumettre la mise à jour
+  const handleUpdateEvent = () => {
+    // Vérifications similaires à celles d'ajout
+    if (
+      !currentEvent.title ||
+      !currentEvent.description ||
+      !currentEvent.date ||
+      !currentEvent.image
+    ) {
+      setMessage({ type: "error", text: "Tous les champs sont obligatoires" });
+      return;
+    }
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    axios
+      .put("/api/admin/events", currentEvent, config)
+      .then(() => {
+        // Mettre à jour la liste des événements
+        setEvents(
+          events.map((event) =>
+            event.id === currentEvent.id
+              ? {
+                  ...event,
+                  title: currentEvent.title,
+                  date: currentEvent.date,
+                }
+              : event,
+          ),
+        );
+        setEditOpen(false);
+        setMessage({
+          type: "success",
+          text: "Événement mis à jour avec succès",
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating event:", error);
+        setMessage({
+          type: "error",
+          text: "Erreur lors de la mise à jour de l'événement",
+        });
+      });
+  };
+
   if (!token) {
     return (
       <Dialog open={loginOpen} onClose={() => {}}>
@@ -299,6 +418,7 @@ const AdminDashboard = () => {
                 variant="contained"
                 color="primary"
                 sx={{ marginLeft: 1 }}
+                onClick={() => handleOpenEditDialog(event)}
               >
                 Modifier
               </Button>
@@ -306,6 +426,7 @@ const AdminDashboard = () => {
                 variant="contained"
                 color="secondary"
                 sx={{ marginLeft: 1 }}
+                onClick={() => handleDeleteEvent(event.id)}
               >
                 Supprimer
               </Button>
@@ -386,6 +507,90 @@ const AdminDashboard = () => {
           </Button>
           <Button onClick={handleAddEvent} color="primary">
             Ajouter
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Boîte de dialogue pour modifier un événement */}
+      <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
+        <DialogTitle>Modifier un événement</DialogTitle>
+        <DialogContent>
+          <TextField
+            margin="dense"
+            label="Image"
+            type="file"
+            fullWidth
+            inputProps={{
+              accept: "image/*",
+            }}
+            onChange={async (e) => {
+              const file = (e.target as HTMLInputElement).files?.[0];
+              if (file) {
+                try {
+                  const compressedImage = await compressImage(file);
+                  setCurrentEvent({ ...currentEvent, image: compressedImage });
+                } catch (error) {
+                  console.error(
+                    "Erreur lors de la compression de l'image:",
+                    error,
+                  );
+                  setMessage({
+                    type: "error",
+                    text: "Erreur lors du traitement de l'image",
+                  });
+                }
+              }
+            }}
+          />
+          {currentEvent.image && (
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="subtitle1">Image actuelle:</Typography>
+              <img
+                src={currentEvent.image}
+                alt="Aperçu"
+                style={{ maxWidth: "100%", maxHeight: "200px" }}
+              />
+            </Box>
+          )}
+          <TextField
+            margin="dense"
+            label="Titre"
+            type="text"
+            fullWidth
+            value={currentEvent.title}
+            onChange={(e) =>
+              setCurrentEvent({ ...currentEvent, title: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            label="Description"
+            type="text"
+            fullWidth
+            multiline
+            rows={4}
+            value={currentEvent.description}
+            onChange={(e) =>
+              setCurrentEvent({ ...currentEvent, description: e.target.value })
+            }
+          />
+          <TextField
+            margin="dense"
+            label="Date"
+            type="datetime-local"
+            fullWidth
+            value={currentEvent.date}
+            onChange={(e) =>
+              setCurrentEvent({ ...currentEvent, date: e.target.value })
+            }
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditOpen(false)} color="secondary">
+            Annuler
+          </Button>
+          <Button onClick={handleUpdateEvent} color="primary">
+            Mettre à jour
           </Button>
         </DialogActions>
       </Dialog>

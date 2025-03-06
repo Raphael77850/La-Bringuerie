@@ -58,4 +58,19 @@ const getEvents: RequestHandler = async (req, res, next) => {
   }
 };
 
-export default { add, getEvents };
+const getEventById: RequestHandler = async (req, res, next) => {
+  try {
+    const id = Number.parseInt(req.params.id, 10);
+    const event = await eventRepository.getEventById(id);
+
+    if (!event) {
+      res.status(404).json({ message: "Événement non trouvé" });
+    }
+
+    res.status(200).json(event);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { add, getEvents, getEventById };

@@ -21,6 +21,7 @@ router.post("/newsletter", newsletterActions.add);
 
 router.post("/user_event", eventActions.add);
 router.get("/events", eventActions.getEvents);
+router.get("/events/:id", eventActions.getEventById);
 
 router.get(
   "/admin/newsletter/emails",

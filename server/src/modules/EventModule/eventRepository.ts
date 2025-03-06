@@ -68,6 +68,15 @@ class EventRepository {
     return rows;
   }
 
+  async getEventById(id: number) {
+    const [rows] = await databaseClient.query<RowDataPacket[]>(
+      "SELECT * FROM event WHERE id = ?",
+      [id],
+    );
+
+    return rows.length > 0 ? rows[0] : null;
+  }
+
   async update(event: Event) {
     await databaseClient.query<Result>(
       "UPDATE event SET image = ?, title = ?, description = ?, date = ? WHERE id = ?",
