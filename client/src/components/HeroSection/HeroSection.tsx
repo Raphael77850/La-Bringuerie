@@ -1,6 +1,6 @@
 import "../../App.css";
 import { Box, Typography } from "@mui/material";
-import videoSrc from "../../../src/assets/images/Video_Bringuerie.mp4";
+import videoSrc from "../../assets/images/Video_Bringuerie.mp4";
 
 export default function HeroSection() {
   return (
@@ -24,7 +24,7 @@ export default function HeroSection() {
         }}
       >
         <source src={videoSrc} type="video/mp4" />
-        Ton navigateur ne supporte pas la balise vidéo.
+        Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
       <Box
         sx={{
