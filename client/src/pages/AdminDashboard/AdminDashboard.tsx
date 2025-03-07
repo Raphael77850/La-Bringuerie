@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -464,413 +465,463 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Box sx={{ padding: 2 }} />
-      <Typography variant="h4" sx={{ marginBottom: 2 }}>
-        Dashboard admin Bringueur
-      </Typography>
-      <Box sx={{ marginBottom: 4 }}>
+      <Container maxWidth="lg">
+        <Box sx={{ padding: 2 }} />
+        <Typography
+          variant="h4"
+          sx={{ marginBottom: 2, fontFamily: "'Francois One', serif" }}
+        >
+          Dashboard admin Bringueur
+        </Typography>
         <Box sx={{ marginBottom: 4 }}>
-          <Typography variant="h5" sx={{ marginBottom: 1 }}>
-            Gérer les événements
-          </Typography>
-          <ul>
-            {events.map((event) => (
-              <li key={event.id}>
-                {event.title} - {formatDateForDisplay(event.date)}{" "}
-                {extractTimeFromDate(event.date)}
-                {event.endTime && `- ${extractTimeFromDate(event.endTime)}`}
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ marginLeft: 1 }}
-                  onClick={() => handleOpenEditDialog(event)}
+          <Box sx={{ marginBottom: 4 }}>
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: 1, fontFamily: "'Francois One', serif" }}
+            >
+              Gérer les événements
+            </Typography>
+            <Box sx={{ marginTop: 2 }}>
+              {events.map((event) => (
+                <Box
+                  key={event.id}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    padding: 2,
+                    marginBottom: 2, // Ajoute de l'espace entre les événements
+                    borderRadius: 1,
+                    backgroundColor: "#f5f5f5",
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                  }}
                 >
-                  Modifier
-                </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  sx={{ marginLeft: 1 }}
-                  onClick={() => handleDeleteEvent(event.id)}
-                >
-                  Supprimer
-                </Button>
-              </li>
-            ))}
-          </ul>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpen(true)}
-          >
-            Ajouter un événement
-          </Button>
-        </Box>
-
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <DialogTitle>Ajouter un événement</DialogTitle>
-          <DialogContent>
-            <TextField
-              margin="dense"
-              label="Image"
-              type="file"
-              fullWidth
-              inputProps={{
-                accept: "image/*",
-              }}
-              onChange={async (e) => {
-                const file = (e.target as HTMLInputElement).files?.[0];
-                if (file) {
-                  try {
-                    const compressedImage = await compressImage(file);
-                    setNewEvent({ ...newEvent, image: compressedImage });
-                  } catch (error) {
-                    console.error(
-                      "Erreur lors de la compression de l'image:",
-                      error,
-                    );
-                    setMessage({
-                      type: "error",
-                      text: "Erreur lors du traitement de l'image",
-                    });
-                  }
-                }
-              }}
-            />
-            <TextField
-              margin="dense"
-              label="Titre"
-              type="text"
-              fullWidth
-              value={newEvent.title}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, title: e.target.value })
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Description"
-              type="text"
-              fullWidth
-              value={newEvent.description}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, description: e.target.value })
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Date (JJ/MM/AAAA)"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={newEvent.date}
-              onChange={(e) =>
-                setNewEvent({ ...newEvent, date: e.target.value })
-              }
-            />
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <TextField
-                margin="dense"
-                label="Heure de début"
-                type="time"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={newEvent.startTime}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, startTime: e.target.value })
-                }
-              />
-
-              <TextField
-                margin="dense"
-                label="Heure de fin"
-                type="time"
-                fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={newEvent.endTime}
-                onChange={(e) =>
-                  setNewEvent({ ...newEvent, endTime: e.target.value })
-                }
-              />
+                  <Box>
+                    <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+                      {event.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {formatDateForDisplay(event.date)}{" "}
+                      {extractTimeFromDate(event.date)}
+                      {event.endTime &&
+                        ` - ${extractTimeFromDate(event.endTime)}`}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      sx={{ marginRight: 1 }}
+                      onClick={() => handleOpenEditDialog(event)}
+                    >
+                      Modifier
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      onClick={() => handleDeleteEvent(event.id)}
+                    >
+                      Supprimer
+                    </Button>
+                  </Box>
+                </Box>
+              ))}
             </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpen(false)} color="secondary">
-              Annuler
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+              sx={{ marginTop: 1.5 }}
+            >
+              Ajouter un événement
             </Button>
-            <Button onClick={handleAddEvent} color="primary">
-              Ajouter
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Boîte de dialogue pour modifier un événement */}
-        <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
-          <DialogTitle>Modifier un événement</DialogTitle>
-          <DialogContent>
-            <TextField
-              margin="dense"
-              label="Image"
-              type="file"
-              fullWidth
-              inputProps={{
-                accept: "image/*",
-              }}
-              onChange={async (e) => {
-                const file = (e.target as HTMLInputElement).files?.[0];
-                if (file) {
-                  try {
-                    const compressedImage = await compressImage(file);
-                    setCurrentEvent({
-                      ...currentEvent,
-                      image: compressedImage,
-                    });
-                  } catch (error) {
-                    console.error(
-                      "Erreur lors de la compression de l'image:",
-                      error,
-                    );
-                    setMessage({
-                      type: "error",
-                      text: "Erreur lors du traitement de l'image",
-                    });
+          </Box>
+          <Dialog open={open} onClose={() => setOpen(false)}>
+            <DialogTitle>Ajouter un événement</DialogTitle>
+            <DialogContent>
+              <TextField
+                margin="dense"
+                label="Image"
+                type="file"
+                fullWidth
+                inputProps={{
+                  accept: "image/*",
+                }}
+                onChange={async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) {
+                    try {
+                      const compressedImage = await compressImage(file);
+                      setNewEvent({ ...newEvent, image: compressedImage });
+                    } catch (error) {
+                      console.error(
+                        "Erreur lors de la compression de l'image:",
+                        error,
+                      );
+                      setMessage({
+                        type: "error",
+                        text: "Erreur lors du traitement de l'image",
+                      });
+                    }
                   }
+                }}
+              />
+              <TextField
+                margin="dense"
+                label="Titre"
+                type="text"
+                fullWidth
+                value={newEvent.title}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, title: e.target.value })
                 }
-              }}
-            />
-            {currentEvent.image && (
-              <Box sx={{ mt: 2, mb: 2 }}>
-                <Typography variant="subtitle1">Image actuelle:</Typography>
-                <img
-                  src={currentEvent.image}
-                  alt="Aperçu"
-                  style={{ maxWidth: "100%", maxHeight: "200px" }}
+              />
+              <TextField
+                margin="dense"
+                label="Description"
+                type="text"
+                fullWidth
+                value={newEvent.description}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, description: e.target.value })
+                }
+              />
+              <TextField
+                margin="dense"
+                label="Date (JJ/MM/AAAA)"
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                value={newEvent.date}
+                onChange={(e) =>
+                  setNewEvent({ ...newEvent, date: e.target.value })
+                }
+              />
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <TextField
+                  margin="dense"
+                  label="Heure de début"
+                  type="time"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  value={newEvent.startTime}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, startTime: e.target.value })
+                  }
+                />
+
+                <TextField
+                  margin="dense"
+                  label="Heure de fin"
+                  type="time"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  value={newEvent.endTime}
+                  onChange={(e) =>
+                    setNewEvent({ ...newEvent, endTime: e.target.value })
+                  }
                 />
               </Box>
-            )}
-            <TextField
-              margin="dense"
-              label="Titre"
-              type="text"
-              fullWidth
-              value={currentEvent.title}
-              onChange={(e) =>
-                setCurrentEvent({ ...currentEvent, title: e.target.value })
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Description"
-              type="text"
-              fullWidth
-              multiline
-              rows={4}
-              value={currentEvent.description}
-              onChange={(e) =>
-                setCurrentEvent({
-                  ...currentEvent,
-                  description: e.target.value,
-                })
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Date (JJ/MM/AAAA)"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={currentEvent.date}
-              onChange={(e) =>
-                setCurrentEvent({ ...currentEvent, date: e.target.value })
-              }
-            />
-            <Box sx={{ display: "flex", gap: 2 }}>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpen(false)} color="secondary">
+                Annuler
+              </Button>
+              <Button onClick={handleAddEvent} color="primary">
+                Ajouter
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Boîte de dialogue pour modifier un événement */}
+          <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
+            <DialogTitle>Modifier un événement</DialogTitle>
+            <DialogContent>
               <TextField
                 margin="dense"
-                label="Heure de début"
-                type="time"
+                label="Image"
+                type="file"
                 fullWidth
-                InputLabelProps={{ shrink: true }}
-                value={currentEvent.startTime}
+                inputProps={{
+                  accept: "image/*",
+                }}
+                onChange={async (e) => {
+                  const file = (e.target as HTMLInputElement).files?.[0];
+                  if (file) {
+                    try {
+                      const compressedImage = await compressImage(file);
+                      setCurrentEvent({
+                        ...currentEvent,
+                        image: compressedImage,
+                      });
+                    } catch (error) {
+                      console.error(
+                        "Erreur lors de la compression de l'image:",
+                        error,
+                      );
+                      setMessage({
+                        type: "error",
+                        text: "Erreur lors du traitement de l'image",
+                      });
+                    }
+                  }
+                }}
+              />
+              {currentEvent.image && (
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <Typography variant="subtitle1">Image actuelle:</Typography>
+                  <img
+                    src={currentEvent.image}
+                    alt="Aperçu"
+                    style={{ maxWidth: "100%", maxHeight: "200px" }}
+                  />
+                </Box>
+              )}
+              <TextField
+                margin="dense"
+                label="Titre"
+                type="text"
+                fullWidth
+                value={currentEvent.title}
+                onChange={(e) =>
+                  setCurrentEvent({ ...currentEvent, title: e.target.value })
+                }
+              />
+              <TextField
+                margin="dense"
+                label="Description"
+                type="text"
+                fullWidth
+                multiline
+                rows={4}
+                value={currentEvent.description}
                 onChange={(e) =>
                   setCurrentEvent({
                     ...currentEvent,
-                    startTime: e.target.value,
+                    description: e.target.value,
                   })
                 }
               />
-
               <TextField
                 margin="dense"
-                label="Heure de fin"
-                type="time"
+                label="Date (JJ/MM/AAAA)"
+                type="date"
                 fullWidth
                 InputLabelProps={{ shrink: true }}
-                value={currentEvent.endTime}
+                value={currentEvent.date}
                 onChange={(e) =>
-                  setCurrentEvent({ ...currentEvent, endTime: e.target.value })
+                  setCurrentEvent({ ...currentEvent, date: e.target.value })
                 }
               />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setEditOpen(false)} color="secondary">
-              Annuler
-            </Button>
-            <Button onClick={handleUpdateEvent} color="primary">
-              Mettre à jour
-            </Button>
-          </DialogActions>
-        </Dialog>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <TextField
+                  margin="dense"
+                  label="Heure de début"
+                  type="time"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  value={currentEvent.startTime}
+                  onChange={(e) =>
+                    setCurrentEvent({
+                      ...currentEvent,
+                      startTime: e.target.value,
+                    })
+                  }
+                />
 
-        <Box sx={{ marginBottom: 4 }}>
-          <Typography variant="h5" sx={{ marginBottom: 1 }}>
-            Abonnés à la newsletter
-          </Typography>
-          <table
-            style={{ width: "100%", borderCollapse: "collapse", marginTop: 2 }}
-          >
-            <thead>
-              <tr style={{ background: "#f5f5f5" }}>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Prénom
-                </th>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Nom
-                </th>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Email
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {newsletterUsers.map((user) => (
-                <tr
-                  key={user.email} // Utiliser une propriété unique comme l'email
-                  style={{
-                    background:
-                      newsletterUsers.indexOf(user) % 2 === 0
-                        ? "white"
-                        : "#fafafa",
-                  }}
-                >
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.firstName}
-                  </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.lastName}
-                  </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.email}
-                  </td>
+                <TextField
+                  margin="dense"
+                  label="Heure de fin"
+                  type="time"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  value={currentEvent.endTime}
+                  onChange={(e) =>
+                    setCurrentEvent({
+                      ...currentEvent,
+                      endTime: e.target.value,
+                    })
+                  }
+                />
+              </Box>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setEditOpen(false)} color="secondary">
+                Annuler
+              </Button>
+              <Button onClick={handleUpdateEvent} color="primary">
+                Mettre à jour
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          <Box sx={{ marginBottom: 4 }}>
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: 1, fontFamily: "'Francois One', serif" }}
+            >
+              Abonnés à la newsletter
+            </Typography>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                marginTop: 2,
+              }}
+            >
+              <thead>
+                <tr style={{ background: "#f5f5f5" }}>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Prénom
+                  </th>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Nom
+                  </th>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Email
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </Box>
+              </thead>
+              <tbody>
+                {newsletterUsers.map((user) => (
+                  <tr
+                    key={user.email} // Utiliser une propriété unique comme l'email
+                    style={{
+                      background:
+                        newsletterUsers.indexOf(user) % 2 === 0
+                          ? "white"
+                          : "#fafafa",
+                    }}
+                  >
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.firstName}
+                    </td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.lastName}
+                    </td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.email}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Box>
 
-        <Box sx={{ marginBottom: 4 }}>
-          <Typography variant="h5" sx={{ marginBottom: 1 }}>
-            Inscrits aux événements
-          </Typography>
-          <table
-            style={{ width: "100%", borderCollapse: "collapse", marginTop: 2 }}
-          >
-            <thead>
-              <tr style={{ background: "#f5f5f5" }}>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Prénom
-                </th>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Nom
-                </th>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Email
-                </th>
-                <th
-                  style={{
-                    padding: 8,
-                    textAlign: "left",
-                    borderBottom: "1px solid #ddd",
-                  }}
-                >
-                  Événement
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {eventUsers.map((user) => (
-                <tr
-                  key={`${user.email}-${user.eventName}`} // Combinaison unique
-                  style={{
-                    background:
-                      eventUsers.indexOf(user) % 2 === 0 ? "white" : "#fafafa",
-                  }}
-                >
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.firstName}
-                  </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.lastName}
-                  </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.email}
-                  </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                    {user.eventName}
-                  </td>
+          <Box sx={{ marginBottom: 4 }}>
+            <Typography
+              variant="h5"
+              sx={{ marginBottom: 1, fontFamily: "'Francois One', serif" }}
+            >
+              Inscrits aux événements
+            </Typography>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                marginTop: 2,
+              }}
+            >
+              <thead>
+                <tr style={{ background: "#f5f5f5" }}>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Prénom
+                  </th>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Nom
+                  </th>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Email
+                  </th>
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Événement
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </Box>
+              </thead>
+              <tbody>
+                {eventUsers.map((user) => (
+                  <tr
+                    key={`${user.email}-${user.eventName}`} // Combinaison unique
+                    style={{
+                      background:
+                        eventUsers.indexOf(user) % 2 === 0
+                          ? "white"
+                          : "#fafafa",
+                    }}
+                  >
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.firstName}
+                    </td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.lastName}
+                    </td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.email}
+                    </td>
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.eventName}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Box>
 
-        <Snackbar
-          open={!!message}
-          autoHideDuration={3000}
-          onClose={() => setMessage(null)}
-        >
-          <Alert onClose={() => setMessage(null)} severity={message?.type}>
-            {message?.text}
-          </Alert>
-        </Snackbar>
-      </Box>
+          <Snackbar
+            open={!!message}
+            autoHideDuration={3000}
+            onClose={() => setMessage(null)}
+          >
+            <Alert onClose={() => setMessage(null)} severity={message?.type}>
+              {message?.text}
+            </Alert>
+          </Snackbar>
+        </Box>
+      </Container>
     </>
   );
 };

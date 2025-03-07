@@ -4,6 +4,18 @@ import styled from "styled-components";
 import { Footer } from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 
+// Style pour le conteneur principal avec flex pour positionner le footer
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+// Style pour le contenu principal qui prendra l'espace disponible
+const MainContent = styled.div`
+  flex: 1;
+`;
+
 const AboutSection = styled.section`
   background-color: #FF5722;
   font-family: "Francois One, serif" !important;
@@ -21,80 +33,82 @@ const contact = [
 
 export default function AboutPage() {
   return (
-    <>
-      <Header />
-      <AboutSection>
-        <Container>
-          <Typography
-            variant="h4"
-            align="center"
-            pt={1}
-            gutterBottom
-            sx={{ color: "white", fontFamily: "Francois One, serif" }}
-          >
-            IL ÉTAIT UNE FOIS, TROIS AMIS PASSIONNÉS PAR LE MONDE DE LA FÊTE ET
-            DE LA MUSIQUE SUR BORDEAUX.
-          </Typography>
-          <Typography
-            variant="h6"
-            align="center"
-            paragraph
-            sx={{
-              color: "white",
-              mb: 1,
-              pb: 1,
-              fontFamily: "Francois One, serif",
-            }}
-          >
-            Mais il fallait un lieu... <br />
-            ...un endroit où tout était possible...
-            <br />
-            ...des rencontres, des échanges, des moments de pure folie !<br />
-            Ils se mirent alors en quête d’un partenaire, un lieu avec lequel
-            s’associer pour créer la première soirée de La Bringuerie.
-          </Typography>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ mb: 4 }}
-          >
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  backgroundColor: "#FFF3E0",
-                  padding: 2,
-                  marginTop: 1,
-                  marginBottom: 2,
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  variant="h6"
+    <PageContainer>
+      <MainContent>
+        <Header />
+        <AboutSection>
+          <Container>
+            <Typography
+              variant="h4"
+              align="center"
+              pt={1}
+              gutterBottom
+              sx={{ color: "white", fontFamily: "Francois One, serif" }}
+            >
+              IL ÉTAIT UNE FOIS, TROIS AMIS PASSIONNÉS PAR LE MONDE DE LA FÊTE
+              ET DE LA MUSIQUE SUR BORDEAUX.
+            </Typography>
+            <Typography
+              variant="h6"
+              align="center"
+              paragraph
+              sx={{
+                color: "white",
+                mb: 1,
+                pb: 1,
+                fontFamily: "Francois One, serif",
+              }}
+            >
+              Mais il fallait un lieu... <br />
+              ...un endroit où tout était possible...
+              <br />
+              ...des rencontres, des échanges, des moments de pure folie !<br />
+              Ils se mirent alors en quête d'un partenaire, un lieu avec lequel
+              s'associer pour créer la première soirée de La Bringuerie.
+            </Typography>
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              sx={{ mb: 4 }}
+            >
+              <Grid item xs={12} sm={6} md={4}>
+                <Card
                   sx={{
-                    mt: 0,
-                    fontFamily: "Francois One, serif",
-                    color: "#FF5722",
+                    backgroundColor: "#FFF3E0",
+                    padding: 2,
+                    marginTop: 1,
+                    marginBottom: 2,
+                    textAlign: "center",
                   }}
                 >
-                  Contact
-                </Typography>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mt: 1,
-                    fontFamily: "Francois One, serif",
-                    color: "#FF5722",
-                  }}
-                >
-                  {contact[0].mail}
-                </Typography>
-              </Card>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      mt: 0,
+                      fontFamily: "Francois One, serif",
+                      color: "#FF5722",
+                    }}
+                  >
+                    Contact
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      mt: 1,
+                      fontFamily: "Francois One, serif",
+                      color: "#FF5722",
+                    }}
+                  >
+                    {contact[0].mail}
+                  </Typography>
+                </Card>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </AboutSection>
+          </Container>
+        </AboutSection>
+      </MainContent>
       <Footer />
-    </>
+    </PageContainer>
   );
 }
