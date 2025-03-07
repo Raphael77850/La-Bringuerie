@@ -17,6 +17,7 @@ interface Event {
   title: string;
   description: string;
   date: string;
+  endTime?: string;
   image: string;
 }
 
@@ -26,6 +27,32 @@ interface EventCarouselProps {
 
 export default function EventCarousel({ events }: EventCarouselProps) {
   const [selectedEventId, setSelectedEventId] = useState<number | null>(null);
+
+  // Fonction pour formater une date pour l'affichage
+  const formatDateForDisplay = (dateStr: string): string => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+  };
+
+  // Fonction pour extraire l'heure d'une date ISO
+  const extractTimeFromDate = (dateStr: string): string => {
+    if (!dateStr) return "";
+    const date = new Date(dateStr);
+    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+  };
+
+  // Formater l'heure de l'événement
+  const formatEventTime = (event: Event): string => {
+    const startTime = extractTimeFromDate(event.date);
+
+    if (event.endTime) {
+      const endTime = extractTimeFromDate(event.endTime);
+      return `${startTime} - ${endTime}`;
+    }
+
+    return startTime;
+  };
 
   const settings = {
     dots: true,
@@ -47,7 +74,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
         },
       },
     ],
-    centerMoode: false,
+    centerMode: false,
     adaptiveHeight: true,
   };
 
@@ -83,14 +110,14 @@ export default function EventCarousel({ events }: EventCarouselProps) {
               <Typography
                 variant="body2"
                 color="text.secondary"
-                sx={{ fontFamily: "Francois One, serif" }}
+                sx={{ fontFamily: "Francois One, serif", my: 1 }}
               >
-                {event.date}
+                {formatDateForDisplay(event.date)} • {formatEventTime(event)}
               </Typography>
               <Button
                 variant="contained"
                 color="primary"
-                sx={{ fontFamily: "Francois One, serif" }}
+                sx={{ fontFamily: "Francois One, serif", mt: 1 }}
                 onClick={() => setSelectedEventId(event.id)}
               >
                 S'inscrire
