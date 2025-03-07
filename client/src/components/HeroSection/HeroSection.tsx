@@ -52,7 +52,11 @@ export default function HeroSection() {
         >
           <Typography
             variant="h6"
-            sx={{ fontFamily: "Francois One, serif", cursor: "pointer" }}
+            sx={{
+              fontFamily: "Francois One, serif",
+              cursor: "pointer",
+              color: "#FF5722",
+            }}
             onClick={() => {
               const element = document.getElementById("newsletterForm");
               if (element) {
@@ -60,7 +64,7 @@ export default function HeroSection() {
               }
             }}
           >
-            Découvrez nos événements et inscrivez-vous ! ⬇️
+            Pour découvrez nos événements, inscrivez-vous !
           </Typography>
         </Box>
       </Box>

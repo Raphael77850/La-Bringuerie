@@ -1,49 +1,21 @@
 import "../../App.css";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, Container, Grid, Typography } from "@mui/material";
 import styled from "styled-components";
 import { Footer } from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 
 const AboutSection = styled.section`
   background-color: #FF5722;
-  fontFamily: "Francois One, serif !important;
+  font-family: "Francois One, serif" !important;
+  padding-top: 6.5rem;
+  padding-bottom: .5rem;
 `;
 
-const TeamMember = styled(Card)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.3s ease;
-  &:hover {
-    transform: translateY(-5px);
-  }
-`;
-
-const teamMembers = [
+const contact = [
   {
     id: 1,
-    name: "Alexis Borgé",
-    role: "Directeur Artistique & Graphiste 360°",
-    image: "/src/assets/images/AlexisDA.png",
-  },
-  {
-    id: 2,
-    name: "Anaïs De Mongolfier",
-    role: "Directrice Événementiel",
-    image: "/src/assets/images/AnaisDE.png",
-  },
-  {
-    id: 3,
-    name: "Victor Barbazanges ",
-    role: "Directeur des partenariats",
-    image: "/src/assets/images/VictorDDP.png",
+    mail: "labringueriebordeaux@gmail.com",
+    image: "/src/assets/images/Icon2Officiel-removebg-preview.png",
   },
 ];
 
@@ -54,61 +26,14 @@ export default function AboutPage() {
       <AboutSection>
         <Container>
           <Typography
-            variant="h5"
-            align="center"
-            sx={{
-              color: "white",
-              mb: 2,
-              pt: 2,
-              fontFamily: "Francois One, serif",
-            }}
-          >
-            Découvrez les personnes qui font vibrer vos soirées
-          </Typography>
-
-          <Grid container spacing={4}>
-            {teamMembers.map((member) => (
-              <Grid item key={member.id} xs={12} sm={6} md={4}>
-                <TeamMember>
-                  <CardMedia
-                    component="img"
-                    height="300"
-                    image={member.image}
-                    alt={member.name}
-                  />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="h3"
-                      sx={{
-                        color: "#FF5722",
-                        fontFamily: "Francois One, serif",
-                      }}
-                    >
-                      {member.name}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color="text.secondary"
-                      gutterBottom
-                      sx={{ fontFamily: "Francois One, serif" }}
-                    >
-                      {member.role}
-                    </Typography>
-                  </CardContent>
-                </TeamMember>
-              </Grid>
-            ))}
-          </Grid>
-          <Typography
             variant="h4"
             align="center"
-            pt={3}
+            pt={1}
             gutterBottom
             sx={{ color: "white", fontFamily: "Francois One, serif" }}
           >
-            CV DES CHEFS DE BRINGUE
+            IL ÉTAIT UNE FOIS, TROIS AMIS PASSIONNÉS PAR LE MONDE DE LA FÊTE ET
+            DE LA MUSIQUE SUR BORDEAUX.
           </Typography>
           <Typography
             variant="h6"
@@ -117,20 +42,56 @@ export default function AboutPage() {
             sx={{
               color: "white",
               mb: 1,
-              pb: 2,
+              pb: 1,
               fontFamily: "Francois One, serif",
             }}
           >
-            Chefs de Clan, de Bringue et Organisateurs d'Événements Privés le
-            chef de bringue est un passionné d'événements exclusifs et
-            innovants, reconnu pour son influence dans la scène parisienne.
+            Mais il fallait un lieu... <br />
+            ...un endroit où tout était possible...
             <br />
-            Expert en création d'expériences uniques, il allie networking,
-            communication et festivités haut de gamme. Il a été coopté par les
-            Ambassadeurs pour intégrer les clans les plus prisés de la Nuit des
-            Ambassadeurs, un événement devenu incontournable à Paris, mélangeant
-            jeu de rôle, théâtre et fête costumée.
+            ...des rencontres, des échanges, des moments de pure folie !<br />
+            Ils se mirent alors en quête d’un partenaire, un lieu avec lequel
+            s’associer pour créer la première soirée de La Bringuerie.
           </Typography>
+          <Grid
+            container
+            justifyContent="center"
+            alignItems="center"
+            sx={{ mb: 4 }}
+          >
+            <Grid item xs={12} sm={6} md={4}>
+              <Card
+                sx={{
+                  backgroundColor: "#FFF3E0",
+                  padding: 2,
+                  marginTop: 1,
+                  marginBottom: 2,
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mt: 0,
+                    fontFamily: "Francois One, serif",
+                    color: "#FF5722",
+                  }}
+                >
+                  Contact
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mt: 1,
+                    fontFamily: "Francois One, serif",
+                    color: "#FF5722",
+                  }}
+                >
+                  {contact[0].mail}
+                </Typography>
+              </Card>
+            </Grid>
+          </Grid>
         </Container>
       </AboutSection>
       <Footer />

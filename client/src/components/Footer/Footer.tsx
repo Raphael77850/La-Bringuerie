@@ -24,6 +24,7 @@ export const Footer = () => {
       <Button
         onClick={scrollToTop}
         sx={{
+          alignItems: "center",
           color: "#FF5722",
           fontFamily: "'Francois One', serif",
           textTransform: "none",

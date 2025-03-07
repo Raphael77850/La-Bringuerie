@@ -60,7 +60,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
           <Card key={event.id} sx={{ maxWidth: 300, gap: 2 }}>
             <CardMedia
               component="img"
-              height="450"
+              height="400"
               image={event.image}
               alt={event.title}
             />
