@@ -1,14 +1,23 @@
 import "../../App.css";
-import { Box, Typography } from "@mui/material";
-import videoSrc from "../../../src/assets/images/Video_Bringuerie.mp4";
+import { Box, Typography, useMediaQuery } from "@mui/material";
+import videoSrc from "../../assets/images/Video_Bringuerie.mp4";
 
 export default function HeroSection() {
+  const isDesktop1024 = useMediaQuery("(min-width:1024px)");
+  const isDesktop1440 = useMediaQuery("(min-width:1440px)");
+
+  const getVideoHeight = () => {
+    if (isDesktop1440) return "100vh";
+    if (isDesktop1024) return "85vh";
+    return { xs: "100vh", md: "70vh" };
+  };
+
   return (
     <Box
       sx={{
         position: "relative",
         width: "100%",
-        height: { xs: "100vh", md: "70vh" },
+        height: getVideoHeight(),
         overflow: "hidden",
       }}
     >
@@ -19,12 +28,14 @@ export default function HeroSection() {
         style={{
           width: "100%",
           height: "100%",
-          objectFit: "cover",
-          objectPosition: "center 45%",
+          objectFit: isDesktop1024 || isDesktop1440 ? "contain" : "cover",
+          objectPosition: "center center",
+          transform: "none",
+          backgroundColor: "#000",
         }}
       >
         <source src={videoSrc} type="video/mp4" />
-        Ton navigateur ne supporte pas la balise vidéo.
+        Votre navigateur ne supporte pas la lecture de vidéos.
       </video>
       <Box
         sx={{
@@ -47,15 +58,16 @@ export default function HeroSection() {
             flexDirection: "column",
             justifyContent: "flex-end",
             height: "100%",
-            paddingBottom: "2rem",
+            paddingBottom: isDesktop1440 ? "3rem" : "2rem",
           }}
         >
           <Typography
-            variant="h6"
+            variant={isDesktop1024 ? "h5" : "h6"}
             sx={{
               fontFamily: "Francois One, serif",
               cursor: "pointer",
               color: "#FF5722",
+              fontSize: isDesktop1440 ? "1.5rem" : undefined,
             }}
             onClick={() => {
               const element = document.getElementById("newsletterForm");
