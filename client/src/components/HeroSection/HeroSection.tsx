@@ -9,7 +9,7 @@ export default function HeroSection() {
   const getVideoHeight = () => {
     if (isDesktop1440) return "100vh";
     if (isDesktop1024) return "85vh";
-    return { xs: "100vh", md: "70vh" };
+    return { xs: "70vh", md: "70vh" };
   };
 
   return (

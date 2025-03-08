@@ -1,10 +1,10 @@
 import express from "express";
+import eventActions from "./modules/EventModule/eventActions";
+import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 import adminActions from "./modules/adminModule/adminActions";
 import authActions from "./modules/auth/authActions";
-import eventActions from "./modules/eventModule/eventActions";
 import itemActions from "./modules/item/itemActions";
 import adminAuth from "./modules/middleware/adminAuth";
-import newsletterActions from "./modules/newsletterModule/newsletterActions";
 
 const router = express.Router();
 
