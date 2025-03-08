@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import newsletterRepository from "../newsletterModule/newsletterRepository";
+import newsletterRepository from "../NewsletterModule/newsletterRepository";
 
 const getAllSubscriptions: RequestHandler = async (req, res, next) => {
   try {

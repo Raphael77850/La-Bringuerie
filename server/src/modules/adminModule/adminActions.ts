@@ -1,5 +1,5 @@
 import type { Request, RequestHandler, Response } from "express";
-import eventRepository from "../eventModule/eventRepository";
+import eventRepository from "../EventModule/eventRepository";
 import adminRepository from "./adminRepository";
 
 const adminActions = {

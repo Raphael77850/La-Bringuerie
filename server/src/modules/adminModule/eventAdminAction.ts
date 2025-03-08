@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import eventRepository from "../eventModule/eventRepository";
+import eventRepository from "../EventModule/eventRepository";
 
 export interface Event {
   id: number;
