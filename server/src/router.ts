@@ -30,16 +30,7 @@ router.get(
   adminAuth,
   adminActions.getNewsletterEmails,
 );
-router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
 
-// Commentez ou supprimez ces anciennes routes sans gestion d'upload d'images
-// router.post("/admin/events", adminAuth, adminActions.addEvent);
-// router.put("/admin/events", adminAuth, adminActions.updateEvent);
-router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
-
-router.post("/login", authActions.login);
-
-// Routes pour les événements avec gestion des images
 router.post(
   "/admin/events",
   adminAuth,
@@ -53,6 +44,12 @@ router.put(
   upload.single("image"),
   eventAdminAction.updateEvent,
 );
+router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
+router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
+
+router.post("/login", authActions.login);
+
+// Routes pour les événements avec gestion des images
 
 /* ************************************************************************* */
 

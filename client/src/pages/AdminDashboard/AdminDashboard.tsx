@@ -11,8 +11,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "../../config/axiosConfig";
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState<
@@ -82,8 +82,8 @@ const AdminDashboard = () => {
     };
 
     // Fetch newsletter emails
-    axios
-      .get("/api/admin/newsletter/emails", config)
+    api
+      .get("/admin/newsletter/emails", config)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setNewsletterUsers(response.data);
@@ -104,8 +104,8 @@ const AdminDashboard = () => {
       });
 
     // Fetch event emails
-    axios
-      .get("/api/admin/events/emails", config)
+    api
+      .get("/admin/events/emails", config)
       .then((response) => {
         if (Array.isArray(response.data)) {
           setEventUsers(response.data);
@@ -126,8 +126,8 @@ const AdminDashboard = () => {
       });
 
     // Fetch events
-    axios
-      .get("/api/events")
+    api
+      .get("/events")
       .then((response) => {
         if (Array.isArray(response.data)) {
           setEvents(response.data);
@@ -149,8 +149,8 @@ const AdminDashboard = () => {
   };
 
   const handleLogin = () => {
-    axios
-      .post("/api/login", credentials)
+    api
+      .post("/login", credentials)
       .then((response) => {
         const data = response.data as { token: string };
         setToken(data.token);
@@ -200,8 +200,8 @@ const AdminDashboard = () => {
     };
 
     try {
-      const response = await axios.post<{ id: number; imagePath: string }>(
-        "/api/admin/events",
+      const response = await api.post<{ id: number; imagePath: string }>(
+        "/admin/events",
         formData,
         config,
       );
@@ -293,8 +293,8 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      axios
-        .delete(`/api/admin/events/${id}`, config)
+      api
+        .delete(`/admin/events/${id}`, config)
         .then(() => {
           // Mettre à jour la liste des événements en supprimant l'événement
           setEvents(events.filter((event) => event.id !== id));
@@ -320,8 +320,8 @@ const AdminDashboard = () => {
     date: string;
   }) => {
     // Récupérer les détails complets de l'événement
-    axios
-      .get(`/api/events/${event.id}`)
+    api
+      .get(`/events/${event.id}`)
       .then((response) => {
         const eventData = response.data as {
           id: number;
@@ -397,7 +397,7 @@ const AdminDashboard = () => {
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      const response = await axios.put("/api/admin/events", formData, config);
+      const response = await api.put("/admin/events", formData, config);
 
       console.info("Update response:", response.data);
       fetchData();
