@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { RowDataPacket } from "mysql2";
 import type { ResultSetHeader } from "mysql2";
 import databaseClient from "../../../database/client";
@@ -104,8 +106,20 @@ class EventRepository {
     }
   }
 
-  async delete(id: number) {
-    await databaseClient.query<Result>("DELETE FROM event WHERE id = ?", [id]);
+  // Ajoutez une gestion d'erreur appropriée à la méthode delete
+  async delete(id: number): Promise<void> {
+    try {
+      // D'abord supprimer tous les enregistrements liés dans user_event
+      await databaseClient.query("DELETE FROM user_event WHERE event_id = ?", [
+        id,
+      ]);
+
+      // Ensuite supprimer l'événement
+      await databaseClient.query("DELETE FROM event WHERE id = ?", [id]);
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      throw error;
+    }
   }
 }
 
