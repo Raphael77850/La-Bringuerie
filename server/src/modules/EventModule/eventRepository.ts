@@ -86,17 +86,22 @@ class EventRepository {
   }
 
   async update(event: Event) {
-    await databaseClient.query<Result>(
-      "UPDATE event SET image = ?, title = ?, description = ?, date = ? endTime = ? WHERE id = ?",
-      [
-        event.image,
-        event.title,
-        event.description,
-        event.date,
-        event.endTime,
-        event.id,
-      ],
-    );
+    try {
+      await databaseClient.query<Result>(
+        "UPDATE event SET image = ?, title = ?, description = ?, date = ?, endTime = ? WHERE id = ?",
+        [
+          event.image,
+          event.title,
+          event.description,
+          event.date,
+          event.endTime,
+          event.id,
+        ],
+      );
+    } catch (error) {
+      console.error("Error updating event:", error);
+      throw error;
+    }
   }
 
   async delete(id: number) {

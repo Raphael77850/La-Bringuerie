@@ -16,7 +16,13 @@ import { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState<
-    { id: number; title: string; date: string; endTime?: string }[]
+    {
+      id: number;
+      title: string;
+      date: string;
+      endTime?: string;
+      image?: string;
+    }[]
   >([]);
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(true);
@@ -156,23 +162,16 @@ const AdminDashboard = () => {
       });
   };
 
-  const handleAddEvent = () => {
+  const handleAddEvent = async () => {
     // Vérifier que les champs obligatoires sont remplis
     if (
       !newEvent.title ||
       !newEvent.description ||
       !newEvent.date ||
       !newEvent.startTime ||
-      !newEvent.image
+      !selectedFile // Nouvelle variable d'état pour le fichier
     ) {
       setMessage({ type: "error", text: "Tous les champs sont obligatoires" });
-      return;
-    }
-
-    // Limiter la taille de l'image si nécessaire
-    if (newEvent.image.length > 1024 * 1024) {
-      // Plus de 1Mo
-      setMessage({ type: "error", text: "L'image est trop volumineuse" });
       return;
     }
 
@@ -185,45 +184,67 @@ const AdminDashboard = () => {
       ? combineDateTime(newEvent.date, newEvent.endTime)
       : formattedStartDateTime;
 
-    const eventToSend = {
-      ...newEvent,
-      date: formattedStartDateTime,
-      endTime: formattedEndDateTime,
-    };
+    // Utiliser FormData au lieu d'un objet JSON
+    const formData = new FormData();
+    formData.append("title", newEvent.title);
+    formData.append("description", newEvent.description);
+    formData.append("date", formattedStartDateTime);
+    formData.append("endTime", formattedEndDateTime);
+    formData.append("image", selectedFile); // Le fichier lui-même, pas une chaîne base64
 
     const config = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        // Ne pas définir Content-Type, il sera automatiquement défini avec le bon boundary
+      },
     };
 
-    axios
-      .post<{ id: number }>("/api/admin/events", eventToSend, config)
-      .then((response) => {
-        if (response.status === 201) {
-          setEvents([...events, { ...newEvent, id: response.data.id }]);
-          setOpen(false);
-          setNewEvent({
-            image: "",
-            title: "",
-            description: "",
-            date: "",
-            startTime: "",
-            endTime: "",
-          });
-          setMessage({ type: "success", text: "Événement ajouté avec succès" });
-        } else {
-          setMessage({
-            type: "error",
-            text: "Erreur lors de l'ajout de l'événement",
-          });
-        }
-      })
-      .catch((_error) => {
-        setMessage({
-          type: "error",
-          text: "Erreur lors de l'ajout de l'événement",
+    try {
+      const response = await axios.post<{ id: number; imagePath: string }>(
+        "/api/admin/events",
+        formData,
+        config,
+      );
+
+      if (response.status === 201) {
+        // Ajouter le nouvel événement avec l'URL de l'image retournée par le serveur
+        setEvents([
+          ...events,
+          {
+            id: response.data.id,
+            title: newEvent.title,
+            date: formattedStartDateTime,
+            endTime: formattedEndDateTime,
+            image: response.data.imagePath, // Utiliser le chemin retourné par le serveur
+          },
+        ]);
+
+        setOpen(false);
+        setNewEvent({
+          image: "",
+          title: "",
+          description: "",
+          date: "",
+          startTime: "",
+          endTime: "",
         });
+        setSelectedFile(null); // Réinitialiser le fichier sélectionné
+        setMessage({ type: "success", text: "Événement ajouté avec succès" });
+      }
+    } catch (error) {
+      console.error("Error adding event:", error);
+      setMessage({
+        type: "error",
+        text: "Erreur lors de l'ajout de l'événement",
       });
+    }
   };
+
+  // Ajouter un état pour le fichier sélectionné
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedUpdateFile, setSelectedUpdateFile] = useState<File | null>(
+    null,
+  );
 
   const compressImage = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -333,66 +354,66 @@ const AdminDashboard = () => {
       });
   };
 
-  // Fonction pour soumettre la mise à jour
-  const handleUpdateEvent = () => {
-    // Vérifications similaires à celles d'ajout
+  const handleUpdateEvent = async () => {
+    // Vérifications
     if (
       !currentEvent.title ||
       !currentEvent.description ||
       !currentEvent.date ||
-      !currentEvent.startTime ||
-      !currentEvent.image
+      !currentEvent.startTime
     ) {
-      setMessage({ type: "error", text: "Tous les champs sont obligatoires" });
+      setMessage({
+        type: "error",
+        text: "Tous les champs textuels sont obligatoires",
+      });
       return;
     }
 
-    const formattedStartDateTime = combineDateTime(
-      currentEvent.date,
-      currentEvent.startTime,
-    );
-    const formattedEndDateTime = currentEvent.endTime
-      ? combineDateTime(currentEvent.date, currentEvent.endTime)
-      : formattedStartDateTime;
+    try {
+      const formattedStartDateTime = combineDateTime(
+        currentEvent.date,
+        currentEvent.startTime,
+      );
+      const formattedEndDateTime = currentEvent.endTime
+        ? combineDateTime(currentEvent.date, currentEvent.endTime)
+        : formattedStartDateTime;
 
-    const eventToSend = {
-      ...currentEvent,
-      date: formattedStartDateTime,
-      endTime: formattedEndDateTime,
-    };
+      // Utiliser FormData pour l'envoi multipart
+      const formData = new FormData();
+      formData.append("id", String(currentEvent.id));
+      formData.append("title", currentEvent.title);
+      formData.append("description", currentEvent.description);
+      formData.append("date", formattedStartDateTime);
+      formData.append("endTime", formattedEndDateTime);
 
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
+      // Si un fichier est sélectionné, l'ajouter, sinon utiliser l'image existante
+      if (selectedUpdateFile) {
+        formData.append("image", selectedUpdateFile);
+      } else {
+        formData.append("image", currentEvent.image);
+      }
 
-    axios
-      .put("/api/admin/events", eventToSend, config)
-      .then(() => {
-        // Mettre à jour la liste des événements
-        setEvents(
-          events.map((event) =>
-            event.id === currentEvent.id
-              ? {
-                  ...event,
-                  title: currentEvent.title,
-                  date: currentEvent.date,
-                }
-              : event,
-          ),
-        );
-        setEditOpen(false);
-        setMessage({
-          type: "success",
-          text: "Événement mis à jour avec succès",
-        });
-      })
-      .catch((error) => {
-        console.error("Error updating event:", error);
-        setMessage({
-          type: "error",
-          text: "Erreur lors de la mise à jour de l'événement",
-        });
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const response = await axios.put("/api/admin/events", formData, config);
+
+      console.info("Update response:", response.data);
+      fetchData();
+      setEditOpen(false);
+      setSelectedUpdateFile(null);
+      setMessage({
+        type: "success",
+        text: "Événement mis à jour avec succès",
       });
+    } catch (error) {
+      console.error("Error updating event:", error);
+      setMessage({
+        type: "error",
+        text: "Erreur lors de la mise à jour de l'événement",
+      });
+    }
   };
 
   // Fonction pour formater une date pour l'affichage
@@ -549,22 +570,10 @@ const AdminDashboard = () => {
                 inputProps={{
                   accept: "image/*",
                 }}
-                onChange={async (e) => {
+                onChange={(e) => {
                   const file = (e.target as HTMLInputElement).files?.[0];
                   if (file) {
-                    try {
-                      const compressedImage = await compressImage(file);
-                      setNewEvent({ ...newEvent, image: compressedImage });
-                    } catch (error) {
-                      console.error(
-                        "Erreur lors de la compression de l'image:",
-                        error,
-                      );
-                      setMessage({
-                        type: "error",
-                        text: "Erreur lors du traitement de l'image",
-                      });
-                    }
+                    setSelectedFile(file);
                   }
                 }}
               />
