@@ -1,5 +1,5 @@
 import type { RequestHandler } from "express";
-import eventRepository from "./eventRepository";
+import eventRepository from "../EventModule/eventRepository";
 
 const add: RequestHandler = async (req, res, next) => {
   try {

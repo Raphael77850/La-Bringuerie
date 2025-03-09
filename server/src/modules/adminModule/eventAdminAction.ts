@@ -1,26 +1,34 @@
+import fs from "node:fs";
+import path from "node:path";
+import type { NextFunction, Request, Response } from "express";
 import type { RequestHandler } from "express";
-import eventRepository from "../eventModule/eventRepository";
+import eventRepository from "../EventModule/eventRepository";
 
-export interface Event {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  date: string;
-  endTime: string;
+interface FileRequest extends Request {
+  file?: Express.Multer.File;
 }
 
 const addEvent: RequestHandler = async (req, res, next) => {
   try {
-    const { image, title, description, date, endTime } = req.body;
+    const fileReq = req as FileRequest;
+    const { title, description, date, endTime } = fileReq.body;
 
-    if (!image || !title || !description || !date || !endTime) {
-      res.status(400).json({ message: "Tous les champs sont requis" });
+    if (!title || !description || !date || !endTime) {
+      res.status(400).json({ message: "Tous les champs textuels sont requis" });
+      return;
+    }
+
+    let imagePath = "";
+
+    if (fileReq.file) {
+      imagePath = `/uploads/events/${fileReq.file.filename}`;
+    } else {
+      res.status(400).json({ message: "L'image est requise" });
       return;
     }
 
     const insertId = await eventRepository.createEvent({
-      image,
+      image: imagePath,
       title,
       description,
       date,
@@ -28,25 +36,51 @@ const addEvent: RequestHandler = async (req, res, next) => {
       id: 0,
     });
 
-    res
-      .status(201)
-      .json({ message: "Événement ajouté avec succès", id: insertId });
+    res.status(201).json({
+      message: "Événement ajouté avec succès",
+      id: insertId,
+      imagePath,
+    });
   } catch (err) {
+    console.error("Error in addEvent:", err);
     next(err);
   }
 };
 
 const updateEvent: RequestHandler = async (req, res, next) => {
   try {
-    const { id, image, title, description, date, endTime } = req.body;
+    const fileReq = req as FileRequest;
+    const { id, title, description, date, endTime } = fileReq.body;
+    let { image } = fileReq.body;
 
-    if (!id || !image || !title || !description || !date || !endTime) {
-      res.status(400).json({ message: "Tous les champs sont requis" });
+    if (!id || !title || !description || !date || !endTime) {
+      res.status(400).json({ message: "Tous les champs textuels sont requis" });
       return;
     }
 
+    const existingEvent = await eventRepository.getEventById(Number(id));
+
+    if (!existingEvent) {
+      res.status(404).json({ message: "Événement non trouvé" });
+      return;
+    }
+
+    if (fileReq.file) {
+      image = `/uploads/events/${fileReq.file.filename}`;
+
+      const oldImagePath = existingEvent.image;
+      if (oldImagePath.startsWith("/uploads/")) {
+        const fullPath = path.join(__dirname, "../../../public", oldImagePath);
+        if (fs.existsSync(fullPath)) {
+          fs.unlinkSync(fullPath);
+        }
+      }
+    } else if (!image) {
+      image = existingEvent.image;
+    }
+
     await eventRepository.update({
-      id,
+      id: Number(id),
       image,
       title,
       description,
@@ -54,8 +88,12 @@ const updateEvent: RequestHandler = async (req, res, next) => {
       endTime,
     });
 
-    res.status(200).json({ message: "Événement mis à jour avec succès" });
+    res.status(200).json({
+      message: "Événement mis à jour avec succès",
+      imagePath: image,
+    });
   } catch (err) {
+    console.error("Error in updateEvent:", err);
     next(err);
   }
 };
