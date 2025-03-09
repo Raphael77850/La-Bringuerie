@@ -35,20 +35,48 @@ export default function EventCarousel({ events }: EventCarouselProps) {
     return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
   };
 
-  // Fonction pour extraire l'heure d'une date ISO
+  // Fonction robuste pour extraire l'heure d'une date ISO
   const extractTimeFromDate = (dateStr: string): string => {
     if (!dateStr) return "";
-    const date = new Date(dateStr);
-    return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+
+    try {
+      const date = new Date(dateStr);
+
+      // Vérifier si la date est valide
+      if (Number.isNaN(date.getTime())) {
+        console.error("Date invalide:", dateStr);
+        return "";
+      }
+
+      return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+    } catch (error) {
+      console.error("Erreur lors de l'extraction de l'heure:", error, dateStr);
+      return "";
+    }
   };
 
-  // Formater l'heure de l'événement
+  // Formater l'heure de l'événement de manière plus robuste
   const formatEventTime = (event: Event): string => {
-    const startTime = extractTimeFromDate(event.date);
+    let startTime: string;
+    try {
+      startTime = extractTimeFromDate(event.date);
+    } catch (e) {
+      console.error("Erreur avec l'heure de début:", e);
+      startTime = "";
+    }
+
+    if (!startTime) return "";
 
     if (event.endTime) {
-      const endTime = extractTimeFromDate(event.endTime);
-      return `${startTime} - ${endTime}`;
+      let endTime: string;
+      try {
+        endTime = extractTimeFromDate(event.endTime);
+        if (endTime) {
+          return `${startTime} - ${endTime}`;
+        }
+      } catch (e) {
+        console.error("Erreur avec l'heure de fin:", e);
+      }
     }
 
     return startTime;
@@ -88,7 +116,11 @@ export default function EventCarousel({ events }: EventCarouselProps) {
             <CardMedia
               component="img"
               height="400"
-              image={event.image}
+              image={
+                event.image.startsWith("/uploads")
+                  ? `http://localhost:3310${event.image}`
+                  : event.image
+              }
               alt={event.title}
             />
             <CardContent>

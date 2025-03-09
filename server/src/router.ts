@@ -2,9 +2,11 @@ import express from "express";
 import eventActions from "./modules/EventModule/eventActions";
 import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 import adminActions from "./modules/adminModule/adminActions";
+import eventAdminAction from "./modules/adminModule/eventAdminAction";
 import authActions from "./modules/auth/authActions";
 import itemActions from "./modules/item/itemActions";
 import adminAuth from "./modules/middleware/adminAuth";
+import upload from "./modules/middleware/upload";
 
 const router = express.Router();
 
@@ -29,11 +31,28 @@ router.get(
   adminActions.getNewsletterEmails,
 );
 router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
-router.post("/admin/events", adminAuth, adminActions.addEvent);
-router.put("/admin/events", adminAuth, adminActions.updateEvent);
+
+// Commentez ou supprimez ces anciennes routes sans gestion d'upload d'images
+// router.post("/admin/events", adminAuth, adminActions.addEvent);
+// router.put("/admin/events", adminAuth, adminActions.updateEvent);
 router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
 
 router.post("/login", authActions.login);
+
+// Routes pour les événements avec gestion des images
+router.post(
+  "/api/admin/events",
+  adminAuth,
+  upload.single("image"),
+  eventAdminAction.addEvent,
+);
+
+router.put(
+  "/api/admin/events",
+  adminAuth,
+  upload.single("image"),
+  eventAdminAction.updateEvent,
+);
 
 /* ************************************************************************* */
 
