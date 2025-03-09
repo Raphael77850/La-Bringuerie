@@ -41,14 +41,14 @@ router.post("/login", authActions.login);
 
 // Routes pour les événements avec gestion des images
 router.post(
-  "/api/admin/events",
+  "/admin/events",
   adminAuth,
   upload.single("image"),
   eventAdminAction.addEvent,
 );
 
 router.put(
-  "/api/admin/events",
+  "/admin/events",
   adminAuth,
   upload.single("image"),
   eventAdminAction.updateEvent,
