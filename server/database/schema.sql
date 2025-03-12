@@ -6,8 +6,8 @@ CREATE TABLE event (
   date DATETIME NOT NULL,
   endTime DATETIME NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  status ENUM('draft', 'published', 'cancelled', 'completed') DEFAULT 'published';
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  status ENUM('draft', 'published', 'cancelled', 'completed') DEFAULT 'published'
 );
 
 CREATE TABLE user_event (
@@ -25,7 +25,6 @@ CREATE TABLE admin (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  name VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
