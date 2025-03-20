@@ -38,34 +38,6 @@ export default function AboutPage() {
         <Header />
         <AboutSection>
           <Container>
-            <Typography
-              variant="h4"
-              align="center"
-              pt={1}
-              gutterBottom
-              sx={{ color: "white", fontFamily: "Francois One, serif" }}
-            >
-              IL ÉTAIT UNE FOIS, TROIS AMIS PASSIONNÉS PAR LE MONDE DE LA FÊTE
-              ET DE LA MUSIQUE SUR BORDEAUX.
-            </Typography>
-            <Typography
-              variant="h6"
-              align="center"
-              paragraph
-              sx={{
-                color: "white",
-                mb: 1,
-                pb: 1,
-                fontFamily: "Francois One, serif",
-              }}
-            >
-              Mais il fallait un lieu... <br />
-              ...un endroit où tout était possible...
-              <br />
-              ...des rencontres, des échanges, des moments de pure folie !<br />
-              Ils se mirent alors en quête d'un partenaire, un lieu avec lequel
-              s'associer pour créer la première soirée de La Bringuerie.
-            </Typography>
             <Grid
               container
               justifyContent="center"
@@ -77,8 +49,8 @@ export default function AboutPage() {
                   sx={{
                     backgroundColor: "#FFF3E0",
                     padding: 2,
-                    marginTop: 1,
-                    marginBottom: 2,
+                    marginTop: 25,
+                    marginBottom: 25,
                     textAlign: "center",
                   }}
                 >
