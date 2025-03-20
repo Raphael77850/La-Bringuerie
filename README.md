@@ -1,8 +1,5 @@
 # La-Bringuerie
-<<<<<<< HEAD
-=======
 Site vitrine d'évènementiel
->>>>>>> 68c12957948efd9e2c39e50613409a6a19efb773
 
 Ce projet est un monorepo JS, suivant l'architecture React-Express-MySQL telle qu'enseignée à la Wild Code School (v7.1.7) :
 
@@ -368,3 +365,27 @@ Nous accueillons avec plaisir les contributions ! Veuillez suivre ces étapes po
 - Assurez-vous que votre code respecte les standards de codage en exécutant `npm run check` avant de pousser vos modifications.
 - Ajoutez des tests pour toute nouvelle fonctionnalité ou correction de bug.
 - Documentez clairement vos modifications dans la description de la pull request.
+
+# Schéma de base de données La Bringuerie
+
+## Tables
+
+### event
+- `id` : Identifiant unique de l'événement (clé primaire)
+- `image` : Chemin vers l'image de l'événement 
+- `title` : Titre de l'événement
+- `description` : Description détaillée
+- `date` : Date et heure de début
+- `endTime` : Date et heure de fin
+- `status` : Statut de l'événement (draft, published, cancelled, completed)
+
+### user_event
+- `id` : Identifiant unique de l'inscription (clé primaire)
+- `firstName` : Prénom de l'utilisateur
+- `lastName` : Nom de l'utilisateur
+- `email` : Email de l'utilisateur
+- `event_id` : Référence à l'événement (clé étrangère)
+- `created_at` : Date d'inscription
+
+### admin
+...
