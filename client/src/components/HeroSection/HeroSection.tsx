@@ -67,6 +67,7 @@ export default function HeroSection() {
               fontFamily: "Francois One, serif",
               cursor: "pointer",
               color: "#FF5722",
+              lineHeight: 1,
               fontSize: isDesktop1440 ? "1.5rem" : undefined,
             }}
             onClick={() => {
@@ -76,7 +77,7 @@ export default function HeroSection() {
               }
             }}
           >
-            Pour découvrez nos événements, inscrivez-vous !
+            Pour découvrir nos événements, inscrivez-vous !
           </Typography>
         </Box>
       </Box>
