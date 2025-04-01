@@ -5,6 +5,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import LogoTitle from "../../assets/images/LogoTitle.png";
 import facebook from "../../assets/images/facebook.png";
 import instagramLogo from "../../assets/images/instagramLogo.svg";
+import mailLogo from "../../assets/images/mailLogo.svg";
 
 const useStyles = makeStyles({
   appBar: {
@@ -68,7 +69,11 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src={facebook} alt="Facebook" style={{ height: "1.3rem" }} />
+            <img
+              src={facebook}
+              alt="Facebook"
+              style={{ height: "1.3rem", marginLeft: ".1rem" }}
+            />
           </RouterLink>
         </Box>
 
@@ -81,7 +86,11 @@ export default function Header() {
         </RouterLink>
 
         <RouterLink to="/about" className={classes.link}>
-          Qui ?
+          <img
+            src={mailLogo}
+            alt="Mail"
+            style={{ height: "1.5rem", marginRight: "0.5rem" }}
+          />
         </RouterLink>
       </Box>
     </AppBar>
