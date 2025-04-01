@@ -47,7 +47,7 @@ export default function NewsletterForm() {
     if (!formData.consent) {
       setMessage({
         type: "error",
-        text: "Veuillez accepter de recevoir des news la Bringuerie",
+        text: "Veuillez accepter de recevoir des news de la Bringuerie",
       });
       setOpen(true);
       return;
@@ -66,13 +66,18 @@ export default function NewsletterForm() {
         }),
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         setMessage({ type: "success", text: "Inscription réussie!" });
         setFormData({
           firstName: "",
           lastName: "",
           email: "",
           consent: false,
+        });
+      } else if (response.status === 409) {
+        setMessage({
+          type: "error",
+          text: "Cet email est déjà inscrit à la newsletter.",
         });
       } else {
         setMessage({ type: "error", text: "Une erreur est survenue" });
