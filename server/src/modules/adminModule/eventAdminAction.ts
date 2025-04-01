@@ -77,6 +77,10 @@ const updateEvent: RequestHandler = async (req, res, next) => {
       }
     } else if (!image) {
       image = existingEvent.image;
+      if (!image.startsWith("/uploads/")) {
+        res.status(400).json({ message: "Chemin de l'image invalide" });
+        return;
+      }
     }
 
     await eventRepository.update({
