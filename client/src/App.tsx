@@ -60,8 +60,8 @@ export default function App() {
       <Header />
       <HeroSection />
       <section className="events">
-        <h2 style={{ margin: "1rem 0", color: "#FF5722" }}>
-          Prochains Événements
+        <h2 style={{ margin: "1rem 0", color: "#FF5722", textAlign: "center" }}>
+          Prochains Évènements
         </h2>
         <EventCarrousel events={events} />
       </section>
