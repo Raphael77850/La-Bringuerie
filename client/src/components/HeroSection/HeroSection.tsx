@@ -77,7 +77,7 @@ export default function HeroSection() {
               }
             }}
           >
-            Pour découvrir nos événements, inscrivez-vous !
+            Pour découvrir nos évènements, inscrivez-vous !
           </Typography>
         </Box>
       </Box>
