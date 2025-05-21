@@ -81,7 +81,7 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
             label="Prénom"
             name="firstName"
             value={formData.firstName}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFormData({ ...formData, firstName: e.target.value })
             }
             required
@@ -92,7 +92,7 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
             label="Nom"
             name="lastName"
             value={formData.lastName}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFormData({ ...formData, lastName: e.target.value })
             }
             required
@@ -104,7 +104,7 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
             name="email"
             type="email"
             value={formData.email}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFormData({ ...formData, email: e.target.value })
             }
             required
