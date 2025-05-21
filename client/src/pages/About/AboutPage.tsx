@@ -44,38 +44,36 @@ export default function AboutPage() {
               alignItems="center"
               sx={{ mb: 4 }}
             >
-              <Grid item xs={12} sm={6} md={4}>
-                <Card
+              <Card
+                sx={{
+                  backgroundColor: "#FFF3E0",
+                  padding: 2,
+                  marginTop: 25,
+                  marginBottom: 25,
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant="h6"
                   sx={{
-                    backgroundColor: "#FFF3E0",
-                    padding: 2,
-                    marginTop: 25,
-                    marginBottom: 25,
-                    textAlign: "center",
+                    mt: 0,
+                    fontFamily: "Francois One, serif",
+                    color: "#FF5722",
                   }}
                 >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      mt: 0,
-                      fontFamily: "Francois One, serif",
-                      color: "#FF5722",
-                    }}
-                  >
-                    Contact
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      mt: 1,
-                      fontFamily: "Francois One, serif",
-                      color: "#FF5722",
-                    }}
-                  >
-                    {contact[0].mail}
-                  </Typography>
-                </Card>
-              </Grid>
+                  Contact
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mt: 1,
+                    fontFamily: "Francois One, serif",
+                    color: "#FF5722",
+                  }}
+                >
+                  {contact[0].mail}
+                </Typography>
+              </Card>
             </Grid>
           </Container>
         </AboutSection>

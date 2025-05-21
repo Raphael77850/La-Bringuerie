@@ -251,7 +251,7 @@ const AdminDashboard = () => {
             type="email"
             fullWidth
             value={credentials.email}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCredentials({ ...credentials, email: e.target.value })
             }
           />
@@ -261,7 +261,7 @@ const AdminDashboard = () => {
             type="password"
             fullWidth
             value={credentials.password}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCredentials({ ...credentials, password: e.target.value })
             }
           />
@@ -323,7 +323,7 @@ const AdminDashboard = () => {
             type="file"
             fullWidth
             inputProps={{ accept: "image/*" }}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const file = (e.target as HTMLInputElement).files?.[0];
               if (file) setSelectedFile(file);
             }}
@@ -334,7 +334,7 @@ const AdminDashboard = () => {
             type="text"
             fullWidth
             value={newEvent.title}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setNewEvent({ ...newEvent, title: e.target.value })
             }
           />
@@ -344,7 +344,7 @@ const AdminDashboard = () => {
             type="text"
             fullWidth
             value={newEvent.description}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setNewEvent({ ...newEvent, description: e.target.value })
             }
           />
@@ -355,7 +355,9 @@ const AdminDashboard = () => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             value={newEvent.date}
-            onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setNewEvent({ ...newEvent, date: e.target.value })
+            }
           />
           <Box sx={{ display: "flex", gap: 2 }}>
             <TextField
@@ -365,7 +367,7 @@ const AdminDashboard = () => {
               fullWidth
               InputLabelProps={{ shrink: true }}
               value={newEvent.startTime}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setNewEvent({ ...newEvent, startTime: e.target.value })
               }
             />
@@ -376,7 +378,7 @@ const AdminDashboard = () => {
               fullWidth
               InputLabelProps={{ shrink: true }}
               value={newEvent.endTime}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setNewEvent({ ...newEvent, endTime: e.target.value })
               }
             />
@@ -402,7 +404,7 @@ const AdminDashboard = () => {
             type="file"
             fullWidth
             inputProps={{ accept: "image/*" }}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const file = (e.target as HTMLInputElement).files?.[0];
               if (file) setSelectedUpdateFile(file);
             }}
@@ -413,7 +415,7 @@ const AdminDashboard = () => {
             type="text"
             fullWidth
             value={currentEvent?.title || ""}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCurrentEvent((ev) =>
                 ev ? { ...ev, title: e.target.value } : ev,
               )
@@ -427,7 +429,7 @@ const AdminDashboard = () => {
             multiline
             rows={4}
             value={currentEvent?.description || ""}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCurrentEvent((ev) =>
                 ev ? { ...ev, description: e.target.value } : ev,
               )
@@ -440,7 +442,7 @@ const AdminDashboard = () => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             value={currentEvent?.date || ""}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setCurrentEvent((ev) =>
                 ev ? { ...ev, date: e.target.value } : ev,
               )
@@ -454,7 +456,7 @@ const AdminDashboard = () => {
               fullWidth
               InputLabelProps={{ shrink: true }}
               value={currentEvent?.startTime || ""}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setCurrentEvent((ev) =>
                   ev ? { ...ev, startTime: e.target.value } : ev,
                 )
@@ -467,7 +469,7 @@ const AdminDashboard = () => {
               fullWidth
               InputLabelProps={{ shrink: true }}
               value={currentEvent?.endTime || ""}
-              onChange={(e) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setCurrentEvent((ev) =>
                   ev ? { ...ev, endTime: e.target.value } : ev,
                 )
