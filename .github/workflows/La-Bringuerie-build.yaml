@@ -1,0 +1,64 @@
+# To better understand this file read this:
+# https://docs.ionos.space/docs/github-actions-customization/
+
+name: "Deploy Now: Execute Build"
+
+on:
+  workflow_call:
+    inputs:
+      site-url:
+        required: true
+        type: string
+      branch-id:
+        required: true
+        type: string
+
+env:
+  DEPLOYMENT_FOLDER: ./La-Bringuerie
+
+jobs:
+# Please do not rename this job
+  build-project:
+    name: build La-Bringuerie
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: v22.x
+
+      - name: Build Node assets
+        env:
+          APP_PORT: 3310
+          APP_SECRET: OUR_APP_SECRET_KEY
+          CI: true
+          CLIENT_URL: https://ton-domaine-client.ionos.space
+          DB_HOST: db5017757278.hosting-data.io
+          DB_NAME: bringuerie
+          DB_PASSWORD: ringueisback2025
+          DB_PORT: 3306
+          DB_USER: dbu2058188
+          JWT_SECRET: 904b0b11f8e069a3e90aca754d707f83d512893f10824fe19b4f74289d9e7502
+          PROJECT_NAME_SPECIFIC_NAME: La-bringuerie
+          SITE_URL: ${{ inputs.site-url }}
+        run: |
+          npm ci
+          npm run build
+
+# Please do not touch the following action
+      - name: Store deployment content
+        uses: ionos-deploy-now/artifact-action@v1
+        with:
+          api-key: ${{ secrets.IONOS_API_KEY }}
+          service-host: api-eu.ionos.space
+          project-id: 3b1a2376-1b9c-46ab-a1e0-1bd8856680f7
+          branch-id: ${{ inputs.branch-id }}
+          version: ${{ github.sha }}
+          folder: ${{ env.DEPLOYMENT_FOLDER }}
+          config-file: .deploy-now/La-Bringuerie/config.yaml
+          action: upload
