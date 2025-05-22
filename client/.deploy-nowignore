@@ -1,0 +1,7 @@
+node_modules
+src
+.git
+*.log
+*.mp4
+tests
+README.md
