@@ -118,7 +118,7 @@ export default function EventCarousel({ events }: EventCarouselProps) {
               height="400"
               image={
                 event.image.startsWith("/uploads")
-                  ? `http://localhost:3310${event.image}`
+                  ? `${import.meta.env.VITE_API_URL}${event.image}`
                   : event.image
               }
               alt={event.title}
