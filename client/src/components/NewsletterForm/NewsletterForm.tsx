@@ -54,17 +54,20 @@ export default function NewsletterForm() {
     }
 
     try {
-      const response = await fetch("http://localhost:3310/api/newsletter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user_event`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
+          }),
         },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-        }),
-      });
+      );
 
       if (response.status === 201) {
         setMessage({ type: "success", text: "Inscription réussie!" });

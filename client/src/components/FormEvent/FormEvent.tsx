@@ -29,16 +29,19 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3310/api/user_event", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/user_event`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...formData,
+            event_id: eventId,
+          }),
         },
-        body: JSON.stringify({
-          ...formData,
-          event_id: eventId,
-        }),
-      });
+      );
 
       const data = await response.json();
 
