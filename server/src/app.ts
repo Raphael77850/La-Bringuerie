@@ -24,11 +24,17 @@ import cors from "cors";
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []),
+      ...(process.env.CLIENT_URL === "https://home-5017984793.app-ionos.space"
+        ? ["https://home-5017984797.app-ionos.space"]
+        : []), // URL de ton back
+    ],
     credentials: true,
   }),
 );
-
 // If you need to allow extra origins, you can add something like this:
 
 /*
