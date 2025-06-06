@@ -24,17 +24,29 @@ import cors from "cors";
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []),
-      ...(process.env.CLIENT_URL === "https://home-5017984793.app-ionos.space"
-        ? ["https://home-5017984797.app-ionos.space"]
-        : []), // URL de ton back
-    ],
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        process.env.CLIENT_URL,
+        "https://home-5017984793.app-ionos.space",
+        "https://home-5017984797.app-ionos.space",
+      ];
+
+      // Autorise les requêtes sans origin (comme les appels API directs)
+      if (!origin) return callback(null, true);
+
+      // Vérifie si l'origin est dans la liste des origines autorisées
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS non autorisé"));
+      }
+    },
     credentials: true,
   }),
 );
+
 // If you need to allow extra origins, you can add something like this:
 
 /*
