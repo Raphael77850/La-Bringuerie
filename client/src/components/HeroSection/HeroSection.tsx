@@ -1,5 +1,5 @@
 import "../../App.css";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import videoSrc from "../../assets/images/Video_Bringuerie1.mp4";
 
 export default function HeroSection() {
@@ -60,26 +60,7 @@ export default function HeroSection() {
             height: "100%",
             paddingBottom: isDesktop1440 ? "3rem" : "2rem",
           }}
-        >
-          <Typography
-            variant={isDesktop1024 ? "h5" : "h6"}
-            sx={{
-              fontFamily: "Francois One, serif",
-              cursor: "pointer",
-              color: "#FF5722",
-              lineHeight: 1,
-              fontSize: isDesktop1440 ? "1.5rem" : undefined,
-            }}
-            onClick={() => {
-              const element = document.getElementById("newsletterForm");
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-          >
-            Pour découvrir nos évènements, inscrivez-vous !
-          </Typography>
-        </Box>
+        />
       </Box>
     </Box>
   );
