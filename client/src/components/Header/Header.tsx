@@ -5,7 +5,6 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import LogoTitle from "../../assets/images/LogoTitle.png";
 import facebook from "../../assets/images/facebook.png";
 import instagramLogo from "../../assets/images/instagramLogo.svg";
-import mailLogo from "../../assets/images/mailLogo.svg";
 
 const useStyles = makeStyles({
   appBar: {
@@ -13,14 +12,19 @@ const useStyles = makeStyles({
   },
   container: {
     display: "flex !important",
-    justifyContent: "space-between !important",
+    justifyContent: "center !important",
     alignItems: "center !important",
     width: "100% !important",
+    position: "relative",
   },
   socialLinks: {
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
+    position: "absolute",
+    left: 0,
+    top: "50%",
+    transform: "translateY(-50%)",
   },
   link: {
     color: "#FF5722 !important",
@@ -82,14 +86,6 @@ export default function Header() {
             src={LogoTitle}
             alt="La Bringuerie"
             style={{ height: "4.5rem" }}
-          />
-        </RouterLink>
-
-        <RouterLink to="/about" className={classes.link}>
-          <img
-            src={mailLogo}
-            alt="Mail"
-            style={{ height: "1.5rem", marginRight: "0.5rem" }}
           />
         </RouterLink>
       </Box>

@@ -1,13 +1,9 @@
 import "./App.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { useEffect, useState } from "react";
-import EventCarrousel from "./components/EventCarrousel/EventCarrousel";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
 import Intro from "./components/Introduction/Intro";
-import NewsletterForm from "./components/NewsletterForm/NewsletterForm";
-import api from "./config/axiosConfig";
 
 const theme = createTheme({
   palette: {
@@ -30,30 +26,7 @@ const theme = createTheme({
   },
 });
 
-export interface Event {
-  id: number;
-  image: string;
-  title: string;
-  description: string;
-  date: string;
-}
-
 export default function App() {
-  const [events, setEvents] = useState<Event[]>([]);
-
-  useEffect(() => {
-    api.get("/events").then((response) => {
-      if (Array.isArray(response.data)) {
-        setEvents(response.data);
-      } else {
-        console.error(
-          "Erreur lors de la récupération des événements",
-          response.data,
-        );
-      }
-    });
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -63,11 +36,54 @@ export default function App() {
         <h2 style={{ margin: "1rem 0", color: "#FF5722", textAlign: "center" }}>
           Prochains Évènements
         </h2>
-        <EventCarrousel events={events} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <a
+            href="https://shotgun.live/fr/venues/la-bringuerie"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: "#FF5722",
+              color: "#fff",
+              padding: "0.75rem 2rem",
+              borderRadius: "8px",
+              fontWeight: "bold",
+              textDecoration: "none",
+              fontSize: "1.1rem",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+              transition: "background 0.2s",
+            }}
+          >
+            Réserver sur Shotgun
+          </a>
+        </div>
       </section>
       <Intro />
-      <section className="newsletter">
-        <NewsletterForm />
+      <section
+        className="contact"
+        style={{ display: "flex", justifyContent: "center", margin: "2rem 0" }}
+      >
+        <div
+          style={{
+            background: "#FFF3E0",
+            padding: "2rem",
+            borderRadius: "12px",
+            textAlign: "center",
+            minWidth: "280px",
+          }}
+        >
+          <h3 style={{ color: "#FF5722", marginBottom: "1rem" }}>Contact</h3>
+          <p
+            style={{ color: "#FF5722", fontWeight: "bold", fontSize: "1.1rem" }}
+          >
+            labringueriebordeaux@gmail.com
+          </p>
+        </div>
       </section>
       <Footer />
     </ThemeProvider>
