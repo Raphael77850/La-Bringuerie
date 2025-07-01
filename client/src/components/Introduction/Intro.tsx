@@ -6,6 +6,13 @@ const IntroSection = styled.section`
     margin-top: 2.5rem; 
     padding-bottom: 2rem;
     text-align: center;
+    
+    @media (min-width: 768px) {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 18px;
+    }
 `;
 
 const Title = styled.h1`
