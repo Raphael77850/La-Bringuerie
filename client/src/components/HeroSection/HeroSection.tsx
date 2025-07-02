@@ -1,5 +1,5 @@
 import "../../App.css";
-import { Box, Typography, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import videoSrc from "../../assets/videos/Video_Bringuerie.mp4";
 export default function HeroSection() {
   const isDesktop1024 = useMediaQuery("(min-width:1024px)");
@@ -51,36 +51,7 @@ export default function HeroSection() {
           backgroundColor: "rgba(0, 0, 0, 0.4)",
           textAlign: "center",
         }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            height: "100%",
-            paddingBottom: isDesktop1440 ? "3rem" : "2rem",
-          }}
-        >
-          <Typography
-            variant={isDesktop1024 ? "h5" : "h6"}
-            sx={{
-              fontFamily: "Francois One, serif",
-              cursor: "pointer",
-              color: "#FF5722",
-              lineHeight: 1,
-              fontSize: isDesktop1440 ? "1.5rem" : undefined,
-            }}
-            onClick={() => {
-              const element = document.getElementById("newsletterForm");
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-            }}
-          >
-            Pour découvrir nos évènements, inscrivez-vous !
-          </Typography>
-        </Box>
-      </Box>
+      />
     </Box>
   );
 }
