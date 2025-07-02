@@ -1,6 +1,6 @@
 import "../../App.css";
 import { Box, Typography, useMediaQuery } from "@mui/material";
-import videoSrc from "../../assets/vidéos/Video_Bringuerie-Compressed.mp4";
+import videoSrc from "../../assets/videos/Video_Bringuerie-Compressed.mp4";
 export default function HeroSection() {
   const isDesktop1024 = useMediaQuery("(min-width:1024px)");
   const isDesktop1440 = useMediaQuery("(min-width:1440px)");
