@@ -44,7 +44,7 @@ export default function App() {
           }}
         >
           <a
-            href="https://shotgun.live/fr/venues/la-bringuerie"
+            href="https://shotgun.live/fr/events/la-bringuerie-2"
             target="_blank"
             rel="noopener noreferrer"
             style={{
