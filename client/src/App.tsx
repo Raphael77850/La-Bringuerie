@@ -30,62 +30,167 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
-      <HeroSection />
-      <section className="events">
-        <h2 style={{ margin: "1rem 0", color: "#FF5722", textAlign: "center" }}>
-          Prochains Évènements
-        </h2>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginBottom: "1.5rem",
-          }}
-        >
-          <a
-            href="https://shotgun.live/fr/events/la-bringuerie-2"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              background: "#FF5722",
-              color: "#fff",
-              padding: "0.75rem 2rem",
-              borderRadius: "8px",
-              fontWeight: "bold",
-              textDecoration: "none",
-              fontSize: "1.1rem",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              transition: "background 0.2s",
-            }}
-          >
-            Réserver sur Shotgun
-          </a>
-        </div>
-      </section>
-      <Intro />
-      <section
-        className="contact"
-        style={{ display: "flex", justifyContent: "center", margin: "2rem 0" }}
-      >
-        <div
-          style={{
-            background: "#FFF3E0",
-            padding: "2rem",
-            borderRadius: "12px",
-            textAlign: "center",
-            minWidth: "280px",
-          }}
-        >
-          <h3 style={{ color: "#FF5722", marginBottom: "1rem" }}>Contact</h3>
-          <p
-            style={{ color: "#FF5722", fontWeight: "bold", fontSize: "1.1rem" }}
-          >
-            labringueriebordeaux@gmail.com
-          </p>
-        </div>
-      </section>
-      <Footer />
+      <div className="app-root">
+        <Header />
+        <HeroSection />
+        <main className="main-content">
+          {/* Section événements (sera stylée plus tard) */}
+          <section className="events-section">
+            <div className="events-photo-block">
+              {/* Image temporaire, à remplacer plus tard */}
+              <img
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Visuel événement"
+              />
+            </div>
+            <div className="events-list-block">
+              <h2>Prochains Événements</h2>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                <li>
+                  <strong>07 juin</strong> — Kev Junior avec BD Vic
+                  <button
+                    type="button"
+                    style={{
+                      marginLeft: 16,
+                      background: "#FF5722",
+                      color: "#FFF3E0",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.3rem 1rem",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Réserver
+                  </button>
+                </li>
+                <li>
+                  <strong>08 juin</strong> — Monsieur Dollar
+                  <button
+                    type="button"
+                    style={{
+                      marginLeft: 16,
+                      background: "#FF5722",
+                      color: "#FFF3E0",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.3rem 1rem",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Réserver
+                  </button>
+                </li>
+                <li>
+                  <strong>10 juin</strong> — Chips et Rafale 3D
+                  <button
+                    type="button"
+                    style={{
+                      marginLeft: 16,
+                      background: "#FF5722",
+                      color: "#FFF3E0",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.3rem 1rem",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Réserver
+                  </button>
+                </li>
+                <li>
+                  <strong>13 juin</strong> — La Batte avec Collabirie
+                  <button
+                    type="button"
+                    style={{
+                      marginLeft: 16,
+                      background: "#FF5722",
+                      color: "#FFF3E0",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.3rem 1rem",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Réserver
+                  </button>
+                </li>
+                <li>
+                  <strong>14 juin</strong> — Tation 1
+                  <button
+                    type="button"
+                    style={{
+                      marginLeft: 16,
+                      background: "#FF5722",
+                      color: "#FFF3E0",
+                      border: "none",
+                      borderRadius: 8,
+                      padding: "0.3rem 1rem",
+                      fontWeight: "bold",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Réserver
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </section>
+          {/* Section intro (sera stylée plus tard) */}
+          <section className="intro-section">
+            <div className="intro-text-block">
+              <Intro />
+            </div>
+            <div className="intro-photo-block">
+              {/* Image temporaire, à remplacer plus tard */}
+              <img
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="presentation"
+              />
+            </div>
+          </section>
+          {/* Section Instagram (sera stylée plus tard) */}
+          <section className="instagram-section">
+            <h2>Instagram</h2>
+            <div className="instagram-photos-row">
+              <img
+                className="instagram-photo"
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Instagram 1"
+              />
+              <img
+                className="instagram-photo"
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Instagram 2"
+              />
+              <img
+                className="instagram-photo"
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Instagram 3"
+              />
+              <img
+                className="instagram-photo"
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Instagram 4"
+              />
+              <img
+                className="instagram-photo"
+                src="/src/assets/images/fidel-unsplash.jpg"
+                alt="Instagram 5"
+              />
+            </div>
+          </section>
+          {/* Section contact (sera stylée plus tard) */}
+          <section className="contact-section">
+            <h3>Contact</h3>
+            <p>labringueriebordeaux@gmail.com</p>
+          </section>
+        </main>
+        <Footer />
+      </div>
     </ThemeProvider>
   );
 }

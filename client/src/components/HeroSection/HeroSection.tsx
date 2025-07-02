@@ -1,57 +1,58 @@
 import "../../App.css";
-import { Box, useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import videoSrc from "../../assets/videos/Video_Bringuerie.mp4";
-export default function HeroSection() {
-  const isDesktop1024 = useMediaQuery("(min-width:1024px)");
-  const isDesktop1440 = useMediaQuery("(min-width:1440px)");
 
-  const getVideoHeight = () => {
-    if (isDesktop1440) return "100vh";
-    if (isDesktop1024) return "85vh";
-    return { xs: "70vh", md: "70vh" };
-  };
+export default function HeroSection() {
+  // Modifie ici la hauteur visible de la vidéo (ex: '70vh', '60vh', '80vh', etc.)
+  const videoHeight = "70vh";
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: getVideoHeight(),
-        overflow: "hidden",
-      }}
-    >
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: isDesktop1024 || isDesktop1440 ? "contain" : "cover",
-          objectPosition: "center center",
-          transform: "none",
-          backgroundColor: "#000",
-        }}
-      >
-        <source src={videoSrc} type="video/mp4" />
-        Votre navigateur ne supporte pas la lecture de vidéos.
-      </video>
+    <>
       <Box
+        className="hero-video-bg"
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "white",
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-          textAlign: "center",
+          width: "100vw",
+          height: "100vh",
+          zIndex: 0,
+          overflow: "hidden",
+          pointerEvents: "none",
         }}
-      />
-    </Box>
+      >
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            objectPosition: "center center",
+            backgroundColor: "#000",
+          }}
+        >
+          <source src={videoSrc} type="video/mp4" />
+          Votre navigateur ne supporte pas la lecture de vidéos.
+        </video>
+        {/* Masque dégradé pour transition douce */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            height: `calc(100vh - ${videoHeight})`,
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0) 0%, #181818 100%)",
+            pointerEvents: "none",
+          }}
+        />
+      </Box>
+      {/* Espace réservé pour la HeroSection visible (pour éviter que le contenu ne soit caché sous le header) */}
+      <div style={{ height: videoHeight, width: "100%" }} />
+    </>
   );
 }
