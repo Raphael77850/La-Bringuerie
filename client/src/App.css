@@ -85,16 +85,41 @@ header {
   padding-bottom: 2rem;
 }
 
-.events-section,
-.intro-section,
-.instagram-section,
-.contact-section {
-  background: rgba(255, 243, 224, 0.92); /* blanc cassé semi-transparent */
-  border-radius: 24px;
-  margin: 2rem auto;
-  max-width: 1200px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  padding: 2rem 2rem;
+.section-block {
+  width: 100%;
+  max-width: none;
+  margin: 4rem 0;
+  background: rgba(255, 243, 224, 0.92);
+  border-radius: 0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
+}
+
+.section-block h2,
+.section-block h3 {
+  text-align: left;
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: #ff5722;
+  margin-bottom: 1.2rem;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+  .section-block {
+    padding: 1.2rem 0;
+    margin: 2.5rem 0;
+    max-width: none;
+  }
+  .section-block h2,
+  .section-block h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
 }
 
 /* HeroSection occupe tout le haut */
@@ -128,8 +153,8 @@ h6 {
   .intro-section,
   .instagram-section,
   .contact-section {
-    padding: 1rem 0.5rem;
-    margin: 1rem 0.2rem;
+    padding: 2rem;
+    margin: 0rem 0rem 1rem 0rem;
   }
   .HeroSection {
     height: 60vh;
@@ -151,7 +176,6 @@ h6 {
   flex-direction: row;
   align-items: stretch;
   justify-content: center;
-  background: #fff3e0;
   padding: 3rem 0 3rem 0;
   min-height: 400px;
   gap: 2rem;
@@ -162,6 +186,8 @@ h6 {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 1rem;
+  padding: 1rem;
   width: 320px;
   min-width: 220px;
   height: 320px;
@@ -273,8 +299,10 @@ h6 {
 }
 
 .instagram-photo {
-  width: 120px;
-  height: 120px;
+  aspect-ratio: 1 / 1;
+  width: 220px;
+  max-width: 100%;
+  height: auto;
   border-radius: 16px;
   object-fit: cover;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -286,14 +314,16 @@ h6 {
     gap: 0.5rem;
   }
   .instagram-photo {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    min-width: 70px;
+    max-width: 120px;
+    height: auto;
   }
 }
 
 footer {
   width: 100%;
-  background: #181818;
+  background: #fff3e0;
   color: #fff3e0;
   text-align: center;
   padding: 2rem 0 1rem 0;

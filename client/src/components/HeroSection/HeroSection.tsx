@@ -1,10 +1,11 @@
 import "../../App.css";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import videoSrc from "../../assets/videos/Video_Bringuerie.mp4";
 
 export default function HeroSection() {
-  // Modifie ici la hauteur visible de la vidéo (ex: '70vh', '60vh', '80vh', etc.)
-  const videoHeight = "70vh";
+  // Modifie ici la hauteur visible de la vidéo pour desktop et mobile
+  const isDesktop = useMediaQuery("(min-width: 900px)");
+  const videoHeight = isDesktop ? "90vh" : "70vh"; // 55vh sur desktop, 70vh sur mobile/tablette
 
   return (
     <>
@@ -14,7 +15,7 @@ export default function HeroSection() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "100vw",
+          width: "100%",
           height: "100vh",
           zIndex: 0,
           overflow: "hidden",
@@ -27,8 +28,8 @@ export default function HeroSection() {
           muted
           playsInline
           style={{
-            width: "100vw",
-            height: "100vh",
+            width: "100%",
+            height: "100%",
             objectFit: "cover",
             objectPosition: "center center",
             backgroundColor: "#000",

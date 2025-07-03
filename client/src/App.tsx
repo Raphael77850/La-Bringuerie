@@ -3,6 +3,7 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
+import InstagramCarousel from "./components/Instagram/InstagramCarousel";
 import Intro from "./components/Introduction/Intro";
 
 const theme = createTheme({
@@ -35,12 +36,11 @@ export default function App() {
         <HeroSection />
         <main className="main-content">
           {/* Section événements (sera stylée plus tard) */}
-          <section className="events-section">
+          <section className="events-section section-block">
             <div className="events-photo-block">
-              {/* Image temporaire, à remplacer plus tard */}
               <img
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Visuel événement"
+                src="/src/assets/images/LogoOfficielRemovebg.png"
+                alt="Logo La Bringuerie"
               />
             </div>
             <div className="events-list-block">
@@ -140,51 +140,24 @@ export default function App() {
             </div>
           </section>
           {/* Section intro (sera stylée plus tard) */}
-          <section className="intro-section">
+          <section className="intro-section section-block">
             <div className="intro-text-block">
               <Intro />
             </div>
             <div className="intro-photo-block">
-              {/* Image temporaire, à remplacer plus tard */}
               <img
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="presentation"
+                src="/src/assets/images/LogoTitle.png"
+                alt="Logo La Bringuerie"
               />
             </div>
           </section>
           {/* Section Instagram (sera stylée plus tard) */}
-          <section className="instagram-section">
+          <section className="instagram-section section-block">
             <h2>Instagram</h2>
-            <div className="instagram-photos-row">
-              <img
-                className="instagram-photo"
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Instagram 1"
-              />
-              <img
-                className="instagram-photo"
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Instagram 2"
-              />
-              <img
-                className="instagram-photo"
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Instagram 3"
-              />
-              <img
-                className="instagram-photo"
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Instagram 4"
-              />
-              <img
-                className="instagram-photo"
-                src="/src/assets/images/fidel-unsplash.jpg"
-                alt="Instagram 5"
-              />
-            </div>
+            <InstagramCarousel />
           </section>
           {/* Section contact (sera stylée plus tard) */}
-          <section className="contact-section">
+          <section className="contact-section section-block">
             <h3>Contact</h3>
             <p>labringueriebordeaux@gmail.com</p>
           </section>
