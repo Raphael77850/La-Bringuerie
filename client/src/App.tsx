@@ -37,118 +37,138 @@ export default function App() {
         <main className="main-content">
           {/* Section événements (sera stylée plus tard) */}
           <section className="events-section section-block">
-            <div className="events-photo-block">
-              <img
-                src="/src/assets/images/LogoOfficielRemovebg.png"
-                alt="Logo La Bringuerie"
-              />
-            </div>
             <div className="events-list-block">
               <h2>Prochains Événements</h2>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 <li>
                   <strong>07 juin</strong> — Kev Junior avec BD Vic
-                  <button
-                    type="button"
+                  <a
+                    href="https://shotgun.live/fr/events/la-bringuerie-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       marginLeft: 16,
-                      background: "#FF5722",
-                      color: "#FFF3E0",
+                      background: "#FFF3E0",
+                      color: "#FF5722",
                       border: "none",
                       borderRadius: 8,
                       padding: "0.3rem 1rem",
                       fontWeight: "bold",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-block",
                     }}
                   >
                     Réserver
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <strong>08 juin</strong> — Monsieur Dollar
-                  <button
-                    type="button"
+                  <a
+                    href="https://shotgun.live/fr/events/la-bringuerie-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       marginLeft: 16,
-                      background: "#FF5722",
-                      color: "#FFF3E0",
+                      background: "#FFF3E0",
+                      color: "#FF5722",
                       border: "none",
                       borderRadius: 8,
                       padding: "0.3rem 1rem",
                       fontWeight: "bold",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-block",
                     }}
                   >
                     Réserver
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <strong>10 juin</strong> — Chips et Rafale 3D
-                  <button
-                    type="button"
+                  <a
+                    href="https://shotgun.live/fr/events/la-bringuerie-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       marginLeft: 16,
-                      background: "#FF5722",
-                      color: "#FFF3E0",
+                      background: "#FFF3E0",
+                      color: "#FF5722",
                       border: "none",
                       borderRadius: 8,
                       padding: "0.3rem 1rem",
                       fontWeight: "bold",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-block",
                     }}
                   >
                     Réserver
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <strong>13 juin</strong> — La Batte avec Collabirie
-                  <button
-                    type="button"
+                  <a
+                    href="https://shotgun.live/fr/events/la-bringuerie-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       marginLeft: 16,
-                      background: "#FF5722",
-                      color: "#FFF3E0",
+                      background: "#FFF3E0",
+                      color: "#FF5722",
                       border: "none",
                       borderRadius: 8,
                       padding: "0.3rem 1rem",
                       fontWeight: "bold",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-block",
                     }}
                   >
                     Réserver
-                  </button>
+                  </a>
                 </li>
                 <li>
                   <strong>14 juin</strong> — Tation 1
-                  <button
-                    type="button"
+                  <a
+                    href="https://shotgun.live/fr/events/la-bringuerie-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
                       marginLeft: 16,
-                      background: "#FF5722",
-                      color: "#FFF3E0",
+                      background: "#FFF3E0",
+                      color: "#FF5722",
                       border: "none",
                       borderRadius: 8,
                       padding: "0.3rem 1rem",
                       fontWeight: "bold",
                       cursor: "pointer",
+                      textDecoration: "none",
+                      display: "inline-block",
                     }}
                   >
                     Réserver
-                  </button>
+                  </a>
                 </li>
               </ul>
+            </div>
+            <div className="events-photo-block">
+              <img
+                src="/src/assets/images/aleksandr.jpg"
+                alt="Logo La Bringuerie"
+              />
             </div>
           </section>
           {/* Section intro (sera stylée plus tard) */}
           <section className="intro-section section-block">
-            <div className="intro-text-block">
-              <Intro />
-            </div>
             <div className="intro-photo-block">
               <img
-                src="/src/assets/images/LogoTitle.png"
+                src="/src/assets/images/levi-g.jpg"
                 alt="Logo La Bringuerie"
               />
+            </div>
+            <div className="intro-text-block">
+              <Intro />
             </div>
           </section>
           {/* Section Instagram (sera stylée plus tard) */}
