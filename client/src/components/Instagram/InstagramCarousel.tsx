@@ -44,8 +44,7 @@ export default function InstagramCarousel() {
         className="keen-slider"
         style={{ maxWidth: 320 * 4, margin: "0 auto" }}
       >
-        {images.map((img, idx) => (
-          // eslint-disable-next-line react/no-array-index-key
+        {images.map((img) => (
           <div
             className="keen-slider__slide"
             key={img}
@@ -53,7 +52,7 @@ export default function InstagramCarousel() {
           >
             <img
               src={img}
-              alt={`Instagram ${idx + 1}`}
+              alt="Instagram"
               className="instagram-photo"
               style={{
                 width: "100%",
