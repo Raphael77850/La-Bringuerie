@@ -32,10 +32,19 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app-root">
+      <div
+        className="app-root"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <Header />
         <HeroSection />
-        <main className="main-content">
+        <main className="main-content" style={{ flex: 1 }}>
           {/* Section événements (sera stylée plus tard) */}
           <section className="events-section section-block">
             <div className="events-list-block">

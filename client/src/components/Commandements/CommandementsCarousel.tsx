@@ -32,7 +32,7 @@ export default function CommandementsCarousel() {
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
     slides: {
-      perView: 4,
+      perView: 5,
       spacing: 20,
       origin: "center",
     },
