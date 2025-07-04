@@ -1,0 +1,12 @@
+/* ===== IMPORTS DES STYLES MODULAIRES ===== */
+
+/* Styles globaux */
+@import "./global.css";
+
+/* Styles des composants */
+@import "./heroSection.css";
+@import "./header.css";
+@import "./footer.css";
+@import "./events.css";
+@import "./intro.css";
+@import "./commandements.css";

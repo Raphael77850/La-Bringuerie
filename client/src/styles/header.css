@@ -1,0 +1,16 @@
+/* ===== STYLES HEADER ===== */
+
+/* Icônes sociales */
+.social-icon-header {
+  height: 1.5rem;
+}
+
+.social-icon-header-facebook {
+  height: 1.3rem;
+  margin-left: 0.1rem;
+}
+
+/* Logo principal */
+.logo-title {
+  height: 4.5rem;
+}

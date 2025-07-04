@@ -1,4 +1,4 @@
-import "../../App.css";
+import "../../styles/header.css";
 import { AppBar, Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Link as RouterLink, useLocation } from "react-router-dom";
@@ -64,7 +64,7 @@ export default function Header() {
             <img
               src={instagramLogo}
               alt="Instagram"
-              style={{ height: "1.5rem" }}
+              className="social-icon-header"
             />
           </RouterLink>
 
@@ -76,17 +76,13 @@ export default function Header() {
             <img
               src={facebook}
               alt="Facebook"
-              style={{ height: "1.3rem", marginLeft: ".1rem" }}
+              className="social-icon-header-facebook"
             />
           </RouterLink>
         </Box>
 
         <RouterLink to="/">
-          <img
-            src={LogoTitle}
-            alt="La Bringuerie"
-            style={{ height: "4.5rem" }}
-          />
+          <img src={LogoTitle} alt="La Bringuerie" className="logo-title" />
         </RouterLink>
       </Box>
     </AppBar>

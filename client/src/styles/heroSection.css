@@ -1,0 +1,59 @@
+/* ===== STYLES HERO SECTION ===== */
+
+/* HeroSection occupe tout le haut */
+.HeroSection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Vidéo de fond */
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  background-color: #000;
+}
+
+/* Masque dégradé pour transition douce */
+.hero-gradient-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 90vh);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #181818 100%);
+  pointer-events: none;
+}
+
+/* Espace réservé pour la HeroSection visible */
+.hero-spacer {
+  height: 90vh;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .HeroSection {
+    height: 60vh;
+  }
+
+  .hero-gradient-mask {
+    height: calc(100vh - 70vh);
+  }
+
+  .hero-spacer {
+    height: 70vh;
+  }
+}
+
+@media (max-width: 600px) {
+  .HeroSection {
+    height: 40vh;
+  }
+}

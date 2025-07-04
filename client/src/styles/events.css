@@ -1,0 +1,113 @@
+/* ===== STYLES SECTION ÉVÉNEMENTS ===== */
+
+.events-section {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+  min-height: 30rem;
+  height: 30rem;
+  gap: 0;
+  width: 100%;
+}
+
+.events-list-block,
+.events-photo-block {
+  height: 100%;
+}
+
+.events-list-block {
+  background: #ff5722;
+  color: #fff3e0;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem 9.5rem 1.5rem;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 0;
+}
+
+.events-list-block h2 {
+  color: #fff3e0;
+}
+
+.events-photo-block {
+  background: #570000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.events-photo-block img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* Liste des événements */
+.events-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Boutons de réservation */
+.reservation-button {
+  margin-left: 16px;
+  background: #fff3e0;
+  color: #ff5722;
+  border: none;
+  border-radius: 8px;
+  padding: 0.3rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.reservation-button:hover {
+  background: #ff5722;
+  color: #fff3e0;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .events-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 20rem;
+    height: 20rem;
+  }
+
+  .events-list-block,
+  .events-photo-block {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+    height: 50%;
+    border-radius: 0;
+    padding: 1.2rem 1rem;
+    box-shadow: none;
+  }
+
+  .events-list-block {
+    order: 1;
+  }
+
+  .events-photo-block {
+    order: 2;
+  }
+}

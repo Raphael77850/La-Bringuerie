@@ -1,0 +1,51 @@
+/* ===== STYLES SECTION COMMANDEMENTS ===== */
+
+.commandements-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Conteneur du carousel */
+.commandements-carousel-container {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+/* Slider */
+.commandements-slider {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Slides */
+.commandements-slide {
+  display: flex;
+  justify-content: center;
+}
+
+/* Photos des commandements */
+.commandement-photo {
+  aspect-ratio: 3 / 4;
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  background: #fff3e0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .commandement-photo {
+    width: 120px;
+    min-width: 100px;
+    max-width: 160px;
+    height: auto;
+  }
+}

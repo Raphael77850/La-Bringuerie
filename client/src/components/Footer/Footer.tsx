@@ -1,4 +1,4 @@
-import "../../App.css";
+import "../../styles/footer.css";
 import { Box, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import facebook from "../../assets/images/facebook.png";
@@ -22,11 +22,7 @@ export const Footer = () => {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img
-          src={instagramLogo}
-          alt="Instagram"
-          style={{ height: "1.5rem", margin: ".1rem" }}
-        />
+        <img src={instagramLogo} alt="Instagram" className="social-icon" />
       </RouterLink>
       <RouterLink
         to="https://www.facebook.com/labringueriebordeaux/"
@@ -36,7 +32,7 @@ export const Footer = () => {
         <img
           src={facebook}
           alt="Facebook"
-          style={{ height: "1.35rem", margin: ".18rem" }}
+          className="social-icon social-icon-facebook"
         />
       </RouterLink>
     </Box>
