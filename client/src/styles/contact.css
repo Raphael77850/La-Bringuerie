@@ -1,0 +1,100 @@
+/* Styles pour le composant Contact */
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-section {
+  background: rgba(255, 243, 224, 0.92);
+  border-radius: 0;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem 0;
+  margin: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-card {
+  background-color: #fff3e0;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.contact-title {
+  font-family: "Francois One", serif;
+  color: #ff5722;
+  text-align: center !important;
+  font-size: 2.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.contact-text {
+  font-family: "Francois One", serif;
+  color: #ff5722;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.contact-socials {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.contact-social-icon {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s;
+}
+
+.contact-social-icon:hover {
+  transform: scale(1.12);
+}
+
+.contact-social-icon--facebook {
+  width: 28px;
+  height: 28px;
+  background: #fff3e0;
+  padding: 2px;
+  box-sizing: content-box;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-section {
+    padding: 1.2rem 0;
+    margin: 2.5rem 0;
+  }
+
+  .contact-card {
+    padding: 1rem 1.5rem;
+    margin: 0 1rem;
+  }
+
+  .contact-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .contact-text {
+    font-size: 1rem;
+  }
+  .contact-social-icon {
+    width: 26px;
+    height: 26px;
+  }
+}

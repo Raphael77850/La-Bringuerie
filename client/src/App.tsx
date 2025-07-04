@@ -1,6 +1,7 @@
 import "./styles/index.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import CommandementsCarousel from "./components/Commandements/CommandementsCarousel";
+import Contact from "./components/Contact/Contact";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
@@ -121,11 +122,8 @@ export default function App() {
             <h2>Les commandements du Bringueur</h2>
             <CommandementsCarousel />
           </section>
-          {/* Section contact (sera stylée plus tard) */}
-          <section className="contact-section section-block">
-            <h3>Contact</h3>
-            <p>labringueriebordeaux@gmail.com</p>
-          </section>
+          {/* Section contact */}
+          <Contact />
         </main>
         <Footer />
       </div>

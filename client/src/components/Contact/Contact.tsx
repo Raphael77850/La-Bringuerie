@@ -1,20 +1,6 @@
-import "../../App.css";
-import { Card, Container, Grid, Typography } from "@mui/material";
-import styled from "styled-components";
-
-// Style pour le conteneur principal avec flex pour positionner le footer
-const PageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 10vh;
-`;
-
-const AboutSection = styled.section`
-  background-color: #FF5722;
-  font-family: "Francois One, serif" !important;
-  padding-top: 1rem;
-  padding-bottom: .5rem;
-`;
+import "../../styles/contact.css";
+import facebookLogo from "../../assets/images/facebook.png";
+import instagramLogo from "../../assets/images/instagramLogo.svg";
 
 const contact = [
   {
@@ -24,50 +10,39 @@ const contact = [
   },
 ];
 
-export default function AboutPage() {
+export default function Contact() {
   return (
-    <PageContainer>
-      <AboutSection>
-        <Container>
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ mb: 1 }}
+    <section className="section-block contact-section">
+      <div className="contact-card">
+        <h2 className="contact-title">Contact</h2>
+        <p className="contact-text">{contact[0].mail}</p>
+        <div className="contact-socials">
+          <a
+            href="https://www.instagram.com/labringueriebordeaux/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
           >
-            <Card
-              sx={{
-                backgroundColor: "#FFF3E0",
-                padding: 2,
-                marginTop: 2,
-                marginBottom: 2,
-                textAlign: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  mt: 0,
-                  fontFamily: "Francois One, serif",
-                  color: "#FF5722",
-                }}
-              >
-                Contact
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  mt: 1,
-                  fontFamily: "Francois One, serif",
-                  color: "#FF5722",
-                }}
-              >
-                {contact[0].mail}
-              </Typography>
-            </Card>
-          </Grid>
-        </Container>
-      </AboutSection>
-    </PageContainer>
+            <img
+              src={instagramLogo}
+              alt="Instagram"
+              className="contact-social-icon"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/profile.php?id=61571448225787&mibextid=wwXIfr&rdid=sgWfTOUkJ5mKtoNq"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <img
+              src={facebookLogo}
+              alt="Facebook"
+              className="contact-social-icon contact-social-icon--facebook"
+            />
+          </a>
+        </div>
+      </div>
+    </section>
   );
 }
