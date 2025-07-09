@@ -5,25 +5,20 @@
   flex-direction: row;
   align-items: stretch;
   justify-content: center;
-  padding: 0;
-  min-height: 30rem;
-  height: 30rem;
-  gap: 0;
   width: 100%;
-}
-
-.intro-photo-block,
-.intro-text-block {
+  min-height: 100%;
   height: 100%;
+  gap: 0;
+  overflow-x: hidden;
 }
 
 .intro-photo-block {
-  background: #570000;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1 1 0;
-  min-width: 0;
 }
 
 .intro-photo-block img {
@@ -34,56 +29,84 @@
 }
 
 .intro-text-block {
-  background: #ff5722;
-  color: #fff3e0;
+  background: rgba(255, 87, 34, 0.9);
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
-  object-fit: cover;
-  min-height: 220px;
-  padding: 2.5rem 2rem;
+  align-items: center;
+  padding: 2rem 2.5rem;
   border-radius: 0;
-  box-shadow: none;
-  min-width: 0;
 }
 
-.intro-text-block h2,
-.intro-text-block h3 {
+.intro-text-block h1,
+.intro-text-block p {
+  text-align: center;
   color: #fff3e0;
 }
 
+.intro-text-block p {
+  font-size: 1.1rem;
+  margin: 0;
+}
 /* Responsive */
 @media (max-width: 900px) {
   .intro-section {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: 0;
+    display: block;
     width: 100%;
-    min-height: unset;
-    height: auto;
+    margin-top: 1rem;
   }
-
   .intro-photo-block,
   .intro-text-block {
     width: 100%;
-    min-width: 0;
-    max-width: 100vw;
-    height: auto;
-    border-radius: 0;
-    padding: 1.2rem 1rem;
-    box-shadow: none;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    display: block;
   }
-
   .intro-text-block {
-    order: 1;
-    padding-bottom: 1.2rem;
+    padding: 1.2rem 1rem;
   }
 
   .intro-photo-block {
-    order: 2;
-    padding-top: 0;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    display: block;
   }
+
+  .intro-photo-block img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
+  }
+
+  .intro-text-block {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    background: rgba(255, 87, 34, 0.9);
+    color: #fff3e0;
+    position: static;
+    min-height: 11.25rem;
+    word-break: break-word;
+    white-space: normal;
+    z-index: 1;
+    display: block;
+  }
+}
+
+.contact-social-icon--facebook {
+  width: 32px;
+  height: 32px;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-sizing: border-box;
+  object-fit: contain;
+  border: none !important;
 }

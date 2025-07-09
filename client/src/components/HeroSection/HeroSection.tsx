@@ -7,19 +7,7 @@ export default function HeroSection() {
 
   return (
     <>
-      <Box
-        className="hero-video-bg"
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100vh",
-          zIndex: 0,
-          overflow: "hidden",
-          pointerEvents: "none",
-        }}
-      >
+      <Box className="hero-video-bg">
         <video autoPlay loop muted playsInline className="hero-video">
           <source src={videoSrc} type="video/mp4" />
           Votre navigateur ne supporte pas la lecture de vidéos.

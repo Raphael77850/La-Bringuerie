@@ -13,7 +13,7 @@ const contact = [
 export default function Contact() {
   return (
     <section className="section-block contact-section">
-      <div className="contact-card">
+      <div>
         <h2 className="contact-title">Contact</h2>
         <p className="contact-text">{contact[0].mail}</p>
         <div className="contact-socials">

@@ -5,7 +5,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  padding: 1rem 2rem 2rem 2.5rem;
+
+  background-color: rgb(255, 243, 224, 0.92);
 }
 
 /* Conteneur du carousel */
@@ -14,6 +16,11 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
+}
+
+.commandements-section,
+h2 {
+  text-align: center;
 }
 
 /* Slider */
@@ -31,21 +38,21 @@
 /* Photos des commandements */
 .commandement-photo {
   aspect-ratio: 3 / 4;
-  width: 320px;
+  width: 20rem;
   max-width: 100%;
   height: auto;
-  border-radius: 16px;
+  border-radius: 1rem;
   object-fit: cover;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.1);
   background: #fff3e0;
 }
 
 /* Responsive */
 @media (max-width: 900px) {
   .commandement-photo {
-    width: 120px;
-    min-width: 100px;
-    max-width: 160px;
+    width: 7.5rem;
+    min-width: 6.25rem;
+    max-width: 10rem;
     height: auto;
   }
 }

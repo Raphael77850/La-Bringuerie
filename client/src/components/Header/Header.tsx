@@ -1,61 +1,15 @@
 import "../../styles/header.css";
 import { AppBar, Box } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import LogoTitle from "../../assets/images/LogoTitle.png";
 import facebook from "../../assets/images/facebook.png";
 import instagramLogo from "../../assets/images/instagramLogo.svg";
 
-const useStyles = makeStyles({
-  appBar: {
-    padding: ".5rem 1rem 0rem 1rem",
-  },
-  container: {
-    display: "flex !important",
-    justifyContent: "center !important",
-    alignItems: "center !important",
-    width: "100% !important",
-    position: "relative",
-  },
-  socialLinks: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    position: "absolute",
-    left: 0,
-    top: "50%",
-    transform: "translateY(-50%)",
-  },
-  link: {
-    color: "#FF5722 !important",
-    fontSize: "1rem !important",
-    fontFamily: "'Francois One', serif !important",
-    fontWeight: "400 !important",
-    textDecoration: "none !important",
-    "&:hover": {
-      textDecoration: "underline !important",
-    },
-  },
-});
-
 export default function Header() {
-  const classes = useStyles();
-  const location = useLocation();
-
-  const isAboutPage = location.pathname === "/about";
-
   return (
-    <AppBar
-      position="fixed"
-      className={classes.appBar}
-      sx={{
-        backgroundColor: isAboutPage ? "white" : "transparent",
-        boxShadow: isAboutPage ? "0px 4px 12px rgba(0, 0, 0, 0.1)" : "none",
-        position: isAboutPage ? "fixed" : "absolute",
-      }}
-    >
-      <Box className={classes.container}>
-        <Box className={classes.socialLinks}>
+    <AppBar position="static">
+      <Box className="container">
+        <Box className="socialLinks">
           <RouterLink
             to="https://www.instagram.com/labringueriebordeaux/"
             target="_blank"

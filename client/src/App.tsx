@@ -48,7 +48,7 @@ export default function App() {
           {/* Section événements (sera stylée plus tard) */}
           <section className="events-section section-block">
             <div className="events-list-block">
-              <h2>Prochains Événements</h2>
+              <h2>Prochains Évènements</h2>
               <ul className="events-list">
                 <li>
                   <strong>07 juin</strong> — Kev Junior avec BD Vic
@@ -116,19 +116,11 @@ export default function App() {
           </section>
           {/* Section intro (sera stylée plus tard) */}
           <section className="intro-section section-block">
-            <div className="intro-photo-block">
-              <img
-                src="/src/assets/images/levi-g.jpg"
-                alt="Logo La Bringuerie"
-              />
-            </div>
-            <div className="intro-text-block">
-              <Intro />
-            </div>
+            <Intro />
           </section>
           {/* Section Commandements (sera stylée plus tard) */}
           <section className="commandements-section section-block">
-            <h2>Les commandements du Bringueur</h2>
+            <h2>Les commandements du Bringueur :</h2>
             <CommandementsCarousel />
           </section>
           {/* Section contact */}
