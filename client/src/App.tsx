@@ -2,6 +2,7 @@ import "./styles/index.css";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import CommandementsCarousel from "./components/Commandements/CommandementsCarousel";
 import Contact from "./components/Contact/Contact";
+import EventsSection from "./components/Events/EventsSection";
 import { Footer } from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import HeroSection from "./components/HeroSection/HeroSection";
@@ -11,19 +12,6 @@ const theme = createTheme({
   palette: {
     primary: {
       main: "#FF5722",
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          color: "#FFFFFF",
-          border: "2px solid #FF5722",
-          "&:hover": {
-            backgroundColor: "#FF5722",
-          },
-        },
-      },
     },
   },
 });
@@ -45,82 +33,15 @@ export default function App() {
         <Header />
         <HeroSection />
         <main className="main-content" style={{ flex: 1 }}>
-          {/* Section événements (sera stylée plus tard) */}
-          <section className="events-section section-block">
-            <div className="events-list-block">
-              <h2>Prochains Évènements</h2>
-              <ul className="events-list">
-                <li>
-                  <strong>07 juin</strong> — Kev Junior avec BD Vic
-                  <a
-                    href="https://shotgun.live/fr/events/la-bringuerie-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    Réserver
-                  </a>
-                </li>
-                <li>
-                  <strong>08 juin</strong> — Monsieur Dollar
-                  <a
-                    href="https://shotgun.live/fr/events/la-bringuerie-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    Réserver
-                  </a>
-                </li>
-                <li>
-                  <strong>10 juin</strong> — Chips et Rafale 3D
-                  <a
-                    href="https://shotgun.live/fr/events/la-bringuerie-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    Réserver
-                  </a>
-                </li>
-                <li>
-                  <strong>13 juin</strong> — La Batte avec Collabirie
-                  <a
-                    href="https://shotgun.live/fr/events/la-bringuerie-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    Réserver
-                  </a>
-                </li>
-                <li>
-                  <strong>14 juin</strong> — Tation 1
-                  <a
-                    href="https://shotgun.live/fr/events/la-bringuerie-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="reservation-button"
-                  >
-                    Réserver
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="events-photo-block">
-              <img
-                src="/src/assets/images/aleksandr.jpg"
-                alt="Logo La Bringuerie"
-              />
-            </div>
-          </section>
+          {/* Ancienne section événements supprimée, remplacée par le composant */}
+          <EventsSection />
           {/* Section intro (sera stylée plus tard) */}
           <section className="intro-section section-block">
             <Intro />
           </section>
           {/* Section Commandements (sera stylée plus tard) */}
           <section className="commandements-section section-block">
-            <h2>Les commandements du Bringueur :</h2>
+            <h2>Les 10 commandements du Bringueur :</h2>
             <CommandementsCarousel />
           </section>
           {/* Section contact */}

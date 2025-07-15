@@ -12,21 +12,8 @@ import img8 from "../../assets/images/7Commandements.png";
 import img9 from "../../assets/images/8Commandements.png";
 import img10 from "../../assets/images/9Commandements.png";
 import img11 from "../../assets/images/10Commandements.png";
-import img1 from "../../assets/images/les10Commandements.png";
 
-const images = [
-  img1,
-  img2,
-  img3,
-  img4,
-  img5,
-  img6,
-  img7,
-  img8,
-  img9,
-  img10,
-  img11,
-];
+const images = [img2, img3, img4, img5, img6, img7, img8, img9, img10, img11];
 
 export default function CommandementsCarousel() {
   const [sliderRef] = useKeenSlider<HTMLDivElement>({
@@ -38,7 +25,7 @@ export default function CommandementsCarousel() {
     },
     breakpoints: {
       "(max-width: 900px)": {
-        slides: { perView: 2, spacing: 10, origin: "center" },
+        slides: { perView: 4, spacing: 10, origin: "center" },
       },
       "(max-width: 600px)": {
         slides: { perView: 1, spacing: 6, origin: "center" },
