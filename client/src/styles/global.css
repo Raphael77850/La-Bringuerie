@@ -146,3 +146,41 @@ header {
     padding: 0 0.5rem;
   }
 }
+
+/* Styles de base pour les pages légales et la page 404 */
+.legal-main,
+.notfound-main {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legal-section,
+.notfound-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem 2rem;
+  max-width: 600px;
+  width: 100%;
+  text-align: left;
+}
+
+.legal-section h2,
+.notfound-section h2 {
+  color: #ff5722;
+  margin-bottom: 1.2rem;
+}
+
+.legal-section p,
+.notfound-section p {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.notfound-section a {
+  color: #ff5722;
+  text-decoration: underline;
+  font-weight: 500;
+}

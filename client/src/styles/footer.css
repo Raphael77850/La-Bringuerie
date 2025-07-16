@@ -26,6 +26,18 @@
   font-size: 1rem;
   margin-bottom: 0.7rem;
   color: #fff3e0;
+  text-align: center;
+}
+
+.footer-content nav a {
+  color: #fff3e0 !important;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.footer-content nav a:hover {
+  color: #fff3e0;
+  text-decoration: none;
 }
 
 /* Responsive */
