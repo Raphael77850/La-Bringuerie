@@ -16,6 +16,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 // Try creating these components in the "pages" folder
 
 // import Contact from "./pages/Contact";
+import AdminDashboard from "./pages/AdminDashboard";
 
 /* ************************************************************************* */
 
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       { path: "", element: <HomePage /> },
       { path: "mentions-legales", element: <LegalNoticePage /> },
       { path: "politique-confidentialite", element: <PrivacyPolicyPage /> },
+      { path: "admin", element: <AdminDashboard /> }, // <-- AJOUTE CETTE LIGNE
       { path: "*", element: <NotFoundPage /> },
     ],
   },

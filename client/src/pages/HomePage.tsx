@@ -3,6 +3,7 @@ import Contact from "../components/Contact/Contact";
 import EventsSection from "../components/Events/EventsSection";
 import HeroSection from "../components/HeroSection/HeroSection";
 import Intro from "../components/Introduction/Intro";
+import NewsletterForm from "../components/NewsletterForm/NewsletterForm";
 
 const HomePage = () => (
   <>
@@ -17,6 +18,7 @@ const HomePage = () => (
         <CommandementsCarousel />
       </section>
       <Contact />
+      <NewsletterForm />
     </main>
   </>
 );

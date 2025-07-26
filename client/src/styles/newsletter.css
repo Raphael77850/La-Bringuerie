@@ -1,0 +1,77 @@
+/* Lux UI - NewsletterForm.css */
+
+.newsletter-section {
+  background: rgb(255, 243, 224, 0.92);
+  box-shadow: 0 0.25rem 1.5rem 0 rgba(0, 0, 0, 0.1), 0 0.09rem 0.38rem 0
+    rgba(255, 87, 34, 0.08);
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  transform: translateX(-50%);
+}
+
+.newsletter-section:hover {
+  box-shadow: 0 8px 32px 0 rgba(255, 87, 34, 0.18), 0 2px 8px 0
+    rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-title {
+  font-family: "Francois One", serif;
+  font-size: 2rem;
+  color: #ff5722;
+  margin-bottom: 1.1rem;
+  letter-spacing: 0.06rem;
+  text-align: center;
+}
+
+.newsletter-section form {
+  width: 100%;
+  max-width: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.newsletter-section .MuiTextField-root label {
+  color: #ff5722;
+  font-family: "Francois One", serif;
+}
+
+.newsletter-section .MuiInputBase-root {
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+
+.newsletter-section .MuiButton-root {
+  background: linear-gradient(90deg, #ff5722 60%, #ff8a50 100%);
+  color: #fff;
+  font-family: "Francois One", serif;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px 0 rgba(255, 87, 34, 0.1);
+  transition: background 0.2s;
+}
+
+.newsletter-section .MuiButton-root:hover {
+  background: linear-gradient(90deg, #ff8a50 0%, #ff5722 100%);
+}
+
+@media (max-width: 900px) {
+  .newsletter-section {
+    padding: 1.2rem 0.5rem;
+  }
+  .newsletter-title {
+    font-size: 1.3rem;
+  }
+  .newsletter-section form {
+    max-width: 98vw;
+    gap: 0.8rem;
+  }
+}
