@@ -12,9 +12,9 @@
   overflow-x: hidden;
 }
 
-.events-list-block,
 .events-photo-block {
   height: 100%;
+  width: 100%;
 }
 
 .events-list-block {
@@ -25,8 +25,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  gap: 1rem;
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: 0;
   box-shadow: none;
   min-width: 0;
