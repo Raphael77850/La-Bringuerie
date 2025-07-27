@@ -5,9 +5,14 @@ interface Props {
   title: string;
   users: User[];
   showEventName?: boolean;
+  onlyEmail?: boolean;
 }
 
-export function UserTable({ title, users, showEventName }: Props) {
+export function UserTable({ title, users, showEventName, onlyEmail }: Props) {
+  // Générer la liste des emails pour le mailto
+  const allEmails = users.map((u) => u.email).join(",");
+  const mailtoLink = `mailto:?bcc=${encodeURIComponent(allEmails)}&subject=${encodeURIComponent("Newsletter La Bringuerie")}`;
+
   return (
     <Box sx={{ marginBottom: 4 }}>
       <Typography
@@ -16,21 +21,30 @@ export function UserTable({ title, users, showEventName }: Props) {
       >
         {title}
       </Typography>
+      {onlyEmail && users.length > 0 && (
+        <a
+          href={mailtoLink}
+          style={{
+            display: "inline-block",
+            marginBottom: 12,
+            background: "#FF5722",
+            color: "#fff3e0",
+            padding: "8px 16px",
+            borderRadius: 4,
+            textDecoration: "none",
+            fontWeight: 600,
+            letterSpacing: 1,
+          }}
+        >
+          Contacter tous
+        </a>
+      )}
       <table
         style={{ width: "100%", borderCollapse: "collapse", marginTop: 2 }}
       >
         <thead>
           <tr style={{ background: "#f5f5f5" }}>
-            <th
-              style={{
-                padding: 8,
-                textAlign: "left",
-                borderBottom: "1px solid #ddd",
-              }}
-            >
-              Email
-            </th>
-            {showEventName && (
+            {onlyEmail ? (
               <th
                 style={{
                   padding: 8,
@@ -38,8 +52,49 @@ export function UserTable({ title, users, showEventName }: Props) {
                   borderBottom: "1px solid #ddd",
                 }}
               >
-                Événement
+                Email
               </th>
+            ) : (
+              <>
+                <th
+                  style={{
+                    padding: 8,
+                    textAlign: "left",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
+                  Prénom
+                </th>
+                <th
+                  style={{
+                    padding: 8,
+                    textAlign: "left",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
+                  Nom
+                </th>
+                <th
+                  style={{
+                    padding: 8,
+                    textAlign: "left",
+                    borderBottom: "1px solid #ddd",
+                  }}
+                >
+                  Email
+                </th>
+                {showEventName && (
+                  <th
+                    style={{
+                      padding: 8,
+                      textAlign: "left",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    Événement
+                  </th>
+                )}
+              </>
             )}
           </tr>
         </thead>
@@ -51,19 +106,27 @@ export function UserTable({ title, users, showEventName }: Props) {
                 background: users.indexOf(user) % 2 === 0 ? "white" : "#fafafa",
               }}
             >
-              <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                {user.firstName}
-              </td>
-              <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                {user.lastName}
-              </td>
-              <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                {user.email}
-              </td>
-              {showEventName && (
+              {onlyEmail ? (
                 <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
-                  {user.eventName}
+                  {user.email}
                 </td>
+              ) : (
+                <>
+                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                    {user.firstName}
+                  </td>
+                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                    {user.lastName}
+                  </td>
+                  <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                    {user.email}
+                  </td>
+                  {showEventName && (
+                    <td style={{ padding: 8, borderBottom: "1px solid #ddd" }}>
+                      {user.eventName}
+                    </td>
+                  )}
+                </>
               )}
             </tr>
           ))}

@@ -487,7 +487,11 @@ const AdminDashboard = () => {
         </DialogActions>
       </Dialog>
 
-      <UserTable title="Abonnés à la newsletter" users={newsletterUsers} />
+      <UserTable
+        title="Abonnés à la newsletter"
+        users={newsletterUsers}
+        onlyEmail
+      />
       <UserTable
         title="Inscrits aux événements"
         users={eventUsers}
