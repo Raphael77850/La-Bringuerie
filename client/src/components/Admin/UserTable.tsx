@@ -28,24 +28,6 @@ export function UserTable({ title, users, showEventName }: Props) {
                 borderBottom: "1px solid #ddd",
               }}
             >
-              Prénom
-            </th>
-            <th
-              style={{
-                padding: 8,
-                textAlign: "left",
-                borderBottom: "1px solid #ddd",
-              }}
-            >
-              Nom
-            </th>
-            <th
-              style={{
-                padding: 8,
-                textAlign: "left",
-                borderBottom: "1px solid #ddd",
-              }}
-            >
               Email
             </th>
             {showEventName && (

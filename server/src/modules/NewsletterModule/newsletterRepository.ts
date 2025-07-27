@@ -3,16 +3,14 @@ import databaseClient from "../../../database/client";
 
 type Newsletter = {
   id?: number;
-  firstName: string;
-  lastName: string;
   email: string;
 };
 
 class NewsletterRepository {
   async create(newsletter: Newsletter) {
     const [result] = await databaseClient.query<ResultSetHeader>(
-      "INSERT INTO newsletter (firstName, lastName, email) VALUES (?, ?, ?)",
-      [newsletter.firstName, newsletter.lastName, newsletter.email],
+      "INSERT INTO newsletter (email) VALUES (?)",
+      [newsletter.email],
     );
 
     return result.insertId;

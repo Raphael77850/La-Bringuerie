@@ -5,7 +5,7 @@ class AdminRepository {
   // Récupérer tous les emails de la newsletter
   async getNewsletterEmails() {
     const [rows] = await databaseClient.query<RowDataPacket[]>(
-      "SELECT firstName, lastName, email FROM newsletter",
+      "SELECT email FROM newsletter",
     );
     return rows;
   }

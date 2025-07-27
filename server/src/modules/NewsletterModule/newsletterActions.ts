@@ -3,17 +3,15 @@ import newsletterRepository from "../NewsletterModule/newsletterRepository";
 
 const add: RequestHandler = async (req, res, next) => {
   try {
-    const { firstName, lastName, email } = req.body;
+    const { email } = req.body;
 
-    if (!firstName || !lastName || !email) {
+    if (!email) {
       res.status(400).json({ error: "Tous les champs sont requis" });
       return;
     }
 
     try {
       const insertId = await newsletterRepository.create({
-        firstName,
-        lastName,
         email,
       });
 
