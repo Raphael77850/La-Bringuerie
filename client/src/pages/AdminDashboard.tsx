@@ -13,8 +13,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useAdminDashboard } from "../../hooks/useAdminDashboard";
-import { EventList } from "../components/Admin/EventList";
-import { UserTable } from "../components/Admin/UserTable";
+import AddEventDialog from "../components/Admin/AddEventDialog";
+import AdminEventList from "../components/Admin/AdminEventList";
+import AdminUserList from "../components/Admin/AdminUserList";
+import EditEventDialog from "../components/Admin/EditEventDialog";
 import api from "../config/axiosConfig";
 import type { Event } from "../types/admin";
 
@@ -296,7 +298,7 @@ const AdminDashboard = () => {
         >
           Gérer les événements
         </Typography>
-        <EventList
+        <AdminEventList
           events={events}
           onEdit={handleOpenEditDialog}
           onDelete={handleDeleteEvent}
@@ -314,189 +316,26 @@ const AdminDashboard = () => {
       </Box>
 
       {/* Dialog ajout événement */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Ajouter un événement</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Image"
-            type="file"
-            fullWidth
-            inputProps={{ accept: "image/*" }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const file = (e.target as HTMLInputElement).files?.[0];
-              if (file) setSelectedFile(file);
-            }}
-          />
-          <TextField
-            margin="dense"
-            label="Titre"
-            type="text"
-            fullWidth
-            value={newEvent.title}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setNewEvent({ ...newEvent, title: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Description"
-            type="text"
-            fullWidth
-            value={newEvent.description}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setNewEvent({ ...newEvent, description: e.target.value })
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Date"
-            type="date"
-            fullWidth
-            InputLabelProps={{ shrink: true }}
-            value={newEvent.date}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setNewEvent({ ...newEvent, date: e.target.value })
-            }
-          />
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <TextField
-              margin="dense"
-              label="Heure de début"
-              type="time"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={newEvent.startTime}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewEvent({ ...newEvent, startTime: e.target.value })
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Heure de fin"
-              type="time"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={newEvent.endTime}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setNewEvent({ ...newEvent, endTime: e.target.value })
-              }
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)} color="secondary">
-            Annuler
-          </Button>
-          <Button onClick={handleAddEvent} color="primary">
-            Ajouter
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AddEventDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        onAdd={handleAddEvent}
+        newEvent={newEvent}
+        setNewEvent={setNewEvent}
+        setSelectedFile={setSelectedFile}
+      />
 
       {/* Dialog édition événement */}
-      <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
-        <DialogTitle>Modifier un événement</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Image"
-            type="file"
-            fullWidth
-            inputProps={{ accept: "image/*" }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const file = (e.target as HTMLInputElement).files?.[0];
-              if (file) setSelectedUpdateFile(file);
-            }}
-          />
-          <TextField
-            margin="dense"
-            label="Titre"
-            type="text"
-            fullWidth
-            value={currentEvent?.title || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setCurrentEvent((ev: Event | null) =>
-                ev ? { ...ev, title: e.target.value } : ev,
-              )
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Description"
-            type="text"
-            fullWidth
-            multiline
-            rows={4}
-            value={currentEvent?.description || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setCurrentEvent((ev: Event | null) =>
-                ev ? { ...ev, description: e.target.value } : ev,
-              )
-            }
-          />
-          <TextField
-            margin="dense"
-            label="Date"
-            type="date"
-            fullWidth
-            InputLabelProps={{ shrink: true }}
-            value={currentEvent?.date || ""}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setCurrentEvent((ev: Event | null) =>
-                ev ? { ...ev, date: e.target.value } : ev,
-              )
-            }
-          />
-          <Box sx={{ display: "flex", gap: 2 }}>
-            <TextField
-              margin="dense"
-              label="Heure de début"
-              type="time"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={currentEvent?.startTime || ""}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setCurrentEvent((ev: Event | null) =>
-                  ev ? { ...ev, startTime: e.target.value } : ev,
-                )
-              }
-            />
-            <TextField
-              margin="dense"
-              label="Heure de fin"
-              type="time"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={currentEvent?.endTime || ""}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setCurrentEvent((ev: Event | null) =>
-                  ev ? { ...ev, endTime: e.target.value } : ev,
-                )
-              }
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditOpen(false)} color="secondary">
-            Annuler
-          </Button>
-          <Button onClick={handleUpdateEvent} color="primary">
-            Mettre à jour
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <EditEventDialog
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        onUpdate={handleUpdateEvent}
+        currentEvent={currentEvent}
+        setCurrentEvent={setCurrentEvent}
+      />
 
-      <UserTable
-        title="Abonnés à la newsletter"
-        users={newsletterUsers}
-        onlyEmail
-      />
-      <UserTable
-        title="Inscrits aux événements"
-        users={eventUsers}
-        showEventName
-      />
+      <AdminUserList title="Abonnés à la newsletter" users={newsletterUsers} />
+      <AdminUserList title="Inscrits aux événements" users={eventUsers} />
 
       <Snackbar
         open={!!message}

@@ -1,0 +1,9 @@
+.MuiDialog-root .MuiDialog-paper {
+  border-radius: 0.75rem;
+}
+.edit-event-dialog .MuiTextField-root {
+  margin-bottom: 0.75rem;
+}
+.edit-event-dialog .MuiDialogActions-root {
+  padding: 1rem;
+}

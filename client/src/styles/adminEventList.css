@@ -1,0 +1,19 @@
+/* Utilisation des rem pour le responsive */
+.admin-event-list {
+  margin-bottom: 2rem;
+}
+.admin-event-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-event-table th,
+.admin-event-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 1rem;
+}
+.admin-event-table th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
