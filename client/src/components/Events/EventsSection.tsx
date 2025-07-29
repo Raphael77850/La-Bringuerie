@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import Slider from "react-slick";
 import api from "../../config/axiosConfig";
 import type { Event } from "../../types/admin";
 import FormEvent from "./FormEvent";
@@ -33,23 +32,21 @@ export default function EventsSection() {
     setSelectedEventId(null);
   };
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
-    adaptiveHeight: true,
-  };
-
   return (
     <section className="events-section section-block">
       <div className="events-list-block">
         <h2>Prochains Évènements</h2>
-        <Slider {...settings}>
+        <div className="events-horizontal-scroll">
           {events.map((event) => (
-            <Box key={event.id} sx={{ px: 2 }}>
+            <Box
+              key={event.id}
+              sx={{
+                minWidth: 320,
+                maxWidth: 400,
+                mx: 2,
+                flex: "0 0 auto",
+              }}
+            >
               <Card
                 sx={{
                   display: "flex",
@@ -98,7 +95,7 @@ export default function EventsSection() {
               </Card>
             </Box>
           ))}
-        </Slider>
+        </div>
       </div>
       <div className="events-photo-block">
         <img src="/src/assets/images/aleksandr.jpg" alt="Logo La Bringuerie" />

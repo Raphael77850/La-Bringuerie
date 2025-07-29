@@ -98,6 +98,18 @@ const adminActions = {
         .json({ message: "Erreur lors de la suppression de l'événement" });
     }
   },
+
+  // Récupérer tous les événements
+  getAllEvents: async (req: Request, res: Response) => {
+    try {
+      const events = await eventRepository.getEvents();
+      res.json(events);
+    } catch (err) {
+      res.status(500).json({
+        error: "Erreur serveur lors de la récupération des événements",
+      });
+    }
+  },
 };
 
 export default adminActions;

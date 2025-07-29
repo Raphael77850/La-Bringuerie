@@ -12,7 +12,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useAdminDashboard } from "../../hooks/useAdminDashboard";
+
+import { useAdminDashboardLogic } from "../../hooks/useAdminDashboardLogic";
 import AddEventDialog from "../components/Admin/AddEventDialog";
 import AdminEventList from "../components/Admin/AdminEventList";
 import AdminUserList from "../components/Admin/AdminUserList";
@@ -48,8 +49,10 @@ const AdminDashboard = () => {
     eventUsers,
     message,
     setMessage,
-    fetchData,
-  } = useAdminDashboard(token);
+    fetchEvents,
+    deleteNewsletterUser,
+    deleteEventUser,
+  } = useAdminDashboardLogic(token);
 
   // Utilitaires
   const formatDateForDisplay = (dateStr: string): string => {
@@ -119,12 +122,13 @@ const AdminDashboard = () => {
         formData,
         config,
       );
-      if (response.status === 201) {
+      if (response.status === 201 && response.data.id) {
         setEvents([
           ...events,
           {
             id: response.data.id,
             title: newEvent.title,
+            description: newEvent.description,
             date: formattedStartDateTime,
             endTime: formattedEndDateTime,
             image: response.data.imagePath,
@@ -152,7 +156,11 @@ const AdminDashboard = () => {
   };
 
   // Suppression événement
-  const handleDeleteEvent = (id: number) => {
+  const handleDeleteEvent = (id: number | undefined) => {
+    if (typeof id !== "number" || Number.isNaN(id)) {
+      setMessage({ type: "error", text: "ID d'événement invalide" });
+      return;
+    }
     if (window.confirm("Êtes-vous sûr de vouloir supprimer cet événement ?")) {
       const config = { headers: { Authorization: `Bearer ${token}` } };
       api
@@ -175,6 +183,18 @@ const AdminDashboard = () => {
 
   // Ouverture modale édition
   const handleOpenEditDialog = (event: Event) => {
+    if (
+      !event ||
+      !event.date ||
+      typeof event.date !== "string" ||
+      !event.date.includes("T")
+    ) {
+      setMessage({
+        type: "error",
+        text: "Donnée événement invalide pour l'édition",
+      });
+      return;
+    }
     setCurrentEvent({
       ...event,
       date: event.date.split("T")[0],
@@ -230,7 +250,7 @@ const AdminDashboard = () => {
 
     try {
       await api.put("/admin/events", formData, config);
-      fetchData();
+      fetchEvents();
       setEditOpen(false);
       setSelectedUpdateFile(null);
       setMessage({ type: "success", text: "Événement mis à jour avec succès" });
@@ -334,8 +354,16 @@ const AdminDashboard = () => {
         setCurrentEvent={setCurrentEvent}
       />
 
-      <AdminUserList title="Abonnés à la newsletter" users={newsletterUsers} />
-      <AdminUserList title="Inscrits aux événements" users={eventUsers} />
+      <AdminUserList
+        title="Abonnés à la newsletter"
+        users={newsletterUsers}
+        onDelete={deleteNewsletterUser}
+      />
+      <AdminUserList
+        title="Inscrits aux événements"
+        users={eventUsers}
+        onDelete={deleteEventUser}
+      />
 
       <Snackbar
         open={!!message}

@@ -1,12 +1,13 @@
 import path from "node:path";
-// Load the express module to create a web application
 import bodyParser from "body-parser";
 import express from "express";
+import eventRepository from "./modules/EventModule/eventRepository";
+import adminActions from "./modules/adminModule/adminActions";
+import adminRepository from "./modules/adminModule/adminRepository";
+import newsletterAdminActions from "./modules/adminModule/newsletterAdminActions";
 import adminAuth from "./modules/middleware/adminAuth";
 
 const app = express();
-
-// Configure it
 
 /* ************************************************************************* */
 
@@ -19,7 +20,6 @@ const app = express();
 
 // You should NOT do that: such code uses the `cors` module to allow all origins, which can pose security issues.
 // For this pedagogical template, the CORS code allows CLIENT_URL in development mode (when process.env.CLIENT_URL is defined).
-
 import cors from "cors";
 
 app.use(
@@ -68,7 +68,28 @@ app.use(bodyParser.json());
 // Import the API router
 import router from "./router";
 
+// Route API pour les événements admin
+const apiRouter = express.Router();
+apiRouter.get("/admin/events", adminAuth, adminActions.getAllEvents);
+apiRouter.get(
+  "/admin/newsletter",
+  adminAuth,
+  newsletterAdminActions.getAllSubscriptions,
+);
+apiRouter.get("/admin/event-users", adminAuth, async (req, res) => {
+  try {
+    const users = await adminRepository.getEventEmails();
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({
+      error:
+        "Erreur serveur lors de la récupération des inscrits aux événements",
+    });
+  }
+});
+
 // Mount the API router under the "/api" endpoint
+app.use("/api", apiRouter);
 app.use("/api", router);
 
 /* ************************************************************************* */
