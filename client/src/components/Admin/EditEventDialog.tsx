@@ -19,13 +19,13 @@ interface EditEventDialogProps {
   setCurrentEvent: React.Dispatch<React.SetStateAction<Event | null>>;
 }
 
-const EditEventDialog: React.FC<EditEventDialogProps> = ({
+export default function EditEventDialog({
   open,
   onClose,
   onUpdate,
   currentEvent,
   setCurrentEvent,
-}) => {
+}: EditEventDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Modifier un événement</DialogTitle>
@@ -113,6 +113,4 @@ const EditEventDialog: React.FC<EditEventDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-};
-
-export default EditEventDialog;
+}

@@ -20,14 +20,14 @@ interface AddEventDialogProps {
   setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
-const AddEventDialog: React.FC<AddEventDialogProps> = ({
+export default function AddEventDialog({
   open,
   onClose,
   onAdd,
   newEvent,
   setNewEvent,
   setSelectedFile,
-}) => {
+}: AddEventDialogProps) {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Ajouter un événement</DialogTitle>
@@ -109,6 +109,4 @@ const AddEventDialog: React.FC<AddEventDialogProps> = ({
       </DialogActions>
     </Dialog>
   );
-};
-
-export default AddEventDialog;
+}

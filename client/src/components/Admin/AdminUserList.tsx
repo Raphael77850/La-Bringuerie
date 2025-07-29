@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import type React from "react";
 import type { User } from "../../types/admin";
 import "../../styles/adminUserList.css";
 
@@ -7,13 +6,15 @@ interface AdminUserListProps {
   users: User[];
   title?: string;
   onDelete?: (id: number) => void;
+  onlyEmail?: boolean;
 }
 
-const AdminUserList: React.FC<AdminUserListProps> = ({
+export default function AdminUserList({
   users,
   title,
   onDelete,
-}) => {
+  onlyEmail = false,
+}: AdminUserListProps) {
   const safeUsers = Array.isArray(users) ? users : [];
   return (
     <Box className="admin-user-list">
@@ -24,19 +25,31 @@ const AdminUserList: React.FC<AdminUserListProps> = ({
         <table className="admin-user-table">
           <thead>
             <tr>
-              <th>Nom</th>
-              <th>Prénom</th>
-              <th>Email</th>
+              {onlyEmail ? (
+                <th>Email</th>
+              ) : (
+                <>
+                  <th>Nom</th>
+                  <th>Prénom</th>
+                  <th>Email</th>
+                </>
+              )}
               {onDelete && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
             {safeUsers.map((user) => (
               <tr key={user.email}>
-                <td>{user.lastName}</td>
-                <td>{user.firstName}</td>
-                <td>{user.email}</td>
-                {onDelete && user.id !== undefined && (
+                {onlyEmail ? (
+                  <td>{user.email}</td>
+                ) : (
+                  <>
+                    <td>{user.lastName}</td>
+                    <td>{user.firstName}</td>
+                    <td>{user.email}</td>
+                  </>
+                )}
+                {onDelete && (
                   <td>
                     <Button
                       size="small"
@@ -55,6 +68,4 @@ const AdminUserList: React.FC<AdminUserListProps> = ({
       )}
     </Box>
   );
-};
-
-export default AdminUserList;
+}

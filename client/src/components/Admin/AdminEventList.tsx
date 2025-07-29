@@ -1,5 +1,4 @@
 import { Box, Button, Typography } from "@mui/material";
-import type React from "react";
 import type { Event } from "../../types/admin";
 import "../../styles/adminEventList.css";
 
@@ -11,13 +10,13 @@ interface AdminEventListProps {
   extractTime: (date: string) => string;
 }
 
-const AdminEventList: React.FC<AdminEventListProps> = ({
+export default function AdminEventList({
   events,
   onEdit,
   onDelete,
   formatDate,
   extractTime,
-}) => {
+}: AdminEventListProps) {
   if (!Array.isArray(events)) {
     return (
       <Box className="admin-event-list">
@@ -78,6 +77,4 @@ const AdminEventList: React.FC<AdminEventListProps> = ({
       )}
     </Box>
   );
-};
-
-export default AdminEventList;
+}
