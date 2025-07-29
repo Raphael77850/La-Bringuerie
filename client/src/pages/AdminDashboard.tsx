@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 
 import { useAdminDashboardLogic } from "../../hooks/useAdminDashboardLogic";
+import { useAuthToken } from "../../hooks/useAuthToken";
 import { useEventForm } from "../../hooks/useEventForm";
 import AddEventDialog from "../components/Admin/AddEventDialog";
 import AdminEventList from "../components/Admin/AdminEventList";
@@ -19,8 +20,8 @@ import api from "../config/axiosConfig";
 import { extractTimeFromDate, formatDateForDisplay } from "../utils/dateUtils";
 
 const AdminDashboard = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [loginOpen, setLoginOpen] = useState(true);
+  const { accessToken: token, setTokens } = useAuthToken();
+  const [loginOpen, setLoginOpen] = useState(!token);
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -59,8 +60,12 @@ const AdminDashboard = () => {
     api
       .post("/login", credentials)
       .then((response) => {
-        const data = response.data as { token: string };
-        setToken(data.token);
+        const data = response.data as {
+          token: string;
+          refreshToken?: string;
+        };
+        // On attend que le backend renvoie aussi le refreshToken
+        setTokens(data.token, data.refreshToken || null);
         setLoginOpen(false);
         setMessage({ type: "success", text: "Connexion réussie" });
       })

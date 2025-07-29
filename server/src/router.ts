@@ -2,8 +2,10 @@ import express from "express";
 import eventActions from "./modules/EventModule/eventActions";
 import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 import adminActions from "./modules/adminModule/adminActions";
+import adminCreateAction from "./modules/adminModule/adminCreateAction";
 import eventAdminAction from "./modules/adminModule/eventAdminAction";
 import authActions from "./modules/auth/authActions";
+import refreshTokenActions from "./modules/auth/refreshTokenActions";
 import itemActions from "./modules/item/itemActions";
 import adminAuth from "./modules/middleware/adminAuth";
 import upload from "./modules/middleware/upload";
@@ -48,6 +50,12 @@ router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
 router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
 
 router.post("/login", authActions.login);
+
+// Route pour créer un nouvel admin (protégée)
+router.post("/admin/create", adminAuth, adminCreateAction.createAdmin);
+
+// Route pour rafraîchir le token d'accès
+router.post("/refresh-token", refreshTokenActions.refreshToken);
 
 // Routes pour les événements avec gestion des images
 

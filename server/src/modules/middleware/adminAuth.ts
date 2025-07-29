@@ -31,8 +31,7 @@ const adminAuth: RequestHandler = (req, res, next) => {
 
     next();
   } catch (error) {
-    res.status(403).json({ message: "Token invalide" });
-    return;
+    res.status(403).json({ message: "Token invalide ou expiré" });
   }
 };
 
