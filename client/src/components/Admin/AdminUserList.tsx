@@ -17,7 +17,7 @@ const AdminUserList: React.FC<AdminUserListProps> = ({
   const safeUsers = Array.isArray(users) ? users : [];
   return (
     <Box className="admin-user-list">
-      {title && <Typography variant="h6">{title}</Typography>}
+      {title && <Typography variant="h5">{title}</Typography>}
       {safeUsers.length === 0 ? (
         <Typography>Aucun utilisateur.</Typography>
       ) : (

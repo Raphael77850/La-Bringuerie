@@ -76,6 +76,11 @@ apiRouter.get(
   adminAuth,
   newsletterAdminActions.getAllSubscriptions,
 );
+apiRouter.delete(
+  "/admin/newsletter/:id",
+  adminAuth,
+  newsletterAdminActions.deleteSubscription,
+);
 apiRouter.get("/admin/event-users", adminAuth, async (req, res) => {
   try {
     const users = await adminRepository.getEventEmails();

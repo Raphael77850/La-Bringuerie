@@ -355,14 +355,14 @@ const AdminDashboard = () => {
       />
 
       <AdminUserList
-        title="Abonnés à la newsletter"
-        users={newsletterUsers}
-        onDelete={deleteNewsletterUser}
-      />
-      <AdminUserList
         title="Inscrits aux événements"
         users={eventUsers}
         onDelete={deleteEventUser}
+      />
+      <AdminUserList
+        title="Abonnés à la newsletter"
+        users={newsletterUsers}
+        onDelete={deleteNewsletterUser}
       />
 
       <Snackbar
