@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import type { User } from "../../types/admin";
+import "../../styles/admin.css";
 
 interface Props {
   title: string;
@@ -11,34 +12,19 @@ interface Props {
 export function UserTable({ title, users, showEventName, onlyEmail }: Props) {
   // Générer la liste des emails pour le mailto
   const allEmails = users.map((u) => u.email).join(",");
-  const mailtoLink = `mailto:?bcc=${encodeURIComponent(allEmails)}&subject=${encodeURIComponent("Newsletter La Bringuerie")}`;
+  const mailtoLink = `mailto:?bcc=${encodeURIComponent(allEmails)}&subject=${encodeURIComponent(
+    "Newsletter La Bringuerie",
+  )}`;
 
   return (
-    <Box sx={{ marginBottom: 4 }}>
+    <Box className="admin-section">
       <Typography
         variant="h5"
         sx={{ marginBottom: 1, fontFamily: "'Francois One', serif" }}
       >
         {title}
       </Typography>
-      {onlyEmail && users.length > 0 && (
-        <a
-          href={mailtoLink}
-          style={{
-            display: "inline-block",
-            marginBottom: 12,
-            background: "#FF5722",
-            color: "#fff3e0",
-            padding: "8px 16px",
-            borderRadius: 4,
-            textDecoration: "none",
-            fontWeight: 600,
-            letterSpacing: 1,
-          }}
-        >
-          Contacter tous
-        </a>
-      )}
+      {onlyEmail && users.length > 0 && <a href={mailtoLink}>Contacter tous</a>}
       <table
         style={{ width: "100%", borderCollapse: "collapse", marginTop: 2 }}
       >

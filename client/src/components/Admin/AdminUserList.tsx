@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import type { User } from "../../types/admin";
+import "../../styles/admin.css";
 import "../../styles/adminUserList.css";
 
 interface AdminUserListProps {

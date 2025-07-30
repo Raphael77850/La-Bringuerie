@@ -1,0 +1,62 @@
+/* Section admin générique avec fond noir et padding */
+.admin-section {
+  background: #181818;
+  color: #fff3e0;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.admin-section h4 {
+  color: #ff5722;
+  font-family: "Francois One", serif;
+}
+
+.admin-section h4 {
+  color: #fff3e0;
+  margin-bottom: 2rem;
+}
+.admin-user-list {
+  background: #181818;
+  color: #fff3e0;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+}
+
+.admin-user-table th,
+.admin-user-table td {
+  color: #fff3e0;
+  background: transparent;
+}
+
+.admin-user-table th {
+  font-weight: 700;
+  color: #ff5722;
+  background: transparent;
+}
+
+.admin-user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-user-table tr {
+  border-bottom: 1px solid #333;
+}
+
+.admin-user-table tr:last-child {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .admin-section,
+  .admin-user-list {
+    padding: 1.2rem 0.5rem;
+    margin-bottom: 1.2rem;
+    border-radius: 0.7rem;
+  }
+  .admin-user-table td,
+  .admin-user-table th {
+    padding: 0.5rem 0.3rem;
+  }
+}

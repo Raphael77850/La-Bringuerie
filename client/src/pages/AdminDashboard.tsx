@@ -6,7 +6,7 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAdminDashboardLogic } from "../../hooks/useAdminDashboardLogic";
 import { useAuthToken } from "../../hooks/useAuthToken";
@@ -25,6 +25,7 @@ const AdminDashboard = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   const {
     events,
@@ -54,6 +55,16 @@ const AdminDashboard = () => {
     setMessage,
     fetchEvents,
   });
+
+  useEffect(() => {
+    const handleSessionExpired = () => {
+      setSessionExpired(true);
+    };
+    window.addEventListener("sessionExpired", handleSessionExpired);
+    return () => {
+      window.removeEventListener("sessionExpired", handleSessionExpired);
+    };
+  }, []);
 
   // Auth
   const handleLogin = () => {
@@ -115,17 +126,11 @@ const AdminDashboard = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ padding: 2 }} />
-      <Typography
-        variant="h4"
-        sx={{ marginBottom: 2, fontFamily: "'Francois One', serif" }}
-      >
-        Dashboard admin Bringueur
-      </Typography>
-      <Box sx={{ marginBottom: 4 }}>
-        <Typography
-          variant="h5"
-          sx={{ marginBottom: 1, fontFamily: "'Francois One', serif" }}
-        >
+      <Box className="admin-section" sx={{ marginBottom: 4 }}>
+        <Typography variant="h4" sx={{ fontFamily: "'Francois One', serif" }}>
+          Tableau de bord Administrateur
+        </Typography>
+        <Typography variant="h5" sx={{ fontFamily: "'Francois One', serif" }}>
           Gérer les événements
         </Typography>
         <AdminEventList
@@ -164,25 +169,40 @@ const AdminDashboard = () => {
         setCurrentEvent={setCurrentEvent}
       />
 
-      <AdminUserList
-        title="Inscrits aux événements"
-        users={eventUsers}
-        onDelete={deleteEventUser}
-      />
-      <AdminUserList
-        title="Abonnés à la newsletter"
-        users={newsletterUsers}
-        onDelete={deleteNewsletterUser}
-        onlyEmail={true}
-      />
+      <Box className="admin-section">
+        <AdminUserList
+          title="Inscrits aux événements"
+          users={eventUsers}
+          onDelete={deleteEventUser}
+        />
+      </Box>
+      <Box className="admin-section">
+        <AdminUserList
+          title="Abonnés à la newsletter"
+          users={newsletterUsers}
+          onDelete={deleteNewsletterUser}
+          onlyEmail={true}
+        />
+      </Box>
 
       <Snackbar
-        open={!!message}
-        autoHideDuration={3000}
-        onClose={() => setMessage(null)}
+        open={!!message || sessionExpired}
+        autoHideDuration={4000}
+        onClose={() => {
+          setMessage(null);
+          setSessionExpired(false);
+        }}
       >
-        <Alert onClose={() => setMessage(null)} severity={message?.type}>
-          {message?.text}
+        <Alert
+          onClose={() => {
+            setMessage(null);
+            setSessionExpired(false);
+          }}
+          severity={sessionExpired ? "warning" : message?.type}
+        >
+          {sessionExpired
+            ? "Votre session a expiré, veuillez vous reconnecter."
+            : message?.text}
         </Alert>
       </Snackbar>
     </Container>

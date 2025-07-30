@@ -34,6 +34,12 @@ function processQueue(error: unknown, token: string | null = null) {
   failedQueue = [];
 }
 
+// Utilitaire pour afficher une notification globale
+function notifySessionExpired() {
+  // Utilisation d'un event custom pour déclencher une notification dans le front
+  window.dispatchEvent(new CustomEvent("sessionExpired"));
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -74,7 +80,8 @@ api.interceptors.response.use(
         processQueue(err, null);
         localStorage.removeItem("admin_access_token");
         localStorage.removeItem("admin_refresh_token");
-        window.location.reload();
+        notifySessionExpired();
+        window.location.href = "/admin"; // Redirection vers la page de login admin
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
