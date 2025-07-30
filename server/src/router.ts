@@ -48,6 +48,11 @@ router.put(
 );
 router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
 router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
+router.delete(
+  "/admin/event-users/:id",
+  adminAuth,
+  adminActions.deleteEventUser,
+);
 
 router.post("/login", authActions.login);
 

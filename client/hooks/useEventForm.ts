@@ -101,23 +101,30 @@ export function useEventForm({
     event: Event,
     extractTimeFromDate: (date: string) => string,
   ) => {
-    if (
-      !event ||
-      !event.date ||
-      typeof event.date !== "string" ||
-      !event.date.includes("T")
-    ) {
+    if (!event || !event.date || typeof event.date !== "string") {
       setMessage({
         type: "error",
         text: "Donnée événement invalide pour l'édition",
       });
       return;
     }
+    // Correction : gérer le format date avec ou sans 'T'
+    let date = event.date;
+    let startTime = "";
+    let endTime = "";
+    if (date.includes("T")) {
+      date = date.split("T")[0];
+      startTime = extractTimeFromDate(event.date);
+      endTime = event.endTime ? extractTimeFromDate(event.endTime) : "";
+    } else {
+      startTime = event.startTime || "";
+      endTime = event.endTime || "";
+    }
     setCurrentEvent({
       ...event,
-      date: event.date.split("T")[0],
-      startTime: extractTimeFromDate(event.date),
-      endTime: event.endTime ? extractTimeFromDate(event.endTime) : "",
+      date,
+      startTime,
+      endTime,
     });
     setEditOpen(true);
   };

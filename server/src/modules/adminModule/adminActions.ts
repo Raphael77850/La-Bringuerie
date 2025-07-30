@@ -99,6 +99,23 @@ const adminActions = {
     }
   },
 
+  // Supprimer un inscrit à un événement
+  deleteEventUser: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        res.status(400).json({ message: "ID requis" });
+        return;
+      }
+      await eventRepository.deleteUserEvent(Number(id));
+      res.status(200).json({ message: "Inscrit supprimé avec succès" });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la suppression de l'inscrit" });
+    }
+  },
+
   // Récupérer tous les événements
   getAllEvents: async (req: Request, res: Response) => {
     try {

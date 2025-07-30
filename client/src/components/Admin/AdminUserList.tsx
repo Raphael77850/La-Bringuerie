@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
 import type { User } from "../../types/admin";
-import "../../styles/admin.css";
 import "../../styles/adminUserList.css";
 
 interface AdminUserListProps {
@@ -56,7 +55,16 @@ export default function AdminUserList({
                       size="small"
                       variant="outlined"
                       color="error"
-                      onClick={() => onDelete(user.id as number)}
+                      onClick={() => {
+                        if (user.id !== undefined) {
+                          onDelete(user.id as number);
+                        } else {
+                          console.error(
+                            "ID utilisateur manquant pour suppression",
+                            user,
+                          );
+                        }
+                      }}
                     >
                       Supprimer
                     </Button>

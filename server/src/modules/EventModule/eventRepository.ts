@@ -121,6 +121,11 @@ class EventRepository {
       throw error;
     }
   }
+
+  // Supprimer un inscrit à un événement
+  async deleteUserEvent(id: number): Promise<void> {
+    await databaseClient.query("DELETE FROM user_event WHERE id = ?", [id]);
+  }
 }
 
 export default new EventRepository();

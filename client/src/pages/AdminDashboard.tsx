@@ -135,7 +135,10 @@ const AdminDashboard = () => {
         </Typography>
         <AdminEventList
           events={events}
-          onEdit={(event) => handleOpenEditDialog(event, extractTimeFromDate)}
+          onEdit={(event) => {
+            handleOpenEditDialog(event, extractTimeFromDate);
+            setEditOpen(true);
+          }}
           onDelete={handleDeleteEvent}
           formatDate={formatDateForDisplay}
           extractTime={extractTimeFromDate}

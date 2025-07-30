@@ -13,7 +13,7 @@ class AdminRepository {
   // Récupérer les emails des inscrits aux événements
   async getEventEmails(eventId?: number) {
     let query =
-      "SELECT u.email, u.firstName, u.lastName, e.title as eventName FROM user_event u JOIN event e ON u.event_id = e.id";
+      "SELECT u.id, u.email, u.firstName, u.lastName, e.title as eventName FROM user_event u JOIN event e ON u.event_id = e.id";
     const params = [];
 
     if (eventId) {
