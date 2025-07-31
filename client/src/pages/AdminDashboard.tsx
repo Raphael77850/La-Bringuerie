@@ -177,6 +177,7 @@ const AdminDashboard = () => {
           title="Inscrits aux événements"
           users={eventUsers}
           onDelete={deleteEventUser}
+          showEventName={true}
         />
       </Box>
       <Box className="admin-section">

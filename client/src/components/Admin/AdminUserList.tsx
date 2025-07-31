@@ -7,6 +7,7 @@ interface AdminUserListProps {
   title?: string;
   onDelete?: (id: number) => void;
   onlyEmail?: boolean;
+  showEventName?: boolean;
 }
 
 export default function AdminUserList({
@@ -14,6 +15,7 @@ export default function AdminUserList({
   title,
   onDelete,
   onlyEmail = false,
+  showEventName = false,
 }: AdminUserListProps) {
   const safeUsers = Array.isArray(users) ? users : [];
   return (
@@ -32,14 +34,17 @@ export default function AdminUserList({
                   <th>Nom</th>
                   <th>Prénom</th>
                   <th>Email</th>
+                  {showEventName && <th>Événement</th>}
                 </>
               )}
               {onDelete && <th>Actions</th>}
             </tr>
           </thead>
           <tbody>
-            {safeUsers.map((user) => (
-              <tr key={user.email}>
+            {safeUsers.map((user, index) => (
+              <tr
+                key={`${user.email}-${user.eventName || "newsletter"}-${index}`}
+              >
                 {onlyEmail ? (
                   <td>{user.email}</td>
                 ) : (
@@ -47,6 +52,7 @@ export default function AdminUserList({
                     <td>{user.lastName}</td>
                     <td>{user.firstName}</td>
                     <td>{user.email}</td>
+                    {showEventName && <td>{user.eventName || "N/A"}</td>}
                   </>
                 )}
                 {onDelete && (

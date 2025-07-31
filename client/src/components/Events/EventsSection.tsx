@@ -1,12 +1,5 @@
 import "../../styles/events.css";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import api from "../../config/axiosConfig";
 import type { Event } from "../../types/admin";
@@ -38,36 +31,26 @@ export default function EventsSection() {
         <h2>Prochains Évènements</h2>
         <div className="events-horizontal-scroll">
           {events.map((event) => (
-            <Box
-              key={event.id}
-              sx={{
-                minWidth: 320,
-                maxWidth: 400,
-                mx: 2,
-                flex: "0 0 auto",
-              }}
-            >
-              <Card
-                sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  alignItems: "stretch",
-                  minHeight: 320,
-                }}
-              >
+            <div key={event.id} className="event-card-container">
+              <div className="event-card">
                 {event.image && (
-                  <CardMedia
-                    component="img"
-                    sx={{ width: { xs: "100%", md: 300 }, objectFit: "cover" }}
-                    image={
+                  <img
+                    className="event-card-image"
+                    src={
                       event.image.startsWith("/uploads/")
-                        ? event.image
-                        : `/src/assets/images/${event.image}`
+                        ? `http://localhost:3310${event.image}`
+                        : event.image.startsWith("http")
+                          ? event.image
+                          : `/src/assets/images/${event.image}`
                     }
                     alt={event.title}
+                    onError={(e) => {
+                      e.currentTarget.src =
+                        "/src/assets/images/placeholder.jpg";
+                    }}
                   />
                 )}
-                <CardContent sx={{ flex: 1 }}>
+                <div className="event-card-content">
                   <Typography variant="h5" gutterBottom>
                     {event.title}
                   </Typography>
@@ -91,14 +74,18 @@ export default function EventsSection() {
                   >
                     Réserver
                   </Button>
-                </CardContent>
-              </Card>
-            </Box>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
       <div className="events-photo-block">
-        <img src="/src/assets/images/aleksandr.jpg" alt="Logo La Bringuerie" />
+        <img
+          src="/src/assets/images/aleksandr.jpg"
+          alt="Logo La Bringuerie"
+          className="events-photo-image"
+        />
       </div>
       {selectedEventId !== null && (
         <FormEvent
