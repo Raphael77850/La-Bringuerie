@@ -17,6 +17,8 @@ interface EditEventDialogProps {
   onUpdate: () => void;
   currentEvent: Event | null;
   setCurrentEvent: React.Dispatch<React.SetStateAction<Event | null>>;
+  selectedUpdateFile?: File | null;
+  setSelectedUpdateFile?: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export default function EditEventDialog({
@@ -25,7 +27,16 @@ export default function EditEventDialog({
   onUpdate,
   currentEvent,
   setCurrentEvent,
+  selectedUpdateFile,
+  setSelectedUpdateFile,
 }: EditEventDialogProps) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (setSelectedUpdateFile) {
+      setSelectedUpdateFile(file);
+    }
+  };
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Modifier un événement</DialogTitle>
@@ -36,7 +47,32 @@ export default function EditEventDialog({
           type="file"
           fullWidth
           inputProps={{ accept: "image/*" }}
+          onChange={handleFileChange}
         />
+        {currentEvent?.image_url && !selectedUpdateFile && (
+          <Box sx={{ mt: 1, mb: 1 }}>
+            <img
+              src={currentEvent.image_url}
+              alt={currentEvent.title}
+              style={{
+                width: "100px",
+                height: "100px",
+                objectFit: "cover",
+                borderRadius: "4px",
+              }}
+            />
+            <p style={{ fontSize: "0.875rem", color: "#666" }}>
+              Image actuelle (sélectionnez un fichier pour la remplacer)
+            </p>
+          </Box>
+        )}
+        {selectedUpdateFile && (
+          <Box sx={{ mt: 1, mb: 1 }}>
+            <p style={{ fontSize: "0.875rem", color: "#1976d2" }}>
+              Nouvelle image sélectionnée: {selectedUpdateFile.name}
+            </p>
+          </Box>
+        )}
         <TextField
           margin="dense"
           label="Titre"

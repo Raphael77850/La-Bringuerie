@@ -30,7 +30,9 @@ export function useEventForm({
     date: "",
     startTime: "",
     endTime: "",
-    image: "",
+    image_url: "",
+    location: "",
+    max_participants: null,
   });
 
   const handleAddEvent = async () => {
@@ -44,19 +46,36 @@ export function useEventForm({
       setMessage({ type: "error", text: "Tous les champs sont obligatoires" });
       return;
     }
+
     const formattedStartDateTime = combineDateTime(
       newEvent.date,
       newEvent.startTime ?? "",
     );
-    const formattedEndDateTime = newEvent.endTime
+
+    let formattedEndDateTime = newEvent.endTime
       ? combineDateTime(newEvent.date, newEvent.endTime)
       : formattedStartDateTime;
+
+    // Si l'heure de fin est antérieure à l'heure de début, ajouter un jour
+    const startDate = new Date(formattedStartDateTime);
+    const endDate = new Date(formattedEndDateTime);
+
+    if (endDate <= startDate) {
+      endDate.setDate(endDate.getDate() + 1);
+      formattedEndDateTime = endDate.toISOString().slice(0, 19);
+    }
     const formData = new FormData();
     formData.append("title", newEvent.title);
     formData.append("description", newEvent.description || "");
     formData.append("date", formattedStartDateTime);
     formData.append("endTime", formattedEndDateTime);
     formData.append("image", selectedFile);
+    if (newEvent.location) {
+      formData.append("location", newEvent.location);
+    }
+    if (newEvent.max_participants) {
+      formData.append("max_participants", String(newEvent.max_participants));
+    }
     const config = { headers: { Authorization: `Bearer ${token}` } };
     try {
       const response = await api.post<{ id: number; imagePath: string }>(
@@ -73,7 +92,9 @@ export function useEventForm({
             description: newEvent.description,
             date: formattedStartDateTime,
             endTime: formattedEndDateTime,
-            image: response.data.imagePath,
+            image_url: response.data.imagePath,
+            location: newEvent.location,
+            max_participants: newEvent.max_participants,
           },
         ]);
         setOpen(false);
@@ -84,7 +105,9 @@ export function useEventForm({
           date: "",
           startTime: "",
           endTime: "",
-          image: "",
+          image_url: "",
+          location: "",
+          max_participants: null,
         });
         setSelectedFile(null);
         setMessage({ type: "success", text: "Événement ajouté avec succès" });
@@ -108,6 +131,10 @@ export function useEventForm({
       });
       return;
     }
+
+    // Réinitialiser le fichier sélectionné
+    setSelectedUpdateFile(null);
+
     // Correction : gérer le format date avec ou sans 'T'
     let date = event.date;
     let startTime = "";
@@ -146,36 +173,58 @@ export function useEventForm({
       setMessage({ type: "error", text: "L'heure de début est obligatoire" });
       return;
     }
+
     const formattedStartDateTime = combineDateTime(
       currentEvent.date,
       currentEvent.startTime,
     );
-    const formattedEndDateTime =
+
+    let formattedEndDateTime =
       currentEvent.endTime && currentEvent.endTime !== ""
         ? combineDateTime(currentEvent.date, currentEvent.endTime)
         : formattedStartDateTime;
+
+    // Si l'heure de fin est antérieure à l'heure de début, ajouter un jour
+    const startDate = new Date(formattedStartDateTime);
+    const endDate = new Date(formattedEndDateTime);
+
+    if (endDate <= startDate) {
+      endDate.setDate(endDate.getDate() + 1);
+      formattedEndDateTime = endDate.toISOString().slice(0, 19);
+    }
     const formData = new FormData();
     formData.append("id", String(currentEvent.id));
     formData.append("title", currentEvent.title);
     formData.append("description", currentEvent.description ?? "");
     formData.append("date", formattedStartDateTime);
     formData.append("endTime", formattedEndDateTime);
+    if (currentEvent.location) {
+      formData.append("location", currentEvent.location);
+    }
+    if (currentEvent.max_participants) {
+      formData.append(
+        "max_participants",
+        String(currentEvent.max_participants),
+      );
+    }
     if (selectedUpdateFile) {
       formData.append("image", selectedUpdateFile);
-    } else if (currentEvent.image) {
-      formData.append("image", currentEvent.image);
+    } else if (currentEvent.image_url) {
+      formData.append("image_url", currentEvent.image_url);
     }
     const config = { headers: { Authorization: `Bearer ${token}` } };
     try {
-      await api.put("/admin/events", formData, config);
+      await api.put<{ imagePath?: string }>("/admin/events", formData, config);
+
+      // Recharger les événements pour avoir les données à jour
       fetchEvents();
       setEditOpen(false);
       setSelectedUpdateFile(null);
-      setMessage({ type: "success", text: "Événement mis à jour avec succès" });
+      setMessage({ type: "success", text: "Évènement mis à jour avec succès" });
     } catch (error) {
       setMessage({
         type: "error",
-        text: "Erreur lors de la mise à jour de l'événement",
+        text: "Erreur lors de la mise à jour de l'évènement",
       });
     }
   };

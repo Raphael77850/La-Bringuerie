@@ -29,19 +29,31 @@ const adminActions = {
   // Ajouter un événement
   addEvent: async (req: Request, res: Response) => {
     try {
-      const { image, title, description, date, endTime } = req.body;
-
-      if (!image || !title || !description || !date || !endTime) {
-        res.status(400).json({ message: "Tous les champs sont requis" });
-        return;
-      }
-
-      const insertId = await eventRepository.createEvent({
-        image,
+      const {
+        image_url,
         title,
         description,
         date,
         endTime,
+        location,
+        max_participants,
+      } = req.body;
+
+      if (!title || !description || !date || !endTime) {
+        res.status(400).json({
+          message: "Les champs title, description, date et endTime sont requis",
+        });
+        return;
+      }
+
+      const insertId = await eventRepository.createEvent({
+        image_url: image_url || null,
+        title,
+        description,
+        date,
+        endTime,
+        location,
+        max_participants,
         id: 0,
       });
 
@@ -58,20 +70,34 @@ const adminActions = {
   // Mettre à jour un événement
   updateEvent: async (req: Request, res: Response) => {
     try {
-      const { id, image, title, description, date, endTime } = req.body;
+      const {
+        id,
+        image_url,
+        title,
+        description,
+        date,
+        endTime,
+        location,
+        max_participants,
+      } = req.body;
 
-      if (!id || !image || !title || !description || !date || !endTime) {
-        res.status(400).json({ message: "Tous les champs sont requis" });
+      if (!id || !title || !description || !date || !endTime) {
+        res.status(400).json({
+          message:
+            "Les champs id, title, description, date et endTime sont requis",
+        });
         return;
       }
 
       await eventRepository.update({
         id,
-        image,
+        image_url,
         title,
         description,
         date,
         endTime,
+        location,
+        max_participants,
       });
 
       res.status(200).json({ message: "Événement mis à jour avec succès" });

@@ -24,7 +24,12 @@ import cors from "cors";
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: [
+      "http://localhost:3000",
+      "http://127.0.0.1:3000",
+      "http://localhost:3310",
+      "http://127.0.0.1:3310",
+    ],
     credentials: true,
   }),
 );
@@ -68,9 +73,61 @@ app.use(bodyParser.json());
 // Import the API router
 import router from "./router";
 
+// Import multer for file uploads
+import fs from "node:fs";
+import multer from "multer";
+import eventAdminAction from "./modules/adminModule/eventAdminAction";
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "../public/uploads/events");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+// Configure multer for event image uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(
+      null,
+      `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`,
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only image files are allowed!"));
+    }
+  },
+});
+
 // Route API pour les événements admin
 const apiRouter = express.Router();
 apiRouter.get("/admin/events", adminAuth, adminActions.getAllEvents);
+apiRouter.post(
+  "/admin/events",
+  adminAuth,
+  upload.single("image"),
+  eventAdminAction.addEvent,
+);
+apiRouter.put(
+  "/admin/events",
+  adminAuth,
+  upload.single("image"),
+  eventAdminAction.updateEvent,
+);
+apiRouter.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
 apiRouter.get(
   "/admin/newsletter",
   adminAuth,
@@ -106,8 +163,6 @@ app.use("/api", router);
 // What it"s for:
 // - Serving client static files from the server, which is useful when building a single-page application with React.
 // - Redirecting unhandled requests (e.g., all requests not matching a defined API route) to the client's index.html. This allows the client to handle client-side routing.
-
-import fs from "node:fs";
 
 // Serve server resources
 

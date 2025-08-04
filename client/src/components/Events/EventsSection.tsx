@@ -33,15 +33,15 @@ export default function EventsSection() {
           {events.map((event) => (
             <div key={event.id} className="event-card-container">
               <div className="event-card">
-                {event.image && (
+                {event.image_url && (
                   <img
                     className="event-card-image"
                     src={
-                      event.image.startsWith("/uploads/")
-                        ? `http://localhost:3310${event.image}`
-                        : event.image.startsWith("http")
-                          ? event.image
-                          : `/src/assets/images/${event.image}`
+                      event.image_url.startsWith("/uploads/")
+                        ? `http://localhost:3310${event.image_url}`
+                        : event.image_url.startsWith("http")
+                          ? event.image_url
+                          : `/src/assets/images/${event.image_url}`
                     }
                     alt={event.title}
                     onError={(e) => {

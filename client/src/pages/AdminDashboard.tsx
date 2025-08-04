@@ -41,6 +41,8 @@ const AdminDashboard = () => {
 
   const {
     setSelectedFile,
+    selectedUpdateFile,
+    setSelectedUpdateFile,
     currentEvent,
     setCurrentEvent,
     newEvent,
@@ -126,7 +128,7 @@ const AdminDashboard = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ padding: 2 }} />
-      <Box className="admin-section" sx={{ marginBottom: 4 }}>
+      <Box className="admin-section" sx={{ marginBottom: "4rem" }}>
         <Typography variant="h4" sx={{ fontFamily: "'Francois One', serif" }}>
           Tableau de bord Administrateur
         </Typography>
@@ -170,6 +172,8 @@ const AdminDashboard = () => {
         onUpdate={handleUpdateEvent}
         currentEvent={currentEvent}
         setCurrentEvent={setCurrentEvent}
+        selectedUpdateFile={selectedUpdateFile}
+        setSelectedUpdateFile={setSelectedUpdateFile}
       />
 
       <Box className="admin-section">

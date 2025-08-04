@@ -34,6 +34,7 @@ export default function AdminEventList({
         <table className="admin-event-table">
           <thead>
             <tr>
+              <th>Image</th>
               <th>Titre</th>
               <th>Date</th>
               <th>Début</th>
@@ -47,6 +48,20 @@ export default function AdminEventList({
                 .filter((e) => e && e.id !== undefined)
                 .map((event) => (
                   <tr key={String(event.id)}>
+                    <td>
+                      {event.image_url && (
+                        <img
+                          src={event.image_url}
+                          alt={event.title}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            objectFit: "cover",
+                            borderRadius: "4px",
+                          }}
+                        />
+                      )}
+                    </td>
                     <td>{event.title}</td>
                     <td>{formatDate(event.date)}</td>
                     <td>{extractTime(event.date)}</td>

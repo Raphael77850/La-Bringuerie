@@ -11,7 +11,8 @@ interface FileRequest extends Request {
 const addEvent: RequestHandler = async (req, res, next) => {
   try {
     const fileReq = req as FileRequest;
-    const { title, description, date, endTime } = fileReq.body;
+    const { title, description, date, endTime, location, max_participants } =
+      fileReq.body;
 
     if (!title || !description || !date || !endTime) {
       res.status(400).json({ message: "Tous les champs textuels sont requis" });
@@ -28,12 +29,15 @@ const addEvent: RequestHandler = async (req, res, next) => {
     }
 
     const insertId = await eventRepository.createEvent({
-      image: imagePath,
+      image_url: imagePath,
       title,
       description,
       date,
       endTime,
-      id: 0,
+      location: location || null,
+      max_participants: max_participants
+        ? Number.parseInt(max_participants)
+        : undefined,
     });
 
     res.status(201).json({
@@ -42,16 +46,32 @@ const addEvent: RequestHandler = async (req, res, next) => {
       imagePath,
     });
   } catch (err) {
-    console.error("Error in addEvent:", err);
-    next(err);
+    console.error("=== ERROR IN ADD EVENT ===");
+    console.error("Error details:", err);
+    if (err instanceof Error) {
+      console.error("Error message:", err.message);
+      console.error("Error stack:", err.stack);
+    }
+    res.status(500).json({
+      message: "Erreur lors de l'ajout de l'événement",
+      error: err instanceof Error ? err.message : "Unknown error",
+    });
   }
 };
 
 const updateEvent: RequestHandler = async (req, res, next) => {
   try {
     const fileReq = req as FileRequest;
-    const { id, title, description, date, endTime } = fileReq.body;
-    let { image } = fileReq.body;
+    const {
+      id,
+      title,
+      description,
+      date,
+      endTime,
+      location,
+      max_participants,
+    } = fileReq.body;
+    let { image_url } = fileReq.body;
 
     if (!id || !title || !description || !date || !endTime) {
       res.status(400).json({ message: "Tous les champs textuels sont requis" });
@@ -66,39 +86,55 @@ const updateEvent: RequestHandler = async (req, res, next) => {
     }
 
     if (fileReq.file) {
-      image = `/uploads/events/${fileReq.file.filename}`;
+      // Nouvelle image uploadée
+      image_url = `/uploads/events/${fileReq.file.filename}`;
 
-      const oldImagePath = existingEvent.image;
-      if (oldImagePath.startsWith("/uploads/")) {
+      // Supprimer l'ancienne image si elle existe
+      const oldImagePath = existingEvent.image_url;
+      if (oldImagePath?.startsWith("/uploads/")) {
         const fullPath = path.join(__dirname, "../../../public", oldImagePath);
         if (fs.existsSync(fullPath)) {
           fs.unlinkSync(fullPath);
+        } else {
+          console.info("Old image file not found:", fullPath);
         }
       }
-    } else if (!image) {
-      image = existingEvent.image;
-      if (!image.startsWith("/uploads/")) {
-        res.status(400).json({ message: "Chemin de l'image invalide" });
-        return;
+    } else {
+      // Pas de nouvelle image, garder l'ancienne
+      if (!image_url) {
+        image_url = existingEvent.image_url;
       }
     }
 
-    await eventRepository.update({
+    const updateData = {
       id: Number(id),
-      image,
+      image_url,
       title,
       description,
       date,
       endTime,
-    });
+      location: location || null,
+      max_participants: max_participants
+        ? Number.parseInt(max_participants)
+        : undefined,
+    };
+
+    await eventRepository.update(updateData);
+
+    // Vérifier que la mise à jour a bien eu lieu
+    const updatedEvent = await eventRepository.getEventById(Number(id));
 
     res.status(200).json({
       message: "Événement mis à jour avec succès",
-      imagePath: image,
+      imagePath: image_url,
     });
   } catch (err) {
-    console.error("Error in updateEvent:", err);
-    next(err);
+    console.error("=== ERROR IN UPDATE EVENT ===");
+    console.error("Error details:", err);
+    res.status(500).json({
+      message: "Erreur lors de la mise à jour de l'événement",
+      error: err instanceof Error ? err.message : "Unknown error",
+    });
   }
 };
 

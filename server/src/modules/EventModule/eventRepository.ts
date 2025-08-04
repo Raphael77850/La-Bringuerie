@@ -7,11 +7,13 @@ import type { Result } from "../../../database/client";
 
 type Event = {
   id: number;
-  image: string;
+  image_url: string;
   title: string;
   description: string;
   date: string;
   endTime: string;
+  location?: string;
+  max_participants?: number;
 };
 
 type UserEvent = {
@@ -23,22 +25,26 @@ type UserEvent = {
 
 class EventRepository {
   async createEvent(event: {
-    image: string;
+    image_url: string;
     title: string;
     description: string;
     date: string;
     endTime: string;
+    location?: string;
+    max_participants?: number;
     id?: number;
   }): Promise<number> {
     try {
       const [result] = await databaseClient.query<ResultSetHeader>(
-        "INSERT INTO event (image, title, description, date, endTime) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO event (image_url, title, description, date, endTime, location, max_participants) VALUES (?, ?, ?, ?, ?, ?, ?)",
         [
-          event.image,
+          event.image_url,
           event.title,
           event.description,
           event.date,
           event.endTime,
+          event.location || null,
+          event.max_participants || null,
         ],
       );
 
@@ -90,13 +96,15 @@ class EventRepository {
   async update(event: Event) {
     try {
       await databaseClient.query<Result>(
-        "UPDATE event SET image = ?, title = ?, description = ?, date = ?, endTime = ? WHERE id = ?",
+        "UPDATE event SET image_url = ?, title = ?, description = ?, date = ?, endTime = ?, location = ?, max_participants = ? WHERE id = ?",
         [
-          event.image,
+          event.image_url,
           event.title,
           event.description,
           event.date,
           event.endTime,
+          event.location || null,
+          event.max_participants || null,
           event.id,
         ],
       );

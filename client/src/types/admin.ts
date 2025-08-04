@@ -3,9 +3,12 @@ export interface Event {
   title: string;
   date: string;
   endTime?: string;
-  image?: string;
+  image_url?: string;
   description?: string;
   startTime?: string;
+  location?: string;
+  max_participants?: number | null;
+  image?: string; // Pour compatibilité
 }
 
 export interface User {
