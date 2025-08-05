@@ -55,7 +55,7 @@ const seed = async () => {
 
     // Truncate tables (starting from the depending ones)
 
-    for (const seeder of sortedSeeders.toReversed()) {
+    for (const seeder of sortedSeeders.slice().reverse()) {
       // Use delete instead of truncate to bypass foreign key constraint
       // Wait for the delete promise to complete
       await database.query(`delete from ${seeder.table}`);
