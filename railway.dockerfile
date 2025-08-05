@@ -23,6 +23,9 @@ RUN npm run build --workspace=client
 # Build le serveur
 RUN npm run build --workspace=server
 
+# Debug: voir la structure des fichiers
+RUN ls -la /app/server/dist/
+
 # Exposer le port
 EXPOSE $PORT
 
