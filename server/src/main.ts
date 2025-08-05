@@ -9,8 +9,11 @@ import "../database/checkConnection";
 // Import the Express application from ./app
 import app from "./app";
 
-// Get the port from the environment variables
-const port = process.env.APP_PORT;
+// Export for Vercel serverless (production)
+export default app;
+
+// Railway/Production server (utilise PORT de Railway)
+const port = process.env.PORT || process.env.APP_PORT || 3310;
 
 // Start the server and listen on the specified port
 app

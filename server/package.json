@@ -5,8 +5,9 @@
     "dev": "tsx watch --clear-screen=false ./src/main",
     "db:migrate": "tsx ./bin/migrate",
     "db:seed": "tsx ./bin/seed",
-    "build": "tsx ./bin/migrate && tsc ./src/main --outDir ../dist --esModuleInterop",
-    "start": "node ../dist/src/main",
+    "build": "tsc",
+    "vercel-build": "npm run db:migrate",
+    "start": "node dist/main.js",
     "test": "jest --verbose"
   },
   "dependencies": {

@@ -22,14 +22,20 @@ const app = express();
 // For this pedagogical template, the CORS code allows CLIENT_URL in development mode (when process.env.CLIENT_URL is defined).
 import cors from "cors";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "http://localhost:3310", 
+  "http://127.0.0.1:3310",
+  // Vercel auto-generated URLs
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+  // Your custom domain (add when you have one)
+  // "https://votre-domaine.com"
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:3000",
-      "http://localhost:3310",
-      "http://127.0.0.1:3310",
-    ],
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
