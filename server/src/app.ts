@@ -25,7 +25,7 @@ import cors from "cors";
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
-  "http://localhost:3310", 
+  "http://localhost:3310",
   "http://127.0.0.1:3310",
   // Vercel auto-generated URLs
   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
@@ -33,13 +33,15 @@ const allowedOrigins = [
   // "https://votre-domaine.com"
 ].filter(Boolean);
 
-app.use(cors({
-  origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    'http://localhost:3000'
-  ].filter(Boolean),
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_URL || "http://localhost:3000",
+      "http://localhost:3000",
+    ].filter(Boolean),
+    credentials: true,
+  }),
+);
 
 // If you need to allow extra origins, you can add something like this:
 
@@ -160,6 +162,19 @@ apiRouter.get("/admin/event-users", adminAuth, async (req, res) => {
 // Mount the API router under the "/api" endpoint
 app.use("/api", apiRouter);
 app.use("/api", router);
+
+// Route de base pour éviter "Cannot GET /"
+app.get("/", (req, res) => {
+  res.json({
+    message: "🍺 API La Bringuerie is running!",
+    status: "OK",
+    endpoints: {
+      health: "/api/health",
+      events: "/api/events",
+      newsletter: "/api/newsletter",
+    },
+  });
+});
 
 /* ************************************************************************* */
 

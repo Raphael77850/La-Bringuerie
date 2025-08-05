@@ -1,4 +1,5 @@
 import express from "express";
+import databaseClient from "../database/client";
 import eventActions from "./modules/EventModule/eventActions";
 import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 import adminActions from "./modules/adminModule/adminActions";
@@ -15,6 +16,31 @@ const router = express.Router();
 /* ************************************************************************* */
 // Define Your API Routes Here
 /* ************************************************************************* */
+
+// Health check route
+router.get("/health", async (req, res) => {
+  try {
+    // Test de connexion à la base de données
+    const [rows] = await databaseClient.query("SELECT 1 as test");
+
+    res.json({
+      status: "OK",
+      message: "Server is running",
+      database: "Connected",
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || "development",
+    });
+  } catch (error) {
+    console.error("Health check failed:", error);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Database connection failed",
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || "development",
+    });
+  }
+});
 
 // Define item-related routes
 router.get("/items", itemActions.browse);
