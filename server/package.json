@@ -1,5 +1,8 @@
 {
   "name": "@js-monorepo/server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
   "scripts": {
     "check-types": "tsc --noEmit",
     "dev": "tsx watch --clear-screen=false ./src/main",
