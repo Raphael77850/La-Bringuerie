@@ -5,8 +5,6 @@
 
 [deploy]
   startCommand = "npm start --workspace=server"
-  restartPolicyType = "on-failure"
-  restartPolicyMaxRetries = 10
 
 [[services]]
   [services.variables]
