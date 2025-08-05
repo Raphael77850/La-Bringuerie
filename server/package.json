@@ -10,7 +10,7 @@
     "db:seed": "tsx ./bin/seed",
     "build": "tsc",
     "vercel-build": "npm run db:migrate",
-    "start": "node dist/main.js || node dist/src/main.js",
+    "start": "node dist/src/main.js",
     "test": "jest --verbose"
   },
   "dependencies": {
