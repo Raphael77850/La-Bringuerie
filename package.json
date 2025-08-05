@@ -1,5 +1,5 @@
 {
-  "name": "La-Bringuerie",
+  "name": "la-bringuerie",
   "version": "0.0.1",
   "description": "",
   "homepage": "https://github.com/Bringuerie-org/La-Bringuerie#readme",
@@ -22,6 +22,7 @@
     "dev:server": "npm run dev --workspace=server",
     "prepare": "husky || true",
     "start": "npm run start --workspace=server",
+    "railway:deploy": "railway up",
     "test": "npm run test --workspaces --if-present"
   },
   "keywords": [],

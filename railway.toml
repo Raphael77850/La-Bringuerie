@@ -1,0 +1,14 @@
+# Railway configuration
+[build]
+  builder = "dockerfile"
+  dockerfilePath = "railway.dockerfile"
+
+[deploy]
+  startCommand = "npm start --workspace=server"
+  restartPolicyType = "on-failure"
+  restartPolicyMaxRetries = 10
+
+[[services]]
+  [services.variables]
+    NODE_ENV = "production"
+    NPM_CONFIG_PRODUCTION = "false"

@@ -1,0 +1,10 @@
+// Railway deployment configuration
+{
+  "name": "la-bringuerie",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "npm run start:prod"
+  }
+}
