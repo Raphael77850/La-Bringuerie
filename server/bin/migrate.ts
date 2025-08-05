@@ -7,8 +7,27 @@ import path from "node:path";
 // Build the path to the schema SQL file
 const schema = path.join(__dirname, "../../server/database/schema.sql");
 
-// Get database connection details from .env file
-const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+// Get database connection details from .env file (Railway compatible)
+const { 
+  DB_HOST, 
+  DB_PORT, 
+  DB_USER, 
+  DB_PASSWORD, 
+  DB_NAME,
+  // Railway variables
+  MYSQLHOST,
+  MYSQLPORT, 
+  MYSQLUSER,
+  MYSQLPASSWORD,
+  MYSQLDATABASE
+} = process.env;
+
+// Use Railway variables if available, fallback to custom
+const host = MYSQLHOST || DB_HOST;
+const port = MYSQLPORT || DB_PORT;
+const user = MYSQLUSER || DB_USER;
+const password = MYSQLPASSWORD || DB_PASSWORD;
+const database = MYSQLDATABASE || DB_NAME;
 
 // Update the database schema
 import mysql from "mysql2/promise";
@@ -19,30 +38,27 @@ const migrate = async () => {
     const sql = fs.readFileSync(schema, "utf8");
 
     // Create a specific connection to the database
-    const database = await mysql.createConnection({
-      host: DB_HOST,
-      port: DB_PORT as number | undefined,
-      user: DB_USER,
-      password: DB_PASSWORD,
+    const connection = await mysql.createConnection({
+      host,
+      port: Number(port),
+      user,
+      password,
       multipleStatements: true, // Allow multiple SQL statements
     });
 
-    // Drop the existing database if it exists
-    await database.query(`drop database if exists ${DB_NAME}`);
+    // Create database if it doesn't exist
+    await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\``);
 
-    // Create a new database with the specified name
-    await database.query(`create database ${DB_NAME}`);
-
-    // Switch to the newly created database
-    await database.query(`use ${DB_NAME}`);
+    // Switch to the database
+    await connection.query(`USE \`${database}\``);
 
     // Execute the SQL statements to update the database schema
-    await database.query(sql);
+    await connection.query(sql);
 
     // Close the database connection
-    database.end();
+    await connection.end();
 
-    console.info(`${DB_NAME} updated from '${path.normalize(schema)}' 🆙`);
+    console.info(`✅ Database ${database} updated from schema.sql`);
   } catch (err) {
     const { message, stack } = err as Error;
     console.error("Error updating the database:", message, stack);
