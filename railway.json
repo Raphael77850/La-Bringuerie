@@ -1,9 +1,3 @@
 {
-  "$schema": "https://railway.app/railway.schema.json",
-  "deploy": {
-    "startCommand": "npm start --workspace=server"
-  },
-  "build": {
-    "builder": "NIXPACKS"
-  }
+  "$schema": "https://railway.app/railway.schema.json"
 }
