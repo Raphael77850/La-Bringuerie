@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Créez une instance d'axios avec une configuration de base
 const api = axios.create({
-  baseURL: "http://localhost:3310/api", // ou l'URL de votre serveur backend
+  baseURL: import.meta.env.VITE_API_URL || `${window.location.origin}/api`, // URL de votre serveur backend
 });
 
 // Ajoute automatiquement le token d'accès à chaque requête si présent

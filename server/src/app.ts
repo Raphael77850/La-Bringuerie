@@ -163,42 +163,6 @@ apiRouter.get("/admin/event-users", adminAuth, async (req, res) => {
 app.use("/api", apiRouter);
 app.use("/api", router);
 
-// Route de base pour éviter "Cannot GET /"
-app.get("/", (req, res) => {
-  // Essayer de servir le frontend local
-  const clientBuildPath = path.join(__dirname, "../../../client/dist");
-  const indexPath = path.join(clientBuildPath, "index.html");
-
-  console.info(`Client build path: ${clientBuildPath}`);
-  console.info(`Index.html exists: ${fs.existsSync(indexPath)}`);
-  console.info(`CLIENT_URL: ${process.env.CLIENT_URL}`);
-  console.info(`NODE_ENV: ${process.env.NODE_ENV}`);
-
-  if (fs.existsSync(indexPath)) {
-    console.info("Serving index.html from frontend");
-    return res.sendFile(indexPath);
-  }
-
-  // Fallback API info seulement si le frontend n'existe pas
-  console.warn("Frontend not found, serving API info");
-  res.json({
-    message: "🍺 API La Bringuerie is running!",
-    status: "OK",
-    endpoints: {
-      health: "/api/health",
-      events: "/api/events",
-      newsletter: "/api/newsletter",
-    },
-    debug: {
-      clientBuildPath: clientBuildPath,
-      indexExists: fs.existsSync(indexPath),
-      __dirname: __dirname,
-      CLIENT_URL: process.env.CLIENT_URL,
-      NODE_ENV: process.env.NODE_ENV,
-    },
-  });
-});
-
 /* ************************************************************************* */
 
 // Production-ready setup: What is it for?
@@ -223,6 +187,28 @@ if (fs.existsSync(clientBuildPath)) {
   console.info(`Serving client from: ${clientBuildPath}`);
   app.use(express.static(clientBuildPath));
 }
+
+// Route de fallback pour SPA (Single Page Application) - doit être en dernier
+const spaFallback: express.RequestHandler = (req, res) => {
+  // Ne pas intercepter les routes API
+  if (req.path.startsWith("/api")) {
+    res.status(404).json({ error: "API route not found" });
+    return;
+  }
+
+  const indexPath = path.join(clientBuildPath, "index.html");
+
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+    return;
+  }
+
+  res.status(404).json({ error: "Frontend not found" });
+};
+
+app.use("*", spaFallback);
+
+/* ************************************************************************* */
 
 /* ************************************************************************* */
 

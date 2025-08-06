@@ -38,7 +38,7 @@ export default function EventsSection() {
                     className="event-card-image"
                     src={
                       event.image_url.startsWith("/uploads/")
-                        ? `http://localhost:3310${event.image_url}`
+                        ? `${import.meta.env.VITE_API_URL || window.location.origin}${event.image_url}`
                         : event.image_url.startsWith("http")
                           ? event.image_url
                           : `/src/assets/images/${event.image_url}`
@@ -82,7 +82,7 @@ export default function EventsSection() {
       </div>
       <div className="events-photo-block">
         <img
-          src="/src/assets/images/aleksandr.jpg"
+          src="/aleksandr.jpg"
           alt="Logo La Bringuerie"
           className="events-photo-image"
         />
