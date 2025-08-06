@@ -165,6 +165,28 @@ app.use("/api", router);
 
 // Route de base pour éviter "Cannot GET /"
 app.get("/", (req, res) => {
+  // Si CLIENT_URL est défini (production), rediriger vers le frontend externe
+  if (process.env.CLIENT_URL && process.env.NODE_ENV === "production") {
+    console.info(`Redirecting to external frontend: ${process.env.CLIENT_URL}`);
+    return res.redirect(process.env.CLIENT_URL);
+  }
+  
+  // Sinon, essayer de servir le frontend local
+  const clientBuildPath = path.join(__dirname, "../../client/dist");
+  const indexPath = path.join(clientBuildPath, "index.html");
+  
+  console.info(`Client build path: ${clientBuildPath}`);
+  console.info(`Index.html exists: ${fs.existsSync(indexPath)}`);
+  console.info(`CLIENT_URL: ${process.env.CLIENT_URL}`);
+  console.info(`NODE_ENV: ${process.env.NODE_ENV}`);
+  
+  if (fs.existsSync(indexPath)) {
+    console.info("Serving index.html from frontend");
+    return res.sendFile(indexPath);
+  }
+  
+  // Fallback API info seulement si le frontend n'existe pas
+  console.warn("Frontend not found, serving API info");
   res.json({
     message: "🍺 API La Bringuerie is running!",
     status: "OK",
@@ -173,6 +195,13 @@ app.get("/", (req, res) => {
       events: "/api/events",
       newsletter: "/api/newsletter",
     },
+    debug: {
+      clientBuildPath: clientBuildPath,
+      indexExists: fs.existsSync(indexPath),
+      __dirname: __dirname,
+      CLIENT_URL: process.env.CLIENT_URL,
+      NODE_ENV: process.env.NODE_ENV
+    }
   });
 });
 
@@ -188,10 +217,10 @@ app.get("/", (req, res) => {
 
 // Serve server resources
 
-const publicFolderPath = path.join(__dirname, "../../server/public");
+const publicFolderPath = path.join(__dirname, "../public");
 
 if (fs.existsSync(publicFolderPath)) {
-  app.use(express.static(publicFolderPath));
+  app.use("/uploads", express.static(path.join(publicFolderPath, "uploads")));
 }
 
 // Serve client resources
@@ -199,17 +228,20 @@ if (fs.existsSync(publicFolderPath)) {
 const clientBuildPath = path.join(__dirname, "../../client/dist");
 
 if (fs.existsSync(clientBuildPath)) {
+  console.info(`Serving client from: ${clientBuildPath}`);
   app.use(express.static(clientBuildPath));
 
   // Redirect unhandled requests to the client index file
-
-  app.get("*", (_, res) => {
+  app.get("*", (req, res) => {
+    // Don't redirect API routes
+    if (req.path.startsWith("/api")) {
+      return res.status(404).json({ error: "API route not found" });
+    }
     res.sendFile("index.html", { root: clientBuildPath });
   });
+} else {
+  console.warn(`Client build path not found: ${clientBuildPath}`);
 }
-
-// Serve uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 /* ************************************************************************* */
 

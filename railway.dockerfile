@@ -24,7 +24,12 @@ RUN npm run build --workspace=client
 RUN npm run build --workspace=server
 
 # Debug: voir la structure des fichiers
-RUN ls -la /app/server/dist/
+RUN echo "=== Structure du répertoire ===" && \
+    ls -la /app/ && \
+    echo "=== Client dist ===" && \
+    ls -la /app/client/dist/ 2>/dev/null || echo "Client dist non trouvé" && \
+    echo "=== Server dist ===" && \
+    ls -la /app/server/dist/ 2>/dev/null || echo "Server dist non trouvé"
 
 # Exposer le port
 EXPOSE $PORT
