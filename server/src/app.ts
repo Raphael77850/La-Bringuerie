@@ -165,13 +165,7 @@ app.use("/api", router);
 
 // Route de base pour éviter "Cannot GET /"
 app.get("/", (req, res) => {
-  // Si CLIENT_URL est défini (production), rediriger vers le frontend externe
-  if (process.env.CLIENT_URL && process.env.NODE_ENV === "production") {
-    console.info(`Redirecting to external frontend: ${process.env.CLIENT_URL}`);
-    return res.redirect(process.env.CLIENT_URL);
-  }
-
-  // Sinon, essayer de servir le frontend local
+  // Essayer de servir le frontend local
   const clientBuildPath = path.join(__dirname, "../../../client/dist");
   const indexPath = path.join(clientBuildPath, "index.html");
 
