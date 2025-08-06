@@ -172,7 +172,7 @@ app.get("/", (req, res) => {
   }
 
   // Sinon, essayer de servir le frontend local
-  const clientBuildPath = path.join(__dirname, "../../client/dist");
+  const clientBuildPath = path.join(__dirname, "../../../client/dist");
   const indexPath = path.join(clientBuildPath, "index.html");
 
   console.info(`Client build path: ${clientBuildPath}`);
@@ -224,7 +224,7 @@ if (fs.existsSync(publicFolderPath)) {
 }
 
 // Serve client resources
-const clientBuildPath = path.join(__dirname, "../../client/dist");
+const clientBuildPath = path.join(__dirname, "../../../client/dist");
 if (fs.existsSync(clientBuildPath)) {
   console.info(`Serving client from: ${clientBuildPath}`);
   app.use(express.static(clientBuildPath));
