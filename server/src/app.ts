@@ -170,21 +170,21 @@ app.get("/", (req, res) => {
     console.info(`Redirecting to external frontend: ${process.env.CLIENT_URL}`);
     return res.redirect(process.env.CLIENT_URL);
   }
-  
+
   // Sinon, essayer de servir le frontend local
   const clientBuildPath = path.join(__dirname, "../../client/dist");
   const indexPath = path.join(clientBuildPath, "index.html");
-  
+
   console.info(`Client build path: ${clientBuildPath}`);
   console.info(`Index.html exists: ${fs.existsSync(indexPath)}`);
   console.info(`CLIENT_URL: ${process.env.CLIENT_URL}`);
   console.info(`NODE_ENV: ${process.env.NODE_ENV}`);
-  
+
   if (fs.existsSync(indexPath)) {
     console.info("Serving index.html from frontend");
     return res.sendFile(indexPath);
   }
-  
+
   // Fallback API info seulement si le frontend n'existe pas
   console.warn("Frontend not found, serving API info");
   res.json({
@@ -200,8 +200,8 @@ app.get("/", (req, res) => {
       indexExists: fs.existsSync(indexPath),
       __dirname: __dirname,
       CLIENT_URL: process.env.CLIENT_URL,
-      NODE_ENV: process.env.NODE_ENV
-    }
+      NODE_ENV: process.env.NODE_ENV,
+    },
   });
 });
 
@@ -224,23 +224,10 @@ if (fs.existsSync(publicFolderPath)) {
 }
 
 // Serve client resources
-
 const clientBuildPath = path.join(__dirname, "../../client/dist");
-
 if (fs.existsSync(clientBuildPath)) {
   console.info(`Serving client from: ${clientBuildPath}`);
   app.use(express.static(clientBuildPath));
-
-  // Redirect unhandled requests to the client index file
-  app.get("*", (req, res) => {
-    // Don't redirect API routes
-    if (req.path.startsWith("/api")) {
-      return res.status(404).json({ error: "API route not found" });
-    }
-    res.sendFile("index.html", { root: clientBuildPath });
-  });
-} else {
-  console.warn(`Client build path not found: ${clientBuildPath}`);
 }
 
 /* ************************************************************************* */
@@ -248,10 +235,13 @@ if (fs.existsSync(clientBuildPath)) {
 // Middleware for Error Logging
 // Important: Error-handling middleware should be defined last, after other app.use() and routes calls.
 
-import type { ErrorRequestHandler } from "express";
-
 // Define a middleware function to log errors
-const logErrors: ErrorRequestHandler = (err, req, res, next) => {
+const logErrors = (
+  err: unknown,
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
   // Log the error to the console for debugging purposes
   console.error(err);
   console.error("on req:", req.method, req.path);
