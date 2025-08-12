@@ -8,18 +8,18 @@ import path from "node:path";
 const schema = path.join(__dirname, "../../server/database/schema.sql");
 
 // Get database connection details from .env file (Railway compatible)
-const { 
-  DB_HOST, 
-  DB_PORT, 
-  DB_USER, 
-  DB_PASSWORD, 
+const {
+  DB_HOST,
+  DB_PORT,
+  DB_USER,
+  DB_PASSWORD,
   DB_NAME,
   // Railway variables
   MYSQLHOST,
-  MYSQLPORT, 
+  MYSQLPORT,
   MYSQLUSER,
   MYSQLPASSWORD,
-  MYSQLDATABASE
+  MYSQLDATABASE,
 } = process.env;
 
 // Use Railway variables if available, fallback to custom

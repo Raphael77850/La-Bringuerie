@@ -82,8 +82,8 @@ export default function EventsSection() {
       </div>
       <div className="events-photo-block">
         <img
-          src="/aleksandr.jpg"
-          alt="Logo La Bringuerie"
+          src="/src/assets/images/aleksandr.jpg"
+          alt="Fiesta"
           className="events-photo-image"
         />
       </div>

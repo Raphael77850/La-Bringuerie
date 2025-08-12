@@ -27,6 +27,8 @@ const allowedOrigins = [
   "http://127.0.0.1:3000",
   "http://localhost:3310",
   "http://127.0.0.1:3310",
+  // Railway frontend URL
+  "https://la-bringuerie-production.up.railway.app",
   // Vercel auto-generated URLs
   process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
   // Your custom domain (add when you have one)
@@ -38,6 +40,7 @@ app.use(
     origin: [
       process.env.CLIENT_URL || "http://localhost:3000",
       "http://localhost:3000",
+      "https://la-bringuerie-production.up.railway.app",
     ].filter(Boolean),
     credentials: true,
   }),

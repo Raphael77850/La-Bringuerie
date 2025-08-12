@@ -82,6 +82,12 @@ router.delete(
 
 router.post("/login", authActions.login);
 
+// Route pour l'interface admin (serve the admin page)
+router.get("/admin", (req, res) => {
+  // Si c'est une SPA, on redirige vers la page principale pour laisser React Router gérer
+  res.redirect("/");
+});
+
 // Route pour créer un nouvel admin (protégée)
 router.post("/admin/create", adminAuth, adminCreateAction.createAdmin);
 

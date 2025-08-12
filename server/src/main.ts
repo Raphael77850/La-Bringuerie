@@ -15,6 +15,13 @@ export default app;
 // Railway/Production server (utilise PORT de Railway)
 const port = process.env.PORT || process.env.APP_PORT || 3310;
 
+console.info("=== SERVER STARTUP DEBUG ===");
+console.info("NODE_ENV:", process.env.NODE_ENV || "NOT_SET");
+console.info("PORT:", process.env.PORT || "NOT_SET");
+console.info("APP_PORT:", process.env.APP_PORT || "NOT_SET");
+console.info("Final port:", port);
+console.info("==============================");
+
 // Start the server and listen on the specified port
 app
   .listen(port, () => {

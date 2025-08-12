@@ -30,7 +30,7 @@ const router = createBrowserRouter([
       { path: "", element: <HomePage /> },
       { path: "mentions-legales", element: <LegalNoticePage /> },
       { path: "politique-confidentialite", element: <PrivacyPolicyPage /> },
-      { path: "admin", element: <AdminDashboard /> }, // <-- AJOUTE CETTE LIGNE
+      { path: "admin", element: <AdminDashboard /> },
       { path: "*", element: <NotFoundPage /> },
     ],
   },
