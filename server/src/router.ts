@@ -88,6 +88,10 @@ router.get("/admin", (req, res) => {
   res.redirect("/");
 });
 
+// TEMPORAIRE : Route pour créer le premier admin (SANS authentification)
+// ⚠️ À SUPPRIMER après création du premier admin
+router.post("/admin/bootstrap", adminCreateAction.createAdmin);
+
 // Route pour créer un nouvel admin (protégée)
 router.post("/admin/create", adminAuth, adminCreateAction.createAdmin);
 

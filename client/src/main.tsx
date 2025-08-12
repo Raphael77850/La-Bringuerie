@@ -17,6 +17,7 @@ import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 // import Contact from "./pages/Contact";
 import AdminDashboard from "./pages/AdminDashboard";
+import BootstrapPage from "./pages/BootstrapPage";
 
 /* ************************************************************************* */
 
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { path: "mentions-legales", element: <LegalNoticePage /> },
       { path: "politique-confidentialite", element: <PrivacyPolicyPage /> },
       { path: "admin", element: <AdminDashboard /> },
+      { path: "bootstrap", element: <BootstrapPage /> }, // ⚠️ TEMPORAIRE
       { path: "*", element: <NotFoundPage /> },
     ],
   },
