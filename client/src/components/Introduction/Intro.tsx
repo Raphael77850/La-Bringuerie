@@ -2,7 +2,7 @@ export default function Intro() {
   return (
     <section className="intro-section">
       <div className="intro-photo-block">
-        <img src="/src/assets/images/friends.jpg" alt="3 friends" />
+        <img src="/friends.jpg" alt="3 friends" />
       </div>
       <div className="intro-text-block">
         <h1>La Bringuerie</h1>

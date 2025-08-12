@@ -81,11 +81,7 @@ export default function EventsSection() {
         </div>
       </div>
       <div className="events-photo-block">
-        <img
-          src="/src/assets/images/aleksandr.jpg"
-          alt="Fiesta"
-          className="events-photo-image"
-        />
+        <img src="/aleksandr.jpg" alt="Fiesta" className="events-photo-image" />
       </div>
       {selectedEventId !== null && (
         <FormEvent
