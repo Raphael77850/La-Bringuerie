@@ -90,7 +90,24 @@ router.get("/admin", (req, res) => {
 
 // TEMPORAIRE : Route pour créer le premier admin (SANS authentification)
 // ⚠️ À SUPPRIMER après création du premier admin
-router.post("/admin/bootstrap", adminCreateAction.createAdmin);
+router.post("/admin/bootstrap", async (req, res) => {
+  try {
+    console.info("Bootstrap route called with:", { email: req.body.email });
+
+    // Test de connexion à la base de données d'abord
+    await databaseClient.query("SELECT 1 as test");
+    console.info("Database connection OK for bootstrap");
+
+    // Appeler l'action de création
+    await adminCreateAction.createAdmin(req, res);
+  } catch (error) {
+    console.error("Bootstrap error:", error);
+    res.status(500).json({
+      error: "Erreur lors de la création de l'admin",
+      details: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
 
 // Route pour créer un nouvel admin (protégée)
 router.post("/admin/create", adminAuth, adminCreateAction.createAdmin);
