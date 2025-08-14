@@ -35,14 +35,14 @@ const finalConfig = {
   port: Number.parseInt((MYSQLPORT || DB_PORT) as string),
   user: MYSQLUSER || DB_USER,
   password: MYSQLPASSWORD || DB_PASSWORD,
-  database: MYSQLDATABASE || DB_NAME,
+  // Temporairement sans database spécifique pour tester la connexion
+  // database: MYSQLDATABASE || DB_NAME || "mysql",
 };
 
 console.info("Final host:", finalConfig.host);
 console.info("Final port:", finalConfig.port);
 console.info("Final user:", finalConfig.user);
 console.info("Final password:", finalConfig.password ? "***SET***" : "NOT_SET");
-console.info("Final database:", finalConfig.database);
 
 // Emergency: Si les variables Railway ne sont pas configurées, utiliser les variables Railway Provider
 if (!MYSQLPASSWORD && process.env.NODE_ENV === "production") {
