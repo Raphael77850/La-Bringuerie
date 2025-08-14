@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import bcrypt from "bcrypt";
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import type { FieldPacket, RowDataPacket } from "mysql2";
@@ -22,6 +23,8 @@ export const login = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
+    console.info("Login attempt for:", req.body.email);
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -29,35 +32,50 @@ export const login = async (
       return;
     }
 
-    // Hasher le mot de passe pour le comparer avec celui stocké en base
-    const hashedPassword = crypto
-      .createHash("sha256")
-      .update(password)
-      .digest("hex");
-
     // Chercher l'administrateur dans la base de données
     const [rows, fields]: [RowDataPacket[], FieldPacket[]] =
       await databaseClient.query(
-        "SELECT id, email FROM admin WHERE email = ? AND password = ?",
-        [email, hashedPassword],
+        "SELECT id, email, password FROM admin WHERE email = ?",
+        [email],
       );
+
+    console.info("Database query result:", {
+      found: rows.length > 0,
+      email: email,
+    });
 
     // Vérifier si l'administrateur existe
     if (Array.isArray(rows) && rows.length > 0) {
       const admin = rows[0];
 
-      // Créer un token JWT
-      const token = jwt.sign(
-        { id: admin.id, email: admin.email, role: "admin" },
-        process.env.JWT_SECRET || "votre_clé_secrète",
-        { expiresIn: "8h" },
-      );
+      // Comparer le mot de passe avec bcrypt
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
 
-      res.json({
-        token,
-        admin: { id: admin.id, email: admin.email, name: admin.name },
+      console.info("Password validation:", {
+        isValid: isPasswordValid,
+        hasStoredPassword: !!admin.password,
       });
+
+      if (isPasswordValid) {
+        // Créer un token JWT
+        const token = jwt.sign(
+          { id: admin.id, email: admin.email, role: "admin" },
+          process.env.JWT_SECRET || "votre_clé_secrète",
+          { expiresIn: "8h" },
+        );
+
+        console.info("Login successful for:", email);
+
+        res.json({
+          token,
+          admin: { id: admin.id, email: admin.email },
+        });
+      } else {
+        console.warn("Invalid password for:", email);
+        res.status(401).json({ message: "Identifiants invalides" });
+      }
     } else {
+      console.warn("Admin not found for email:", email);
       res.status(401).json({ message: "Identifiants invalides" });
     }
   } catch (error) {

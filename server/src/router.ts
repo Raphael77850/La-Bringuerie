@@ -61,6 +61,27 @@ router.get("/check-tables", async (req, res) => {
   }
 });
 
+// Route pour vérifier l'admin créé (DEBUG)
+router.get("/check-admin", async (req, res) => {
+  try {
+    const [admins] = await databaseClient.query(
+      "SELECT id, email, created_at FROM admin ORDER BY created_at DESC LIMIT 5",
+    );
+    res.json({
+      status: "OK",
+      message: "Admin check",
+      admins: admins,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "ERROR",
+      message: "Failed to check admin",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 // TEMPORAIRE : Route pour initialiser la base de données
 router.get("/init-db", async (req, res) => {
   try {
