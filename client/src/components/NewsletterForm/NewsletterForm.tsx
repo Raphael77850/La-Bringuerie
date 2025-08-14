@@ -1,6 +1,7 @@
 import "../../styles/newsletter.css";
 import { Alert, Button, Snackbar, TextField } from "@mui/material";
 import { useState } from "react";
+import api from "../../config/axiosConfig";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -23,14 +24,8 @@ export default function NewsletterForm() {
       return;
     }
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/newsletter`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        },
-      );
+      const response = await api.post("/newsletter", { email });
+
       if (response.status === 201) {
         setMessage({ type: "success", text: "Inscription réussie !" });
         setEmail("");
@@ -44,7 +39,22 @@ export default function NewsletterForm() {
       }
       setOpen(true);
     } catch (error) {
-      setMessage({ type: "error", text: "Une erreur est survenue." });
+      console.error("Newsletter subscription error:", error);
+
+      // Gérer les erreurs HTTP spécifiques
+      if (error && typeof error === "object" && "response" in error) {
+        const axiosError = error as { response?: { status?: number } };
+        if (axiosError.response?.status === 409) {
+          setMessage({
+            type: "error",
+            text: "Cet email est déjà inscrit à la newsletter.",
+          });
+        } else {
+          setMessage({ type: "error", text: "Une erreur est survenue." });
+        }
+      } else {
+        setMessage({ type: "error", text: "Une erreur est survenue." });
+      }
       setOpen(true);
     }
   };
