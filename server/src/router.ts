@@ -42,6 +42,25 @@ router.get("/health", async (req, res) => {
   }
 });
 
+// Route simple pour vérifier les tables
+router.get("/check-tables", async (req, res) => {
+  try {
+    const [tables] = await databaseClient.query("SHOW TABLES");
+    res.json({
+      status: "OK",
+      message: "Database tables check",
+      tables: tables,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "ERROR",
+      message: "Failed to check tables",
+      error: error instanceof Error ? error.message : "Unknown error",
+    });
+  }
+});
+
 // TEMPORAIRE : Route pour initialiser la base de données
 router.get("/init-db", async (req, res) => {
   try {
