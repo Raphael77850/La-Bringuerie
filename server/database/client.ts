@@ -43,6 +43,19 @@ console.info("Final port:", finalConfig.port);
 console.info("Final user:", finalConfig.user);
 console.info("Final password:", finalConfig.password ? "***SET***" : "NOT_SET");
 console.info("Final database:", finalConfig.database);
+
+// Emergency: Si les variables Railway ne sont pas configurées, utiliser les variables Railway Provider
+if (!MYSQLPASSWORD && process.env.NODE_ENV === "production") {
+  console.warn(
+    "⚠️ MYSQLPASSWORD not set, checking Railway Provider variables...",
+  );
+  finalConfig.password = process.env.MYSQL_ROOT_PASSWORD || DB_PASSWORD;
+  console.info(
+    "Using MYSQL_ROOT_PASSWORD:",
+    finalConfig.password ? "***SET***" : "NOT_SET",
+  );
+}
+
 console.info("=====================================");
 
 // Create a connection pool to the database
