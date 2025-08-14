@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+import api from "../../config/axiosConfig";
 
 interface FormEventProps {
   eventId: number;
@@ -29,43 +30,53 @@ export default function FormEvent({ eventId, open, onClose }: FormEventProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/user_event`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            ...formData,
-            event_id: eventId,
-          }),
-        },
-      );
+      const response = await api.post("/user_event", {
+        ...formData,
+        event_id: eventId,
+      });
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 201) {
         setMessage({
           type: "success",
-          text: data.message || "Inscription réussie",
+          text:
+            (response.data as { message?: string })?.message ||
+            "Inscription réussie",
         });
         setTimeout(() => {
           onClose();
           setFormData({ firstName: "", lastName: "", email: "" });
           setMessage(null);
         }, 2000);
+      }
+    } catch (error) {
+      console.error("Event subscription error:", error);
+
+      // Gérer les erreurs HTTP spécifiques
+      if (error && typeof error === "object" && "response" in error) {
+        const axiosError = error as {
+          response?: { status?: number; data?: { message?: string } };
+        };
+        if (axiosError.response?.status === 409) {
+          setMessage({
+            type: "error",
+            text:
+              axiosError.response.data?.message ||
+              "Vous êtes déjà inscrit à cet événement.",
+          });
+        } else {
+          setMessage({
+            type: "error",
+            text:
+              axiosError.response?.data?.message ||
+              "Erreur lors de l'inscription",
+          });
+        }
       } else {
         setMessage({
           type: "error",
-          text: data.message || "Erreur lors de l'inscription",
+          text: "Erreur lors de l'inscription",
         });
       }
-    } catch (err) {
-      setMessage({
-        type: "error",
-        text: "Erreur lors de l'inscription",
-      });
     }
   };
 
