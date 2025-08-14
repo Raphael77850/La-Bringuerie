@@ -48,7 +48,12 @@ console.info("=====================================");
 // Create a connection pool to the database
 import mysql from "mysql2/promise";
 
-const client = mysql.createPool(finalConfig);
+const client = mysql.createPool({
+  ...finalConfig,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
 // Ready to export
 export default client;

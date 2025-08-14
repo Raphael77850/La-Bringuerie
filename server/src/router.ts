@@ -42,6 +42,73 @@ router.get("/health", async (req, res) => {
   }
 });
 
+// TEMPORAIRE : Route pour initialiser la base de données
+router.get("/init-db", async (req, res) => {
+  try {
+    console.info("Initializing database...");
+
+    // Créer la table admin si elle n'existe pas
+    await databaseClient.query(`
+      CREATE TABLE IF NOT EXISTS admin (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
+
+    // Créer d'autres tables essentielles
+    await databaseClient.query(`
+      CREATE TABLE IF NOT EXISTS newsletter (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    await databaseClient.query(`
+      CREATE TABLE IF NOT EXISTS events (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        date DATE,
+        startTime TIME,
+        endTime TIME,
+        image_url VARCHAR(500),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
+
+    await databaseClient.query(`
+      CREATE TABLE IF NOT EXISTS user_event (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        firstName VARCHAR(255) NOT NULL,
+        lastName VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        eventId INT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (eventId) REFERENCES events(id)
+      )
+    `);
+
+    res.json({
+      status: "SUCCESS",
+      message: "Database initialized successfully",
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    console.error("Database initialization failed:", error);
+    res.status(500).json({
+      status: "ERROR",
+      message: "Database initialization failed",
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+    });
+  }
+});
+
 // Define item-related routes
 router.get("/items", itemActions.browse);
 router.get("/items/:id", itemActions.read);
