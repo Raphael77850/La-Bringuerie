@@ -3,6 +3,7 @@ import { Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import api from "../../config/axiosConfig";
 import type { Event } from "../../types/admin";
+import { formatDateForDisplay } from "../../utils/dateUtils";
 import FormEvent from "./FormEvent";
 
 export default function EventsSection() {
@@ -62,8 +63,8 @@ export default function EventsSection() {
                     {event.description}
                   </Typography>
                   <Typography variant="subtitle2" color="text.secondary">
-                    {new Date(event.date).toLocaleDateString()}{" "}
-                    {event.startTime ? `à ${event.startTime}` : ""}
+                    {formatDateForDisplay(event.date)}
+                    {event.startTime ? ` ${event.startTime}` : ""}
                     {event.endTime ? ` - ${event.endTime}` : ""}
                   </Typography>
                   <Button
