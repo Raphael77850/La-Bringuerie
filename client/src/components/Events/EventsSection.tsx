@@ -66,8 +66,7 @@ export default function EventsSection() {
                     {event.description}
                   </Typography>
                   <Typography variant="subtitle2" color="text.secondary">
-                    {formatDateForDisplay(event.date)}
-                    {extractTimeFromDate(event.date)}
+                    {formatDateForDisplay(event.date)} {extractTimeFromDate(event.date)}
                     {event.endTime
                       ? ` - ${extractTimeFromDate(event.endTime)}`
                       : ""}
