@@ -39,7 +39,7 @@
 
 .events-list-block {
   flex: 1;
-  background: #f4511e;
+  background: rgba(255, 87, 34, 0.92);
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -190,7 +190,7 @@
 /* Boutons de réservation */
 .reservation-button {
   background: #fff3e0;
-  color: #ff5722;
+  color: linear-gradient(90deg, #ff5722 60%, #ff8a50 100%);
   border: none;
   border-radius: 0.5rem;
   padding: 0.25rem 0.5rem;
