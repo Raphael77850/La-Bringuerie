@@ -1,230 +1,109 @@
-import express from "express";
-import databaseClient from "../database/client";
-import eventActions from "./modules/EventModule/eventActions";
-import newsletterActions from "./modules/NewsletterModule/newsletterActions";
-import adminActions from "./modules/adminModule/adminActions";
-import adminCreateAction from "./modules/adminModule/adminCreateAction";
-import eventAdminAction from "./modules/adminModule/eventAdminAction";
-import authActions from "./modules/auth/authActions";
-import refreshTokenActions from "./modules/auth/refreshTokenActions";
-import itemActions from "./modules/item/itemActions";
-import adminAuth from "./modules/middleware/adminAuth";
-import upload from "./modules/middleware/upload";
+import express from 'express';
+import type { Request, Response } from 'express';
 
 const router = express.Router();
 
-/* ************************************************************************* */
-// Define Your API Routes Here
-/* ************************************************************************* */
+// Import des actions existantes
+import itemActions from './modules/item/itemActions';
+import eventActions from './modules/EventModule/eventActions';
+import newsletterActions from './modules/NewsletterModule/newsletterActions';
+import { login } from './modules/auth/authActions';
+import adminActions from './modules/adminModule/adminActions';
+import newsletterAdminActions from './modules/adminModule/newsletterAdminActions';
 
-// Health check route
-router.get("/health", async (req, res) => {
+// Import des middlewares de sécurité
+import { 
+  authenticateToken, 
+  validateEventInput,
+  loginRateLimit,
+  newsletterRateLimit 
+} from './middleware/security';
+
+// ===============================
+// ROUTES PUBLIQUES
+// ===============================
+
+// Health check
+router.get('/health', (req: Request, res: Response) => {
+  res.json({ 
+    success: true, 
+    data: { 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version || '1.0.0',
+      environment: process.env.NODE_ENV || 'development'
+    } 
+  });
+});
+
+// Routes items (publiques)
+router.get('/items', itemActions.browse);
+router.get('/items/:id', itemActions.read);
+router.post('/items', itemActions.add);
+
+// Routes newsletter (avec rate limiting)
+router.post('/newsletter', newsletterRateLimit, newsletterActions.add);
+
+// Routes événements publiques
+router.get('/events', eventActions.getEvents);
+router.get('/events/:id', eventActions.getEventById);
+router.post('/user_event', eventActions.add);
+
+// Route d'authentification (avec rate limiting)
+router.post('/auth/login', loginRateLimit, login);
+
+// ===============================
+// ROUTES ADMIN (SÉCURISÉES)
+// ===============================
+
+// Admin - Newsletter
+router.get('/admin/newsletter/emails', authenticateToken, adminActions.getNewsletterEmails);
+router.get('/admin/newsletter', authenticateToken, newsletterAdminActions.getAllSubscriptions);
+router.delete('/admin/newsletter/:id', authenticateToken, newsletterAdminActions.deleteSubscription);
+
+// Admin - Événements
+router.get('/admin/events', authenticateToken, adminActions.getAllEvents);
+router.post('/admin/events', authenticateToken, validateEventInput, adminActions.addEvent);
+router.put('/admin/events/:id', authenticateToken, validateEventInput, adminActions.updateEvent);
+router.delete('/admin/events/:id', authenticateToken, adminActions.deleteEvent);
+
+// Admin - Utilisateurs événements
+router.get('/admin/event-users', authenticateToken, async (req: Request, res: Response) => {
   try {
-    // Test de connexion à la base de données
-    const [rows] = await databaseClient.query("SELECT 1 as test");
-
+    const adminRepository = (await import('./modules/adminModule/adminRepository')).default;
+    const users = await adminRepository.getEventEmails();
     res.json({
-      status: "OK",
-      message: "Server is running",
-      database: "Connected",
-      timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || "development",
+      success: true,
+      data: users
     });
-  } catch (error) {
-    console.error("Health check failed:", error);
+  } catch (err) {
+    console.error('❌ Error fetching event users:', err);
     res.status(500).json({
-      status: "ERROR",
-      message: "Database connection failed",
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: new Date().toISOString(),
-      environment: process.env.NODE_ENV || "development",
+      success: false,
+      error: { code: 'INTERNAL_ERROR', message: 'Erreur lors de la récupération des utilisateurs' }
     });
   }
 });
 
-// Route simple pour vérifier les tables
-router.get("/check-tables", async (req, res) => {
-  try {
-    const [tables] = await databaseClient.query("SHOW TABLES");
+router.delete('/admin/event-users/:id', authenticateToken, adminActions.deleteEventUser);
+
+// ===============================
+// ROUTES DE DÉVELOPPEMENT UNIQUEMENT
+// ===============================
+if (process.env.NODE_ENV === 'development') {
+  console.warn('⚠️ Routes de développement activées - NE PAS UTILISER EN PRODUCTION');
+  
+  router.get('/dev/status', (req: Request, res: Response) => {
     res.json({
-      status: "OK",
-      message: "Database tables check",
-      tables: tables,
-      timestamp: new Date().toISOString(),
+      success: true,
+      data: {
+        environment: 'development',
+        timestamp: new Date().toISOString(),
+        nodeVersion: process.version,
+        memory: process.memoryUsage()
+      }
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "ERROR",
-      message: "Failed to check tables",
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-});
-
-// Route pour vérifier l'admin créé (DEBUG)
-router.get("/check-admin", async (req, res) => {
-  try {
-    const [admins] = await databaseClient.query(
-      "SELECT id, email, created_at FROM admin ORDER BY created_at DESC LIMIT 5",
-    );
-    res.json({
-      status: "OK",
-      message: "Admin check",
-      admins: admins,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "ERROR",
-      message: "Failed to check admin",
-      error: error instanceof Error ? error.message : "Unknown error",
-    });
-  }
-});
-
-// TEMPORAIRE : Route pour initialiser la base de données
-router.get("/init-db", async (req, res) => {
-  try {
-    console.info("Initializing database...");
-
-    // Test de connexion d'abord
-    await databaseClient.query("SELECT 1 as test");
-    console.info("Database connection OK for init-db");
-
-    // Créer la table admin si elle n'existe pas
-    console.info("Creating admin table...");
-    await databaseClient.query(`
-      CREATE TABLE IF NOT EXISTS admin (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-    console.info("Admin table created successfully");
-
-    // Créer d'autres tables essentielles
-    console.info("Creating newsletter table...");
-    await databaseClient.query(`
-      CREATE TABLE IF NOT EXISTS newsletter (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        date_inscription DATETIME DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    console.info("Creating event table...");
-    await databaseClient.query(`
-      CREATE TABLE IF NOT EXISTS event (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        title VARCHAR(100) NOT NULL,
-        description TEXT NOT NULL,
-        date DATETIME NOT NULL,
-        endTime DATETIME NOT NULL,
-        location VARCHAR(255),
-        max_participants INT DEFAULT NULL,
-        image_url VARCHAR(500),
-        status ENUM('draft', 'published', 'cancelled', 'completed') DEFAULT 'published',
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    console.info("Creating user_event table...");
-    await databaseClient.query(`
-      CREATE TABLE IF NOT EXISTS user_event (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        firstName VARCHAR(100) NOT NULL,
-        lastName VARCHAR(100) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        event_id INT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (event_id) REFERENCES event(id) ON DELETE CASCADE,
-        UNIQUE (email, event_id)
-      )
-    `);
-
-    // Vérifier que la table admin existe vraiment
-    const [tables] = await databaseClient.query("SHOW TABLES LIKE 'admin'");
-    const adminTableExists = Array.isArray(tables) && tables.length > 0;
-
-    console.info("Database initialization completed");
-    res.json({
-      status: "SUCCESS",
-      message: "Database initialized successfully",
-      timestamp: new Date().toISOString(),
-      tables: {
-        admin: adminTableExists ? "Created" : "Failed to create",
-        newsletter: "Created",
-        event: "Created",
-        user_event: "Created",
-      },
-    });
-  } catch (error) {
-    console.error("Database initialization failed:", error);
-    res.status(500).json({
-      status: "ERROR",
-      message: "Database initialization failed",
-      error: error instanceof Error ? error.message : "Unknown error",
-      timestamp: new Date().toISOString(),
-    });
-  }
-});
-
-// Define item-related routes
-router.get("/items", itemActions.browse);
-router.get("/items/:id", itemActions.read);
-router.post("/items", itemActions.add);
-
-router.post("/newsletter", newsletterActions.add);
-
-router.post("/user_event", eventActions.add);
-router.get("/events", eventActions.getEvents);
-router.get("/events/:id", eventActions.getEventById);
-
-router.get(
-  "/admin/newsletter/emails",
-  adminAuth,
-  adminActions.getNewsletterEmails,
-);
-
-router.post(
-  "/admin/events",
-  adminAuth,
-  upload.single("image"),
-  eventAdminAction.addEvent,
-);
-
-router.put(
-  "/admin/events",
-  adminAuth,
-  upload.single("image"),
-  eventAdminAction.updateEvent,
-);
-router.get("/admin/events/emails/:id?", adminAuth, adminActions.getEventEmails);
-router.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
-router.delete(
-  "/admin/event-users/:id",
-  adminAuth,
-  adminActions.deleteEventUser,
-);
-
-router.post("/login", authActions.login);
-
-// Route pour l'interface admin (serve the admin page)
-router.get("/admin", (req, res) => {
-  // Si c'est une SPA, on redirige vers la page principale pour laisser React Router gérer
-  res.redirect("/");
-});
-
-// Route pour créer un nouvel admin (protégée)
-router.post("/admin/create", adminAuth, adminCreateAction.createAdmin);
-
-// Route pour rafraîchir le token d'accès
-router.post("/refresh-token", refreshTokenActions.refreshToken);
-
-// Routes pour les événements avec gestion des images
-
-/* ************************************************************************* */
+  });
+}
 
 export default router;

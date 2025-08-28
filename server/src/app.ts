@@ -1,241 +1,169 @@
-import path from "node:path";
-import bodyParser from "body-parser";
-import express from "express";
-import eventRepository from "./modules/EventModule/eventRepository";
-import adminActions from "./modules/adminModule/adminActions";
-import adminRepository from "./modules/adminModule/adminRepository";
-import newsletterAdminActions from "./modules/adminModule/newsletterAdminActions";
-import adminAuth from "./modules/middleware/adminAuth";
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import path from 'node:path';
+import fs from 'node:fs';
+
+// SÉCURITÉ: Configuration centralisée
+const securityConfig = {
+  helmet: helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        imgSrc: ["'self'", "data:", "https:"],
+      },
+    },
+    crossOriginEmbedderPolicy: false
+  }),
+
+  cors: {
+    origin: process.env.NODE_ENV === 'production' 
+      ? (process.env.ALLOWED_ORIGINS?.split(',') || ['https://your-domain.com'])
+      : ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  },
+
+  rateLimit: {
+    auth: rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 5, // limit each IP to 5 requests per windowMs
+      message: { 
+        success: false, 
+        error: { code: 'RATE_LIMIT_EXCEEDED', message: 'Trop de tentatives de connexion. Réessayez dans 15 minutes.' }
+      },
+      standardHeaders: true,
+      legacyHeaders: false,
+    }),
+    
+    api: rateLimit({
+      windowMs: 15 * 60 * 1000,
+      max: 100,
+      message: { 
+        success: false, 
+        error: { code: 'RATE_LIMIT_EXCEEDED', message: 'Trop de requêtes. Réessayez plus tard.' }
+      }
+    })
+  }
+};
+
+// SÉCURITÉ: Validation des variables d'environnement
+const validateEnvironment = () => {
+  if (process.env.NODE_ENV === 'production') {
+    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
+      throw new Error('JWT_SECRET must be at least 32 characters long in production');
+    }
+    if (!process.env.JWT_REFRESH_SECRET || process.env.JWT_REFRESH_SECRET.length < 32) {
+      throw new Error('JWT_REFRESH_SECRET must be at least 32 characters long in production');
+    }
+  }
+};
 
 const app = express();
 
-/* ************************************************************************* */
-
-// CORS Handling: Why is the current code present and do I need to define specific allowed origins for my project?
-
-// CORS (Cross-Origin Resource Sharing) is a security mechanism in web browsers that blocks requests from a different domain than the server.
-// You may find the following magic line in forums:
-
-// app.use(cors());
-
-// You should NOT do that: such code uses the `cors` module to allow all origins, which can pose security issues.
-// For this pedagogical template, the CORS code allows CLIENT_URL in development mode (when process.env.CLIENT_URL is defined).
-import cors from "cors";
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "http://localhost:3310",
-  "http://127.0.0.1:3310",
-  // Railway frontend URL
-  "https://la-bringuerie-production.up.railway.app",
-  // Vercel auto-generated URLs
-  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
-  // Your custom domain (add when you have one)
-  // "https://votre-domaine.com"
-].filter(Boolean);
-
-app.use(
-  cors({
-    origin: [
-      process.env.CLIENT_URL || "http://localhost:3000",
-      "http://localhost:3000",
-      "https://la-bringuerie-production.up.railway.app",
-    ].filter(Boolean),
-    credentials: true,
-  }),
-);
-
-// If you need to allow extra origins, you can add something like this:
-
-/*
-app.use(
-  cors({
-    origin: ["http://mysite.com", "http://another-domain.com"],
-  }),
-);
-*/
-
-// With ["http://mysite.com", "http://another-domain.com"]
-// to be replaced with an array of your trusted origins
-
-/* ************************************************************************* */
-
-// Request Parsing: Understanding the purpose of this part
-
-// Request parsing is necessary to extract data sent by the client in an HTTP request.
-// For example to access the body of a POST request.
-// The current code contains different parsing options as comments to demonstrate different ways of extracting data.
-
-// 1. `express.json()`: Parses requests with JSON data.
-// 2. `express.urlencoded()`: Parses requests with URL-encoded data.
-// 3. `express.text()`: Parses requests with raw text data.
-// 4. `express.raw()`: Parses requests with raw binary data.
-
-// Uncomment one or more of these options depending on the format of the data sent by your client:
-
-app.use(express.json());
-app.use(bodyParser.json());
-// app.use(express.urlencoded());
-// app.use(express.text());
-// app.use(express.raw());
-
-/* ************************************************************************* */
-
-// Import the API router
-import router from "./router";
-
-// Import multer for file uploads
-import fs from "node:fs";
-import multer from "multer";
-import eventAdminAction from "./modules/adminModule/eventAdminAction";
-
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, "../public/uploads/events");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+// SÉCURITÉ: Validation environnement
+try {
+  validateEnvironment();
+} catch (error) {
+  console.error('❌ Configuration error:', error instanceof Error ? error.message : 'Unknown error');
+  process.exit(1);
 }
 
-// Configure multer for event image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(
-      null,
-      `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`,
-    );
-  },
-});
+// SÉCURITÉ: Middlewares de sécurité
+app.use(securityConfig.helmet);
+app.use(cors(securityConfig.cors));
 
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB limit
-  },
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith("image/")) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only image files are allowed!"));
+// SÉCURITÉ: Rate limiting
+app.use('/api/auth', securityConfig.rateLimit.auth);
+app.use('/api', securityConfig.rateLimit.api);
+
+// Parsing
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// SÉCURITÉ: Logging des requêtes (sans données sensibles)
+app.use((req, res, next) => {
+  const start = Date.now();
+  
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`${req.method} ${req.path} - ${res.statusCode} - ${duration}ms - ${req.ip}`);
+    
+    // Alerte sur requêtes lentes
+    if (duration > 5000) {
+      console.warn(`⚠️ Slow request: ${req.method} ${req.path} - ${duration}ms`);
     }
-  },
+  });
+  
+  next();
 });
 
-// Route API pour les événements admin
-const apiRouter = express.Router();
-apiRouter.get("/admin/events", adminAuth, adminActions.getAllEvents);
-apiRouter.post(
-  "/admin/events",
-  adminAuth,
-  upload.single("image"),
-  eventAdminAction.addEvent,
-);
-apiRouter.put(
-  "/admin/events",
-  adminAuth,
-  upload.single("image"),
-  eventAdminAction.updateEvent,
-);
-apiRouter.delete("/admin/events/:id", adminAuth, adminActions.deleteEvent);
-apiRouter.get(
-  "/admin/newsletter",
-  adminAuth,
-  newsletterAdminActions.getAllSubscriptions,
-);
-apiRouter.delete(
-  "/admin/newsletter/:id",
-  adminAuth,
-  newsletterAdminActions.deleteSubscription,
-);
-apiRouter.get("/admin/event-users", adminAuth, async (req, res) => {
-  try {
-    const users = await adminRepository.getEventEmails();
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({
-      error:
-        "Erreur serveur lors de la récupération des inscrits aux événements",
-    });
-  }
+// Health check sécurisé
+app.get('/health', (req, res) => {
+  res.json({ 
+    success: true, 
+    data: { 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      version: process.env.npm_package_version || '1.0.0',
+      environment: process.env.NODE_ENV || 'development'
+    } 
+  });
 });
 
-// Mount the API router under the "/api" endpoint
-app.use("/api", apiRouter);
-app.use("/api", router);
+// Import des routes sécurisées (temporaire - en attendant la refactorisation complète)
+import router from './router';
+app.use('/api', router);
 
-/* ************************************************************************* */
-
-// Production-ready setup: What is it for?
-
-// The code includes sections to set up a production environment where the client and server are executed from the same processus.
-
-// What it"s for:
-// - Serving client static files from the server, which is useful when building a single-page application with React.
-// - Redirecting unhandled requests (e.g., all requests not matching a defined API route) to the client's index.html. This allows the client to handle client-side routing.
-
-// Serve server resources
-
-const publicFolderPath = path.join(__dirname, "../public");
-
-if (fs.existsSync(publicFolderPath)) {
-  app.use("/uploads", express.static(path.join(publicFolderPath, "uploads")));
+// Servir les fichiers statiques (production)
+if (process.env.NODE_ENV === 'production') {
+  const clientBuildPath = path.join(__dirname, '../../client/dist');
+  
+  if (fs.existsSync(clientBuildPath)) {
+    console.info(`✅ Serving client from: ${clientBuildPath}`);
+    app.use(express.static(clientBuildPath));
+    
+    console.info(`✅ Client build files served from: ${clientBuildPath}`);
+  } else {
+    console.warn(`⚠️ Client build not found at: ${clientBuildPath}`);
+  }
 }
 
-// Serve client resources
-const clientBuildPath = path.join(__dirname, "../../../client/dist");
-if (fs.existsSync(clientBuildPath)) {
-  console.info(`Serving client from: ${clientBuildPath}`);
-  app.use(express.static(clientBuildPath));
-}
+// SÉCURITÉ: Gestion d'erreurs centralisée
+app.use((error: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('❌ Application error:', {
+    error: error.message,
+    path: req.path,
+    method: req.method,
+    ip: req.ip,
+    timestamp: new Date().toISOString()
+  });
 
-// Route de fallback pour SPA (Single Page Application) - doit être en dernier
-const spaFallback: express.RequestHandler = (req, res) => {
-  // Ne pas intercepter les routes API
-  if (req.path.startsWith("/api")) {
-    res.status(404).json({ error: "API route not found" });
-    return;
-  }
+  // Ne pas exposer les détails d'erreur en production
+  const response = {
+    success: false,
+    error: {
+      code: error.code || 'INTERNAL_ERROR',
+      message: process.env.NODE_ENV === 'production' 
+        ? 'Une erreur interne s\'est produite'
+        : error.message
+    }
+  };
 
-  const indexPath = path.join(clientBuildPath, "index.html");
+  res.status(error.statusCode || 500).json(response);
+});
 
-  if (fs.existsSync(indexPath)) {
-    res.sendFile(indexPath);
-    return;
-  }
-
-  res.status(404).json({ error: "Frontend not found" });
-};
-
-app.use("*", spaFallback);
-
-/* ************************************************************************* */
-
-/* ************************************************************************* */
-
-// Middleware for Error Logging
-// Important: Error-handling middleware should be defined last, after other app.use() and routes calls.
-
-// Define a middleware function to log errors
-const logErrors = (
-  err: unknown,
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) => {
-  // Log the error to the console for debugging purposes
-  console.error(err);
-  console.error("on req:", req.method, req.path);
-
-  // Pass the error to the next middleware in the stack
-  next(err);
-};
-
-// Mount the logErrors middleware globally
-app.use(logErrors);
-
-/* ************************************************************************* */
+// 404 handler
+app.use('*', (req, res) => {
+  console.warn(`⚠️ 404 Not Found: ${req.originalUrl} from ${req.ip}`);
+  res.status(404).json({
+    success: false,
+    error: { code: 'NOT_FOUND', message: 'Route non trouvée' }
+  });
+});
 
 export default app;

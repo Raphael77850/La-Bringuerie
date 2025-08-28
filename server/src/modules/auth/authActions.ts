@@ -23,14 +23,22 @@ export const login = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    console.info("Login attempt for:", req.body.email);
-
     const { email, password } = req.body;
 
+    // SÉCURITÉ: Validation des entrées
     if (!email || !password) {
+      console.warn(`⚠️ Login attempt with missing credentials from ${req.ip}`);
       res.status(400).json({ message: "Email et mot de passe requis" });
       return;
     }
+
+    // SÉCURITÉ: Log sécurisé (sans mot de passe)
+    console.info(`🔐 Login attempt`, {
+      email: email,
+      ip: req.ip,
+      userAgent: req.get('User-Agent'),
+      timestamp: new Date().toISOString()
+    });
 
     // Chercher l'administrateur dans la base de données
     const [rows, fields]: [RowDataPacket[], FieldPacket[]] =
@@ -39,43 +47,55 @@ export const login = async (
         [email],
       );
 
-    console.info("Database query result:", {
-      found: rows.length > 0,
-      email: email,
-    });
-
     // Vérifier si l'administrateur existe
     if (Array.isArray(rows) && rows.length > 0) {
       const admin = rows[0];
 
-      // Comparer le mot de passe avec bcrypt
+      // SÉCURITÉ: Comparer le mot de passe avec bcrypt
       const isPasswordValid = await bcrypt.compare(password, admin.password);
 
-      console.info("Password validation:", {
-        isValid: isPasswordValid,
-        hasStoredPassword: !!admin.password,
-      });
-
       if (isPasswordValid) {
-        // Créer un token JWT
-        const token = jwt.sign(
+        // SÉCURITÉ: Créer des tokens JWT sécurisés
+        const jwtSecret = process.env.JWT_SECRET || 'dev_secret_change_in_production';
+        const refreshSecret = process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret_change_in_production';
+        
+        const accessToken = jwt.sign(
           { id: admin.id, email: admin.email, role: "admin" },
-          process.env.JWT_SECRET || "votre_clé_secrète",
-          { expiresIn: "8h" },
+          jwtSecret,
+          { expiresIn: "15m" } // SÉCURITÉ: Token courte durée
         );
 
-        console.info("Login successful for:", email);
+        const refreshToken = jwt.sign(
+          { id: admin.id, email: admin.email, role: "admin" },
+          refreshSecret,
+          { expiresIn: "7d" }
+        );
+
+        console.info(`✅ Login successful`, {
+          adminId: admin.id,
+          email: email,
+          ip: req.ip,
+          timestamp: new Date().toISOString()
+        });
 
         res.json({
-          token,
-          admin: { id: admin.id, email: admin.email },
+          token: accessToken,
+          admin: { id: admin.id, email: admin.email }
         });
       } else {
-        console.warn("Invalid password for:", email);
-        res.status(401).json({ message: "Identifiants invalides" });
+        console.warn(`⚠️ Invalid password attempt`, {
+          email: email,
+          ip: req.ip,
+          timestamp: new Date().toISOString()
+        });
+      res.status(401).json({ message: "Identifiants invalides" });
       }
     } else {
-      console.warn("Admin not found for email:", email);
+      console.warn(`⚠️ Admin not found`, {
+        email: email,
+        ip: req.ip,
+        timestamp: new Date().toISOString()
+      });
       res.status(401).json({ message: "Identifiants invalides" });
     }
   } catch (error) {

@@ -71,7 +71,7 @@ const AdminDashboard = () => {
   // Auth
   const handleLogin = () => {
     api
-      .post("/login", credentials)
+      .post("/auth/login", credentials)
       .then((response) => {
         const data = response.data as {
           token: string;
