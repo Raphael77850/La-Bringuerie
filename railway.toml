@@ -1,12 +1,23 @@
-# Railway configuration
+# Railway configuration optimisée pour La-Bringuerie
 [build]
   builder = "dockerfile"
   dockerfilePath = "railway.dockerfile"
 
 [deploy]
   startCommand = "npm start --workspace=server"
+  healthcheckPath = "/api/health"
+  healthcheckTimeout = 300
+  restartPolicyType = "on_failure"
+  restartPolicyMaxRetries = 3
 
 [[services]]
   [services.variables]
     NODE_ENV = "production"
     NPM_CONFIG_PRODUCTION = "false"
+    # Variables de sécurité - À configurer dans Railway Dashboard
+    # JWT_SECRET = "your-64-char-secret"
+    # DB_HOST = "${{PostgreSQL.PGHOST}}"
+    # DB_USER = "${{PostgreSQL.PGUSER}}"
+    # DB_PASSWORD = "${{PostgreSQL.PGPASSWORD}}"
+    # DB_NAME = "${{PostgreSQL.PGDATABASE}}"
+    # PORT = "${{PORT}}"
