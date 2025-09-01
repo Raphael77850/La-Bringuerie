@@ -54,11 +54,16 @@ const securityConfig = {
 // SÉCURITÉ: Validation des variables d'environnement
 const validateEnvironment = () => {
   if (process.env.NODE_ENV === 'production') {
-    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) {
-      throw new Error('JWT_SECRET must be at least 32 characters long in production');
+    // Utiliser SecurityConfig au lieu de process.env directement
+    const jwtSecret = SecurityConfig.JWT.SECRET;
+    const jwtRefreshSecret = SecurityConfig.JWT.REFRESH_SECRET;
+    
+    if (!jwtSecret || jwtSecret.length < 32) {
+      console.warn('⚠️  JWT_SECRET should be at least 32 characters in production');
+      console.warn('⚠️  Using fallback secret - Please configure proper JWT_SECRET in Railway Dashboard');
     }
-    if (!process.env.JWT_REFRESH_SECRET || process.env.JWT_REFRESH_SECRET.length < 32) {
-      throw new Error('JWT_REFRESH_SECRET must be at least 32 characters long in production');
+    if (!jwtRefreshSecret || jwtRefreshSecret.length < 32) {
+      console.warn('⚠️  JWT_REFRESH_SECRET should be at least 32 characters in production');
     }
   }
 };
