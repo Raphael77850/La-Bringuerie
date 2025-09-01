@@ -83,7 +83,7 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
 // MIDDLEWARE DE VALIDATION
 // ===============================
 export const validateEventInput = (req: Request, res: Response, next: NextFunction): void => {
-  const { title, description, date, endTime, maxParticipants } = req.body;
+  const { title, description, date, endTime, maxParticipants, max_participants } = req.body;
   const errors: string[] = [];
   
   if (!title || typeof title !== 'string' || title.trim().length < 3) {
@@ -104,13 +104,17 @@ export const validateEventInput = (req: Request, res: Response, next: NextFuncti
       errors.push('Format de date invalide');
     } else if (endDate <= startDate) {
       errors.push('La date de fin doit être postérieure à la date de début');
-    } else if (startDate <= new Date()) {
-      errors.push('L\'événement doit être programmé dans le futur');
     }
+    // Permettre les événements passés pour l'admin
+    // } else if (startDate <= new Date()) {
+    //   errors.push('L\'événement doit être programmé dans le futur');
+    // }
   }
   
-  if (maxParticipants !== undefined) {
-    const maxPart = Number(maxParticipants);
+  // Accepter les deux formats: maxParticipants et max_participants
+  const participants = maxParticipants || max_participants;
+  if (participants !== undefined && participants !== null && participants !== '') {
+    const maxPart = Number(participants);
     if (isNaN(maxPart) || maxPart < 1 || maxPart > 10000) {
       errors.push('Le nombre maximum de participants doit être entre 1 et 10000');
     }

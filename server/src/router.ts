@@ -1,7 +1,36 @@
 import express from 'express';
+import multer from 'multer';
+import path from 'path';
 import type { Request, Response } from 'express';
 
 const router = express.Router();
+
+// Configuration multer pour les uploads d'images
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/uploads/events/');
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({ 
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|webp/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Seules les images JPEG, PNG et WebP sont autorisées'));
+    }
+  }
+});
 
 // Import des actions existantes
 import itemActions from './modules/item/itemActions';
@@ -63,8 +92,8 @@ router.delete('/admin/newsletter/:id', authenticateToken, newsletterAdminActions
 
 // Admin - Événements
 router.get('/admin/events', authenticateToken, adminActions.getAllEvents);
-router.post('/admin/events', authenticateToken, validateEventInput, adminActions.addEvent);
-router.put('/admin/events/:id', authenticateToken, validateEventInput, adminActions.updateEvent);
+router.post('/admin/events', authenticateToken, upload.single('image'), validateEventInput, adminActions.addEvent);
+router.put('/admin/events/:id', authenticateToken, upload.single('image'), validateEventInput, adminActions.updateEvent);
 router.delete('/admin/events/:id', authenticateToken, adminActions.deleteEvent);
 
 // Admin - Utilisateurs événements

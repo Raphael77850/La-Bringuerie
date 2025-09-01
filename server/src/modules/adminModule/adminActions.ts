@@ -30,7 +30,6 @@ const adminActions = {
   addEvent: async (req: Request, res: Response) => {
     try {
       const {
-        image_url,
         title,
         description,
         date,
@@ -41,29 +40,48 @@ const adminActions = {
 
       if (!title || !description || !date || !endTime) {
         res.status(400).json({
-          message: "Les champs title, description, date et endTime sont requis",
+          success: false,
+          error: { 
+            code: 'VALIDATION_ERROR',
+            message: "Les champs title, description, date et endTime sont requis"
+          }
         });
         return;
       }
 
+      // Gérer l'upload d'image
+      let image_url = null;
+      if (req.file) {
+        // Chemin relatif pour l'URL
+        image_url = `/uploads/events/${req.file.filename}`;
+      }
+
       const insertId = await eventRepository.createEvent({
-        image_url: image_url || null,
+        image_url: image_url || '', // Utiliser string vide au lieu de null
         title,
         description,
         date,
         endTime,
         location,
-        max_participants,
+        max_participants: max_participants ? Number(max_participants) : undefined, // undefined au lieu de null
         id: 0,
       });
 
-      res
-        .status(201)
-        .json({ message: "Événement ajouté avec succès", id: insertId });
+      res.status(201).json({ 
+        success: true,
+        id: insertId,
+        imagePath: image_url,
+        message: "Événement ajouté avec succès" 
+      });
     } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Erreur lors de l'ajout de l'événement" });
+      console.error('❌ Error adding event:', err);
+      res.status(500).json({ 
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: "Erreur lors de l'ajout de l'événement"
+        }
+      });
     }
   },
 
