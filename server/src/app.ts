@@ -5,6 +5,9 @@ import rateLimit from 'express-rate-limit';
 import path from 'node:path';
 import fs from 'node:fs';
 
+// SÉCURITÉ: Import de la configuration centralisée
+import { SecurityConfig } from './config/security';
+
 // SÉCURITÉ: Configuration centralisée
 const securityConfig = {
   helmet: helmet({
