@@ -85,44 +85,64 @@ const adminActions = {
     }
   },
 
-  // Mettre à jour un événement
+    // Mettre à jour un événement
   updateEvent: async (req: Request, res: Response) => {
     try {
+      const eventId = req.params.id; // ID depuis l'URL
       const {
-        id,
-        image_url,
         title,
         description,
         date,
         endTime,
         location,
         max_participants,
+        image_url, // URL existante si pas de nouveau fichier
       } = req.body;
 
-      if (!id || !title || !description || !date || !endTime) {
+      if (!eventId || !title || !description || !date || !endTime) {
         res.status(400).json({
-          message:
-            "Les champs id, title, description, date et endTime sont requis",
+          success: false,
+          error: { 
+            code: 'VALIDATION_ERROR',
+            message: "Les champs id, title, description, date et endTime sont requis"
+          }
         });
         return;
       }
 
+      // Gérer l'upload d'image (nouveau fichier ou garder l'existant)
+      let finalImageUrl = image_url || ''; // Garder l'existant par défaut
+      
+      if (req.file) {
+        // Nouveau fichier uploadé
+        finalImageUrl = `/uploads/events/${req.file.filename}`;
+      }
+
       await eventRepository.update({
-        id,
-        image_url,
+        id: Number(eventId),
+        image_url: finalImageUrl,
         title,
         description,
         date,
         endTime,
         location,
-        max_participants,
+        max_participants: max_participants ? Number(max_participants) : undefined,
       });
 
-      res.status(200).json({ message: "Événement mis à jour avec succès" });
+      res.json({ 
+        success: true,
+        imagePath: finalImageUrl,
+        message: "Événement mis à jour avec succès" 
+      });
     } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Erreur lors de la mise à jour de l'événement" });
+      console.error('❌ Error updating event:', err);
+      res.status(500).json({ 
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: "Erreur lors de la mise à jour de l'événement"
+        }
+      });
     }
   },
 
