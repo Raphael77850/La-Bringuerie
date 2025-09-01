@@ -17,6 +17,10 @@ COPY . .
 RUN npm run build --workspace=client
 RUN npm run build --workspace=server
 
+# Create uploads directory with proper permissions
+RUN mkdir -p ./server/public/uploads/events
+RUN chmod 755 ./server/public/uploads/events
+
 # Start the application
 EXPOSE 3310
 CMD ["npm", "start", "--workspace=server"]

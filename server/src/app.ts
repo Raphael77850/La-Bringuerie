@@ -138,6 +138,24 @@ app.get('/health', (req, res) => {
 
 // Import des routes sécurisées (temporaire - en attendant la refactorisation complète)
 import router from './router';
+
+// IMPORTANT: Servir les fichiers uploads AVANT les routes API
+const uploadsPath = path.join(__dirname, '../public/uploads');
+console.info(`📁 Uploads directory: ${uploadsPath}`);
+if (fs.existsSync(uploadsPath)) {
+  console.info(`✅ Serving uploads from: ${uploadsPath}`);
+  app.use('/uploads', express.static(uploadsPath));
+} else {
+  console.warn(`⚠️ Uploads directory not found, creating: ${uploadsPath}`);
+  try {
+    require('fs').mkdirSync(uploadsPath, { recursive: true });
+    app.use('/uploads', express.static(uploadsPath));
+    console.info(`✅ Created and serving uploads from: ${uploadsPath}`);
+  } catch (err) {
+    console.error(`❌ Failed to create uploads directory:`, err);
+  }
+}
+
 app.use('/api', router);
 
 // Servir les fichiers statiques (production)

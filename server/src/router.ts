@@ -8,7 +8,13 @@ const router = express.Router();
 // Configuration multer pour les uploads d'images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './public/uploads/events/');
+    const uploadPath = path.join(__dirname, '../public/uploads/events/');
+    // Créer le dossier s'il n'existe pas
+    const fs = require('fs');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
