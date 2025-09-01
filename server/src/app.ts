@@ -129,15 +129,23 @@ app.use('/api', router);
 
 // Servir les fichiers statiques (production)
 if (process.env.NODE_ENV === 'production') {
-  const clientBuildPath = path.join(__dirname, '../../client/dist');
+  // Chemin corrigé pour Railway Docker container
+  const clientBuildPath = path.join(__dirname, '../../../client/dist');
   
   if (fs.existsSync(clientBuildPath)) {
     console.info(`✅ Serving client from: ${clientBuildPath}`);
     app.use(express.static(clientBuildPath));
     
+    // Route catch-all pour React Router (SPA)
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(clientBuildPath, 'index.html'));
+    });
+    
     console.info(`✅ Client build files served from: ${clientBuildPath}`);
   } else {
     console.warn(`⚠️ Client build not found at: ${clientBuildPath}`);
+    console.info(`📂 Current directory: ${__dirname}`);
+    console.info(`📂 Checking path: ${clientBuildPath}`);
   }
 }
 
