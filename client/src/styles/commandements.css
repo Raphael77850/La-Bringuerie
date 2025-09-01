@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 1rem 2rem 2rem 2.5rem;
-
+  backdrop-filter: blur(2px);
   background-color: rgb(255, 243, 224, 0.92);
 }
 

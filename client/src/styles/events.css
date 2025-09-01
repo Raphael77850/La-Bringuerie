@@ -39,7 +39,12 @@
 
 .events-list-block {
   flex: 1;
-  background: rgba(255, 87, 34, 0.92);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 80, 0.92) 0%,
+    rgba(255, 87, 34, 0.92) 100%
+  );
+  backdrop-filter: blur(2px);
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;

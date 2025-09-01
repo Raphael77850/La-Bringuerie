@@ -29,7 +29,12 @@
 }
 
 .intro-text-block {
-  background: rgba(255, 87, 34, 0.92);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 80, 0.92) 0%,
+    rgba(255, 87, 34, 0.92) 100%
+  );
+  backdrop-filter: blur(2px);
   color: #fff3e0;
   flex: 1 1 0;
   display: flex;

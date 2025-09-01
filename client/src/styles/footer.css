@@ -2,7 +2,12 @@
 
 .footer-section {
   width: 100%;
-  background: #ff5722;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 138, 80, 0.92) 0%,
+    rgba(255, 87, 34, 0.92) 100%
+  );
+  backdrop-filter: blur(2px);
   text-align: center;
   padding: 2rem 0 1rem 0;
   font-size: 1.1rem;
