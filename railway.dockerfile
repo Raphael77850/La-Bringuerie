@@ -34,7 +34,6 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
 
 # Copier les packages.json
 COPY package*.json ./
@@ -48,17 +47,15 @@ RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder --chown=nodejs:nodejs /app/client/dist ./client/dist
 COPY --from=builder --chown=nodejs:nodejs /app/server/dist ./server/dist
 COPY --from=builder --chown=nodejs:nodejs /app/server/database ./server/database
-COPY --chown=nodejs:nodejs server/.env.example-secure ./server/.env.example
+
+# Créer le fichier .env avec les bonnes permissions
+RUN touch /app/server/.env && chown nodejs:nodejs /app/server/.env
 
 # Changer vers l'utilisateur non-root
 USER nodejs
 
 # Exposer le port Railway
-EXPOSE ${PORT:-3310}
-
-# Healthcheck pour Railway
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:${PORT:-3310}/api/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+EXPOSE 3310
 
 # Démarrer avec dumb-init pour la gestion des signaux
 ENTRYPOINT ["dumb-init", "--"]
