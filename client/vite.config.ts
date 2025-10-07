@@ -5,10 +5,10 @@ export default defineConfig({
   plugins: [react()],
   assetsInclude: ["**/*.MP4", "**/*.mp4", "**/*.Mp4"],
   server: {
-    port: 3000, // Spécifie explicitement le port 3000
+    port: 3002, // Port libre disponible
     proxy: {
       "/api": {
-        target: "http://localhost:3310",
+        target: "http://localhost:3001",
         changeOrigin: true,
       },
     },

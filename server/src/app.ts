@@ -155,17 +155,27 @@ app.get("/health", (req, res) => {
 // Import des routes sécurisées (temporaire - en attendant la refactorisation complète)
 import router from "./router";
 
-// IMPORTANT: Servir les fichiers uploads AVANT les routes API
+// IMPORTANT: Servir les fichiers uploads sous /api/uploads avec CORS approprié
 const uploadsPath = path.join(__dirname, "../public/uploads");
 console.info(`📁 Uploads directory: ${uploadsPath}`);
+
+// Middleware CORS spécifique pour les uploads
+const uploadsMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+};
+
 if (fs.existsSync(uploadsPath)) {
   console.info(`✅ Serving uploads from: ${uploadsPath}`);
-  app.use("/uploads", express.static(uploadsPath));
+  app.use("/api/uploads", uploadsMiddleware, express.static(uploadsPath));
 } else {
   console.warn(`⚠️ Uploads directory not found, creating: ${uploadsPath}`);
   try {
     require("node:fs").mkdirSync(uploadsPath, { recursive: true });
-    app.use("/uploads", express.static(uploadsPath));
+    app.use("/api/uploads", uploadsMiddleware, express.static(uploadsPath));
     console.info(`✅ Created and serving uploads from: ${uploadsPath}`);
   } catch (err) {
     console.error("❌ Failed to create uploads directory:", err);

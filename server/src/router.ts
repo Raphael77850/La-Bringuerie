@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
+import path from 'node:path';
 import type { Request, Response } from 'express';
 
 const router = express.Router();
@@ -10,15 +10,16 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, '../public/uploads/events/');
     // Créer le dossier s'il n'existe pas
-    const fs = require('fs');
+    // biome-ignore lint/style/useNodejsImportProtocol: <explanation>
+        const fs = require('fs');
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1E9)}`;
+    cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
   }
 });
 
@@ -32,9 +33,8 @@ const upload = multer({
     
     if (mimetype && extname) {
       return cb(null, true);
-    } else {
-      cb(new Error('Seules les images JPEG, PNG et WebP sont autorisées'));
     }
+    cb(new Error('Seules les images JPEG, PNG et WebP sont autorisées'));
   }
 });
 
@@ -107,10 +107,7 @@ router.get('/admin/event-users', authenticateToken, async (req: Request, res: Re
   try {
     const adminRepository = (await import('./modules/adminModule/adminRepository')).default;
     const users = await adminRepository.getEventEmails();
-    res.json({
-      success: true,
-      data: users
-    });
+    res.json(users); // Retourner directement les utilisateurs
   } catch (err) {
     console.error('❌ Error fetching event users:', err);
     res.status(500).json({
