@@ -41,3 +41,7 @@ Thumbs.db
 .npm/
 .eslintcache
 .parcel-cache/
+
+# Local development only - DO NOT COMMIT
+create-admin.js
+docker-compose.dev.yml
