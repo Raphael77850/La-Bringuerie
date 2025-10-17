@@ -214,7 +214,11 @@ export function useEventForm({
     }
     const config = { headers: { Authorization: `Bearer ${token}` } };
     try {
-      await api.put<{ imagePath?: string }>(`/admin/events/${currentEvent.id}`, formData, config);
+      await api.put<{ imagePath?: string }>(
+        `/admin/events/${currentEvent.id}`,
+        formData,
+        config,
+      );
 
       // Recharger les événements pour avoir les données à jour
       fetchEvents();

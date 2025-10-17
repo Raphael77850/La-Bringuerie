@@ -160,11 +160,15 @@ const uploadsPath = path.join(__dirname, "../public/uploads");
 console.info(`📁 Uploads directory: ${uploadsPath}`);
 
 // Middleware CORS spécifique pour les uploads
-const uploadsMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+const uploadsMiddleware = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction,
+) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Cross-Origin-Resource-Policy", "cross-origin");
   next();
 };
 

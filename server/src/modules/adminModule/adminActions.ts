@@ -29,22 +29,17 @@ const adminActions = {
   // Ajouter un événement
   addEvent: async (req: Request, res: Response) => {
     try {
-      const {
-        title,
-        description,
-        date,
-        endTime,
-        location,
-        max_participants,
-      } = req.body;
+      const { title, description, date, endTime, location, max_participants } =
+        req.body;
 
       if (!title || !description || !date || !endTime) {
         res.status(400).json({
           success: false,
-          error: { 
-            code: 'VALIDATION_ERROR',
-            message: "Les champs title, description, date et endTime sont requis"
-          }
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "Les champs title, description, date et endTime sont requis",
+          },
         });
         return;
       }
@@ -57,35 +52,37 @@ const adminActions = {
       }
 
       const insertId = await eventRepository.createEvent({
-        image_url: image_url || '', // Utiliser string vide au lieu de null
+        image_url: image_url || "", // Utiliser string vide au lieu de null
         title,
         description,
         date,
         endTime,
         location,
-        max_participants: max_participants ? Number(max_participants) : undefined, // undefined au lieu de null
+        max_participants: max_participants
+          ? Number(max_participants)
+          : undefined, // undefined au lieu de null
         id: 0,
       });
 
-      res.status(201).json({ 
+      res.status(201).json({
         success: true,
         id: insertId,
         imagePath: image_url,
-        message: "Événement ajouté avec succès" 
+        message: "Événement ajouté avec succès",
       });
     } catch (err) {
-      console.error('❌ Error adding event:', err);
-      res.status(500).json({ 
+      console.error("❌ Error adding event:", err);
+      res.status(500).json({
         success: false,
         error: {
-          code: 'INTERNAL_ERROR',
-          message: "Erreur lors de l'ajout de l'événement"
-        }
+          code: "INTERNAL_ERROR",
+          message: "Erreur lors de l'ajout de l'événement",
+        },
       });
     }
   },
 
-    // Mettre à jour un événement
+  // Mettre à jour un événement
   updateEvent: async (req: Request, res: Response) => {
     try {
       const eventId = req.params.id; // ID depuis l'URL
@@ -102,17 +99,18 @@ const adminActions = {
       if (!eventId || !title || !description || !date || !endTime) {
         res.status(400).json({
           success: false,
-          error: { 
-            code: 'VALIDATION_ERROR',
-            message: "Les champs id, title, description, date et endTime sont requis"
-          }
+          error: {
+            code: "VALIDATION_ERROR",
+            message:
+              "Les champs id, title, description, date et endTime sont requis",
+          },
         });
         return;
       }
 
       // Gérer l'upload d'image (nouveau fichier ou garder l'existant)
-      let finalImageUrl = image_url || ''; // Garder l'existant par défaut
-      
+      let finalImageUrl = image_url || ""; // Garder l'existant par défaut
+
       if (req.file) {
         // Nouveau fichier uploadé
         finalImageUrl = `/uploads/events/${req.file.filename}`;
@@ -126,22 +124,24 @@ const adminActions = {
         date,
         endTime,
         location,
-        max_participants: max_participants ? Number(max_participants) : undefined,
+        max_participants: max_participants
+          ? Number(max_participants)
+          : undefined,
       });
 
-      res.json({ 
+      res.json({
         success: true,
         imagePath: finalImageUrl,
-        message: "Événement mis à jour avec succès" 
+        message: "Événement mis à jour avec succès",
       });
     } catch (err) {
-      console.error('❌ Error updating event:', err);
-      res.status(500).json({ 
+      console.error("❌ Error updating event:", err);
+      res.status(500).json({
         success: false,
         error: {
-          code: 'INTERNAL_ERROR',
-          message: "Erreur lors de la mise à jour de l'événement"
-        }
+          code: "INTERNAL_ERROR",
+          message: "Erreur lors de la mise à jour de l'événement",
+        },
       });
     }
   },

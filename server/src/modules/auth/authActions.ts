@@ -33,11 +33,11 @@ export const login = async (
     }
 
     // SÉCURITÉ: Log sécurisé (sans mot de passe)
-    console.info(`🔐 Login attempt`, {
+    console.info("🔐 Login attempt", {
       email: email,
       ip: req.ip,
-      userAgent: req.get('User-Agent'),
-      timestamp: new Date().toISOString()
+      userAgent: req.get("User-Agent"),
+      timestamp: new Date().toISOString(),
     });
 
     // Chercher l'administrateur dans la base de données
@@ -56,45 +56,48 @@ export const login = async (
 
       if (isPasswordValid) {
         // SÉCURITÉ: Créer des tokens JWT sécurisés
-        const jwtSecret = process.env.JWT_SECRET || 'dev_secret_change_in_production';
-        const refreshSecret = process.env.JWT_REFRESH_SECRET || 'dev_refresh_secret_change_in_production';
-        
+        const jwtSecret =
+          process.env.JWT_SECRET || "dev_secret_change_in_production";
+        const refreshSecret =
+          process.env.JWT_REFRESH_SECRET ||
+          "dev_refresh_secret_change_in_production";
+
         const accessToken = jwt.sign(
           { id: admin.id, email: admin.email, role: "admin" },
           jwtSecret,
-          { expiresIn: "15m" } // SÉCURITÉ: Token courte durée
+          { expiresIn: "15m" }, // SÉCURITÉ: Token courte durée
         );
 
         const refreshToken = jwt.sign(
           { id: admin.id, email: admin.email, role: "admin" },
           refreshSecret,
-          { expiresIn: "7d" }
+          { expiresIn: "7d" },
         );
 
-        console.info(`✅ Login successful`, {
+        console.info("✅ Login successful", {
           adminId: admin.id,
           email: email,
           ip: req.ip,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
 
         res.json({
           token: accessToken,
-          admin: { id: admin.id, email: admin.email }
+          admin: { id: admin.id, email: admin.email },
         });
       } else {
-        console.warn(`⚠️ Invalid password attempt`, {
+        console.warn("⚠️ Invalid password attempt", {
           email: email,
           ip: req.ip,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
-      res.status(401).json({ message: "Identifiants invalides" });
+        res.status(401).json({ message: "Identifiants invalides" });
       }
     } else {
-      console.warn(`⚠️ Admin not found`, {
+      console.warn("⚠️ Admin not found", {
         email: email,
         ip: req.ip,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
       res.status(401).json({ message: "Identifiants invalides" });
     }
