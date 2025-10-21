@@ -32,7 +32,7 @@ export const HTTP_STATUS = {
 // ===============================
 // INTERFACES
 // ===============================
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
   admin?: {
     id: number;
     email: string;
@@ -98,6 +98,30 @@ export const authenticateToken = (
     });
     return;
   }
+};
+
+/**
+ * Middleware pour vérifier le rôle admin
+ * À utiliser après authenticateToken
+ */
+export const requireAdmin = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+): void => {
+  if (!req.admin || req.admin.role !== "admin") {
+    console.warn(`⚠️ Unauthorized admin access attempt from ${req.ip}`);
+    res.status(HTTP_STATUS.FORBIDDEN).json({
+      success: false,
+      error: {
+        code: ErrorCodes.AUTHORIZATION_FAILED,
+        message: "Accès réservé aux administrateurs",
+      },
+    });
+    return;
+  }
+
+  next();
 };
 
 // ===============================
