@@ -42,6 +42,10 @@ README.md
 coverage
 .nyc_output
 reports
+server/tests
+**/tests
+**/*.test.ts
+**/*.spec.ts
 
 # Documentation
 docs

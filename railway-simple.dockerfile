@@ -1,5 +1,8 @@
-# Railway Dockerfile SIMPLE - Version de fallback
+# Railway Dockerfile SIMPLE - Version optimisée mémoire
 FROM node:22-alpine
+
+# Optimisation: Limite la mémoire Node.js
+ENV NODE_OPTIONS="--max-old-space-size=512"
 
 WORKDIR /app
 
@@ -13,7 +16,7 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application (avec limite mémoire)
 RUN npm run build --workspace=client
 RUN npm run build --workspace=server
 
