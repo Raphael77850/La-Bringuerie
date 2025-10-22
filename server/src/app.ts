@@ -100,6 +100,9 @@ const validateEnvironment = () => {
 
 const app = express();
 
+// SÉCURITÉ: Configure trust proxy pour Railway (nécessaire pour rate limiting)
+app.set("trust proxy", 1);
+
 // SÉCURITÉ: Validation environnement
 try {
   validateEnvironment();
