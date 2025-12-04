@@ -1,63 +1,30 @@
-import path from "node:path";
+/**
+ * Router principal de l'application
+ * Définit toutes les routes avec les middlewares appropriés
+ * Refactorisé selon les principes SOLID
+ */
+
 import express from "express";
 import type { Request, Response } from "express";
-import multer from "multer";
 
-const router = express.Router();
-
-// Configuration multer pour les uploads d'images
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, "../public/uploads/events/");
-    // Créer le dossier s'il n'existe pas
-    // biome-ignore lint/style/useNodejsImportProtocol: <explanation>
-    const fs = require("fs");
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(
-      null,
-      `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`,
-    );
-  },
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp/;
-    const extname = allowedTypes.test(
-      path.extname(file.originalname).toLowerCase(),
-    );
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    }
-    cb(new Error("Seules les images JPEG, PNG et WebP sont autorisées"));
-  },
-});
-
+// Import des actions
 import eventActions from "./modules/EventModule/eventActions";
 import newsletterActions from "./modules/NewsletterModule/newsletterActions";
 import adminActions from "./modules/adminModule/adminActions";
 import newsletterAdminActions from "./modules/adminModule/newsletterAdminActions";
 import { login } from "./modules/auth/authActions";
-// Import des actions existantes
 import itemActions from "./modules/item/itemActions";
 
-// Import des middlewares de sécurité
+// Import des middlewares centralisés (barrel export)
 import {
   authenticateToken,
   loginRateLimit,
   newsletterRateLimit,
+  upload,
   validateEventInput,
-} from "./middleware/security";
+} from "./middleware";
+
+const router = express.Router();
 
 // ===============================
 // ROUTES PUBLIQUES

@@ -117,12 +117,8 @@ class EventRepository {
   // Ajoutez une gestion d'erreur appropriée à la méthode delete
   async delete(id: number): Promise<void> {
     try {
-      // D'abord supprimer tous les enregistrements liés dans user_event
-      await databaseClient.query("DELETE FROM user_event WHERE event_id = ?", [
-        id,
-      ]);
-
-      // Ensuite supprimer l'événement
+      // La suppression en cascade est gérée automatiquement par MySQL
+      // grâce aux contraintes ON DELETE CASCADE définies dans schema.sql
       await databaseClient.query("DELETE FROM event WHERE id = ?", [id]);
     } catch (error) {
       console.error("Error deleting event:", error);
